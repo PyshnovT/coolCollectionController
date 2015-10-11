@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SupplementaryCell">
+            <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
+                <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6V-8I-Esu">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="60"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caE-q6-szA">
+                        <rect key="frame" x="0.0" y="8" width="234" height="90"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Совместная аналитика" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPy-Wg-PwR">
+                                <rect key="frame" x="21" y="16" width="205" height="21"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Hrd-Se-Ya5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="IPy-Wg-PwR" secondAttribute="trailing" constant="8" id="7nZ-Mc-Qm8"/>
+                            <constraint firstItem="IPy-Wg-PwR" firstAttribute="leading" secondItem="caE-q6-szA" secondAttribute="leading" constant="21" id="DmP-Dr-hjf"/>
+                            <constraint firstItem="IPy-Wg-PwR" firstAttribute="top" secondItem="caE-q6-szA" secondAttribute="top" constant="16" id="e89-jF-voV"/>
+                            <constraint firstAttribute="height" constant="90" id="hOg-fB-aaY"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <animations/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <animations/>
+            <constraints>
+                <constraint firstItem="caE-q6-szA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6TZ-j0-qdB"/>
+                <constraint firstItem="caE-q6-szA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="QYm-f9-oEc"/>
+                <constraint firstAttribute="trailing" secondItem="caE-q6-szA" secondAttribute="trailing" id="agq-Z1-0aT"/>
+            </constraints>
+            <size key="customSize" width="234" height="60"/>
+            <connections>
+                <outlet property="backView" destination="T6V-8I-Esu" id="zK3-jv-VMY"/>
+                <outlet property="decorationView" destination="caE-q6-szA" id="Fgh-7S-kVq"/>
+                <outlet property="titleLabel" destination="IPy-Wg-PwR" id="Vpu-i4-ebd"/>
+            </connections>
+            <point key="canvasLocation" x="472" y="511"/>
+        </collectionViewCell>
+    </objects>
+</document>
