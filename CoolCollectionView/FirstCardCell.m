@@ -9,6 +9,7 @@
 #import "FirstCardCell.h"
 
 @interface FirstCardCell ()
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end

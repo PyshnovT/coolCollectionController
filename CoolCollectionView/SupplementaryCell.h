@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CollectionCardCell.h"
 
-@interface SupplementaryCell : CollectionCardCell
+@interface SupplementaryCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *decorationView;

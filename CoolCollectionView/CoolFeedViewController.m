@@ -32,7 +32,6 @@ static NSString * const viewReuseIdentifier = @"View";
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
- //   NSLog(@"секции: %lu", (unsigned long)[self.data count]);
     return [self.data count];
 }
 
@@ -40,20 +39,14 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
- //   NSLog(@"количество айтемов %lu в секции: %@", (unsigned long)sectionData.count, sectionKey);
     return sectionData.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    //NSLog(@"%@", indexPath);
-    
     NSString *sectionKey = [self.data allKeys][indexPath.section];
-  //  NSLog(@"КИ: %@", sectionKey);
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     NSString *title = [sectionData objectAtIndex:indexPath.item];
-    
     
     CardItem *item = [[CardItem alloc] init];
     item.type = CardItemTypeFirst;
@@ -63,18 +56,11 @@ static NSString * const viewReuseIdentifier = @"View";
     for (Class<CollectionCard> cellClass in self.cellClasses) {
         if ([cellClass handleItem:item]) {
             cardCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cellClass) forIndexPath:indexPath];
-            
-        //    NSLog(@"%@", title);
-            cardCell.title = title;
         }
-        
-     //   [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
     }
     
- //   FirstCardCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier: forIndexPath:indexPath];
-    
-  //  cardCell.backgroundColor = [UIColor redColor];
     cardCell.layer.zPosition = -1;
+    cardCell.title = title;
     
     return cardCell;
 }
@@ -86,14 +72,9 @@ static NSString * const viewReuseIdentifier = @"View";
   //  NSLog(@"%@", title);
     
     SupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
-    supCell.titleLabel.text = title;//title = @"ЛОООООООООООЛ";
-  //  NSLog(@"%@", supView.privateTitleLabel);
+    supCell.titleLabel.text = title;
     supCell.layer.zPosition = indexPath.section;
-  //  supCell.backgroundColor = [UIColor yellowColor];
     supCell.backView.hidden = !!indexPath.section;
-    
-  //  supCell.layer.shouldRasterize = YES;
-    //supCell.layer.rasterizationScale = [UIScreen mainScreen].scale;
     
     return supCell;
 }
@@ -101,34 +82,36 @@ static NSString * const viewReuseIdentifier = @"View";
 #pragma mark - UICollectionViewDelegate
 
 
+#pragma mark - Cells
+
+- (void)registerCells {
+    
+    self.cellClasses = @[[FirstCardCell class]];
+    
+    for (Class<CollectionCard> cellClass in self.cellClasses) {
+        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
+    }
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"SupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
+    
+}
 
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.cellClasses = @[[FirstCardCell class]];
-    
-    NSDictionary *dict = @{@"Первая секция": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
-                           @"Вторая секцушка": @[@"Ва", @"Вы", @"Вивы"],
-                           @"2.5 секция": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Треться секция": @[@"Твац", @"Тцуацуа"],
-                           @"Четвёртая секция": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"]
+    NSDictionary *dict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
+                           @"Вата": @[@"Ва", @"Вы", @"Вивы"],
+                           @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                           @"Тёрка": @[@"Твац", @"Тцуацуа"],
+                           @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"]
                   };
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:dict];
     
-    NSLog(@"ставлю дату");
+    [self registerCells];
     
- //   [self.collectionView registerClass:[FirstCardCell class] forCellWithReuseIdentifier:cellReuseIdentifier];
-    
-    for (Class<CollectionCard> cellClass in self.cellClasses) {
-        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
-    }
-    
-    //[self.collectionView registerNib:[UINib nibWithNibName:@"FirstCardCell" bundle:nil] forCellWithReuseIdentifier:cellReuseIdentifier];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"SupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
-
     
 }
 

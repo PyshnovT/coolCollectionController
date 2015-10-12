@@ -12,8 +12,8 @@
 
 @protocol CollectionCard <NSObject>
 
-+ (BOOL)handleItem:(CardItem *)item;
-
 @property (nonatomic, strong) NSString *title;
+
++ (BOOL)handleItem:(CardItem *)item;
 
 @end

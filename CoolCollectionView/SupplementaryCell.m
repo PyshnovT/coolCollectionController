@@ -7,7 +7,6 @@
 //
 
 #import "SupplementaryCell.h"
-#import "CardLayoutAttributes.h"
 
 @interface SupplementaryCell ()
 
