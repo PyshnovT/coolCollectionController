@@ -26,7 +26,7 @@
     
 - (void)commonInit {
     self.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-    self.cardBehaviourEnabled = NO;
+    self.cardBehaviourEnabled = YES;
     self.showsVerticalScrollIndicator = NO;
 }
 

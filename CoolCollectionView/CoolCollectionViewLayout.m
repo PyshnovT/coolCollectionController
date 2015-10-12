@@ -64,7 +64,7 @@ static NSString * const SupKind = @"title";
     
     
     NSNumber *tag = [self tagForIndexPath:indexPathForLastCard];
-    CGFloat height = [self.cellBottomY[tag] floatValue];// + 1000;
+    CGFloat height = [self.cellBottomY[tag] floatValue] + 1000;
    // NSLog(@"%f", height);
     
     
@@ -108,11 +108,37 @@ static NSString * const SupKind = @"title";
             cellLayoutInfo[indexPath] = itemAttributes;
             
             if (!indexPath.item) {
-            CardLayoutAttributes *supAttributes = [CardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupKind withIndexPath:indexPath];
-            supAttributes.size = supplementaryViewSize;
-            supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, previousBottomY + supplementaryViewSize.height / 2.0);
-            
-            supplementaryInfo[indexPath] = supAttributes;
+                CardLayoutAttributes *supAttributes = [CardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupKind withIndexPath:indexPath];
+                supAttributes.size = supplementaryViewSize;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                CGFloat y = previousBottomY;
+                
+                
+                
+                
+                CGFloat yOffset = self.collectionView.contentOffset.y;
+                
+                CGFloat minimumTopOffset = MIN(8 * indexPath.section, 8 * 2);
+                
+                if (y < yOffset + minimumTopOffset) { // всё, пошла цепочечка
+                    y = yOffset + minimumTopOffset;
+                }
+                
+                supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, y + supplementaryViewSize.height / 2.0);
+                
+                supplementaryInfo[indexPath] = supAttributes;
                 
             }
             
@@ -135,7 +161,7 @@ static NSString * const SupKind = @"title";
         for (NSIndexPath *indexKey in attributesDict) {
             
             
-            CardLayoutAttributes *attributes = (CardLayoutAttributes *)[attributesDict objectForKey:indexKey];
+            CardLayoutAttributes *attributes = [(CardLayoutAttributes *)[attributesDict objectForKey:indexKey] copy];
             CardLayoutAttributes *nextItemAttributes;
             NSIndexPath *nextPath = [NSIndexPath indexPathForItem:indexKey.item inSection:indexKey.section + 1];
             
@@ -148,45 +174,51 @@ static NSString * const SupKind = @"title";
             if (key == SupKind) { //двигать только сапы
                 CGRect supFrame = attributes.frame;
                 
-                                 //   NSLog(@"NEXT %@ %f", nextPath, nextItemAttributes.frame.origin.y);
-                
-                CGFloat yOffset = self.collectionView.contentOffset.y;
-                
-                CGFloat yS = MIN(8 * indexKey.section, 8 * 2);
-                
-             //   NSLog(@"%f", yS);
-            
-                if (supFrame.origin.y < yOffset + yS) { // всё, пошла цепочечка
-                    y = yOffset + yS;
-                    if (((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
+                if (((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     NSIndexPath *decorationIndexPath = indexKey;
                     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine"
                                                                                                                                          withIndexPath:decorationIndexPath];
                         
                     decorationAttributes.frame = CGRectMake(0.0f,
-                                                            y + supFrame.size.height,
+                                                            supFrame.origin.y + supFrame.size.height,
                                                             self.collectionViewContentSize.width,
                                                             2);
+                    
                     decorationAttributes.zIndex = indexKey.section;
+                
                     
-                    CGFloat d = MIN(1, (yOffset + yS - supFrame.origin.y) / 10);
+                    CGFloat yOffset = self.collectionView.contentOffset.y;
+                    CGFloat minimumTopOffset = MIN(8 * indexKey.section, 8 * 2);
                     
-                 //   decorationAttributes.alpha = d;
-                 //   NSLog(@"D: %f, ", d);
-                 //   NSLog(@"%@ %f", indexKey, yOffset + yS - supFrame.origin.y);
+                    NSIndexPath *firstCardIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexKey.section];
+                    CardLayoutAttributes *cardAttributes = self.layoutInfo[CardCell][firstCardIndexInCurrentSection];
+                    CGFloat zN = (cardAttributes.frame.origin.y - yOffset - minimumTopOffset) / supFrame.size.height;
                     
-                    [allAttributes addObject:decorationAttributes];
+                    CGFloat d = MIN(1, 1 - zN);
+                    
+                    decorationAttributes.alpha = d;
+                   // NSLog(@"Z: %f", zN);
+                 //   NSLog(@"%f %f", attributes.frame.origin.y, nextItemAttributes.frame.origin.y);
+
+                    if (attributes.frame.origin.y < nextItemAttributes.frame.origin.y - supFrame.size.height + 20 || !nextItemAttributes) {
+                    
+                        [allAttributes addObject:decorationAttributes];
                     }
+                
+                
+                    
                 } else {
                     y = supFrame.origin.y;
                 }
 
                 if (((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
-                attributes.frame = CGRectMake(supFrame.origin.x, y, supFrame.size.width, supFrame.size.height);
+             //   attributes.frame = CGRectMake(supFrame.origin.x, y, supFrame.size.width, supFrame.size.height); // кароч, они тупо не сихнронятся
+                //NSLog(@"я:%lu,  %f", indexKey.section, attributes.frame.origin.y);
+               // NSLog(@"ПИДОР СЛЕДУЮЩИЙ %lu %f", nextPath.section, nextItemAttributes.frame.origin.y);
                 }
 
             }
-            
+
             
             if (CGRectIntersectsRect(rect, attributes.frame)) {
                 
