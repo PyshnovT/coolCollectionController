@@ -11,5 +11,6 @@
 @interface CoolSupplementaryLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
+@property (nonatomic, getter=isBackViewHidden) BOOL backViewHidden;
 
 @end

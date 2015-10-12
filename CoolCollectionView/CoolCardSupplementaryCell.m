@@ -13,6 +13,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
+@property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
+@property (nonatomic, getter=isBackViewHidden) BOOL backViewHidden;
+
 @end
 
 @implementation CoolCardSupplementaryCell
@@ -53,6 +56,12 @@
     self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
 }
 
+- (void)setBackViewHidden:(BOOL)backViewHidden {
+    _backViewHidden = backViewHidden;
+    
+    self.backView.hidden = backViewHidden;
+}
+
 - (void)setTitle:(NSString *)title {
     _title = title;
     
@@ -66,6 +75,7 @@
     
     CoolSupplementaryLayoutAttributes *supLayoutAttributes = (CoolSupplementaryLayoutAttributes *)layoutAttributes;
     
+    self.backViewHidden = supLayoutAttributes.isBackViewHidden;
     self.shadowVisible = supLayoutAttributes.isShadowVisible;
 }
 

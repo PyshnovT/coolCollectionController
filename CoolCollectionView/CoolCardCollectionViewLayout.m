@@ -10,6 +10,8 @@
 #import "CoolCardCollectionView.h"
 #import "CoolCardDecorationView.h"
 
+#import "CoolCardTopDecorationView.h"
+
 #import "CoolSupplementaryLayoutAttributes.h"
 
 @interface CoolCardCollectionViewLayout ()
@@ -57,6 +59,7 @@ static NSString * const SupplementaryViewKind = @"title";
     self.cellBottomY = [NSMutableDictionary dictionary];
     
     [self registerClass:[CoolCardDecorationView class] forDecorationViewOfKind:@"bottomLine"];
+    [self registerClass:[CoolCardTopDecorationView class] forDecorationViewOfKind:@"topLine"];
 }
 
 #pragma mark - Layout
@@ -130,6 +133,7 @@ static NSString * const SupplementaryViewKind = @"title";
                 CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
+                supAttributes.backViewHidden = !!indexPath.section;
                 
                 if (self.cardBehaviourEnabled) {
                 
@@ -144,12 +148,15 @@ static NSString * const SupplementaryViewKind = @"title";
                             supplementaryInfo[prevSupIndexPath] = prevAttributes;
                             
                             prevprevAttributes.center = CGPointMake(prevprevAttributes.center.x, prevprevAttributes.center.y - dFactor);
+                           // prevprevAttributes.backViewHidden = NO;
                             supplementaryInfo[prevprevSupIndexPath] = prevprevAttributes;
                             
                            // NSLog(@"%f", lFactor);
                             
                             prevprevprevAttributes.center = CGPointMake(prevprevprevAttributes.center.x, prevprevprevAttributes.center.y + dFactor);
+                          //  prevprevprevAttributes.backViewHidden = NO;
                             supplementaryInfo[prevprevprevSupIndexPath] = prevprevprevAttributes;
+                            
                             
                     //        NSLog(@"prev:%@", prevAttributes);//NSStringFromCGRect(prevAttributes.frame));
                         }
@@ -195,6 +202,12 @@ static NSString * const SupplementaryViewKind = @"title";
             if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
 
                 if (self.cardBehaviourEnabled) {
+                    
+#warning Put decoration view to the top
+                    
+                    UICollectionViewLayoutAttributes *topAt = [self decorationAttributesForTopView];
+                    
+                    [allAttributes addObject:topAt];
                    
                     UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementartViewAttributes:currentItemAttributes indexPath:indexKey];
                     
@@ -335,6 +348,20 @@ static NSString * const SupplementaryViewKind = @"title";
 }
 
 #pragma mark - Layout Info
+
+- (UICollectionViewLayoutAttributes *)decorationAttributesForTopView {
+    UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"topLine" withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    
+    
+    decorationAttributes.frame = CGRectMake(0.0f,
+                                            self.collectionView.contentOffset.y,
+                                            self.collectionViewContentSize.width,
+                                            20);
+    
+    decorationAttributes.zIndex = -1;
+    
+    return decorationAttributes;
+}
 
 - (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementartViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
