@@ -14,6 +14,4 @@
 @property (nonatomic) CGFloat interItemSpaceY;
 @property (nonatomic) CGFloat cellHeight;
 
-@property (nonatomic) UIEdgeInsets insets;
-
 @end

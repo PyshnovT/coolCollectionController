@@ -21,6 +21,7 @@
 @property (nonatomic) CGFloat clingYOffset;
 @property (nonatomic) BOOL cardBehaviourEnabled;
 
+
 @end
 
 static NSString * const CardCell = @"CardCell";
@@ -43,6 +44,7 @@ static NSString * const SupplementaryViewKind = @"title";
 }
 
 - (void)setupLayout {
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
     
     self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
     
@@ -67,7 +69,7 @@ static NSString * const SupplementaryViewKind = @"title";
     NSIndexPath *indexPathForLastCard = [NSIndexPath indexPathForItem:lastItemIndex inSection:numberOfSections-1];
     
     NSNumber *tag = [self tagForIndexPath:indexPathForLastCard];
-    CGFloat height = [self.cellBottomY[tag] floatValue] + 50;
+    CGFloat height = self.collectionView.contentInset.top + [self.cellBottomY[tag] floatValue] + self.collectionView.contentInset.bottom;
     
     CGSize size = CGSizeMake(self.collectionView.bounds.size.width, height);
     
@@ -90,12 +92,12 @@ static NSString * const SupplementaryViewKind = @"title";
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             NSNumber *tag = [self tagForIndexPath:indexPath];
             
-            NSDictionary *layoutInfoForIndexPath = [self layoutInfoForIndexPath:indexPath];
-            self.cellBottomY[tag] = [layoutInfoForIndexPath objectForKey:@"currentBottomY"];
+            NSDictionary *cellLayout = [self cellLayoutInfoForIndexPath:indexPath];
+            self.cellBottomY[tag] = [cellLayout objectForKey:@"currentBottomY"];
             
-            CGSize cardSize = [[layoutInfoForIndexPath objectForKey:@"cardSize"] CGSizeValue];
-            CGSize supplementaryViewSize = [[layoutInfoForIndexPath objectForKey:@"supplementaryViewSize"] CGSizeValue];
-            CGFloat previousBottomY = [[layoutInfoForIndexPath objectForKey:@"previousBottomY"] floatValue];
+            CGSize cardSize = [[cellLayout objectForKey:@"cardSize"] CGSizeValue];
+            CGSize supplementaryViewSize = [[cellLayout objectForKey:@"supplementaryViewSize"] CGSizeValue];
+            CGFloat previousBottomY = [[cellLayout objectForKey:@"previousBottomY"] floatValue];
             
             UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             itemAttributes.size = cardSize;
@@ -330,7 +332,7 @@ static NSString * const SupplementaryViewKind = @"title";
     return nil;
 }
 
-- (NSDictionary *)layoutInfoForIndexPath:(NSIndexPath *)indexPath {
+- (NSDictionary *)cellLayoutInfoForIndexPath:(NSIndexPath *)indexPath {
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
     NSNumber *tag = [self tagForIndexPath:previousIndexPath];
