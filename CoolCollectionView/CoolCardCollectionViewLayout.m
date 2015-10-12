@@ -17,13 +17,14 @@
 @property (nonatomic, strong) NSDictionary *layoutInfo; 
 @property (nonatomic, strong) NSMutableDictionary *cellBottomY;
 
-
+@property (nonatomic) NSInteger numberOfClingedCards;
+@property (nonatomic) CGFloat clingYOffset;
 @property (nonatomic) BOOL cardBehaviourEnabled;
 
 @end
 
 static NSString * const CardCell = @"CardCell";
-static NSString * const SupKind = @"title";
+static NSString * const SupplementaryViewKind = @"title";
 
 @implementation CoolCardCollectionViewLayout
 
@@ -42,7 +43,11 @@ static NSString * const SupKind = @"title";
 }
 
 - (void)setupLayout {
+    
     self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
+    
+    self.numberOfClingedCards = 3;
+    self.clingYOffset = 8;
     
     self.cellHeight = 40;
     self.interItemSpaceY = 0;
@@ -61,14 +66,8 @@ static NSString * const SupKind = @"title";
     
     NSIndexPath *indexPathForLastCard = [NSIndexPath indexPathForItem:lastItemIndex inSection:numberOfSections-1];
     
-  //  CGPoint offset = [self cardOffsetForIndexPath:indexPathForLastCard];
-    
-    
     NSNumber *tag = [self tagForIndexPath:indexPathForLastCard];
     CGFloat height = [self.cellBottomY[tag] floatValue] + 50;
-   // NSLog(@"%f", height);
-    
-    
     
     CGSize size = CGSizeMake(self.collectionView.bounds.size.width, height);
     
@@ -90,41 +89,39 @@ static NSString * const SupKind = @"title";
             
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             NSNumber *tag = [self tagForIndexPath:indexPath];
-
             
             NSDictionary *layoutInfoForIndexPath = [self layoutInfoForIndexPath:indexPath];
-            self.cellBottomY[tag] = [layoutInfoForIndexPath objectForKey:@"currentBottomY"];//[NSNumber numberWithFloat:newBottomY];
-            
-            UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+            self.cellBottomY[tag] = [layoutInfoForIndexPath objectForKey:@"currentBottomY"];
             
             CGSize cardSize = [[layoutInfoForIndexPath objectForKey:@"cardSize"] CGSizeValue];
             CGSize supplementaryViewSize = [[layoutInfoForIndexPath objectForKey:@"supplementaryViewSize"] CGSizeValue];
             CGFloat previousBottomY = [[layoutInfoForIndexPath objectForKey:@"previousBottomY"] floatValue];
             
+            UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             itemAttributes.size = cardSize;
             itemAttributes.center = CGPointMake(cardSize.width / 2.0, previousBottomY + (cardSize.height) / 2.0 + supplementaryViewSize.height);
             
             cellLayoutInfo[indexPath] = itemAttributes;
             
-            if (!indexPath.item) {
-                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupKind withIndexPath:indexPath];
+            if (!indexPath.item) { // тут создаётся supplementary
+                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryViewKind withIndexPath:indexPath];
                 supAttributes.size = supplementaryViewSize;
     
-                CGFloat y = previousBottomY;
-                CGFloat yOffset = self.collectionView.contentOffset.y;
-                CGFloat minimumTopOffset = MIN(8 * indexPath.section, 8 * 2);
+                CGFloat supplementaryY = previousBottomY;
+                CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
+                CGFloat minimumTopOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
                 
-                if ((y < yOffset + minimumTopOffset) && self.cardBehaviourEnabled) { // всё, пошла цепочечка
-                    y = yOffset + minimumTopOffset;
+                if ((supplementaryY < collectionViewYOffset + minimumTopOffset) && self.cardBehaviourEnabled) { // всё прицепился
+                    supplementaryY = collectionViewYOffset + minimumTopOffset;
                     
-                    if (indexPath.section > 2) {
+                    if (indexPath.section > self.numberOfClingedCards - 1) {
                         supAttributes.shadowVisible = NO;
                     }
                 }
                 
-                supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, y + supplementaryViewSize.height / 2.0);
+                supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
                 supplementaryInfo[indexPath] = supAttributes;
                 
             }
@@ -133,7 +130,7 @@ static NSString * const SupKind = @"title";
     }
     
     newLayoutInfo[CardCell] = cellLayoutInfo;
-    newLayoutInfo[SupKind] = supplementaryInfo;
+    newLayoutInfo[SupplementaryViewKind] = supplementaryInfo;
     
     self.layoutInfo = newLayoutInfo;
 }
@@ -147,69 +144,26 @@ static NSString * const SupKind = @"title";
         
         for (NSIndexPath *indexKey in attributesDict) {
             
+            UICollectionViewLayoutAttributes *currentItemAttributes = [attributesDict objectForKey:indexKey];
             
-            UICollectionViewLayoutAttributes *attributes = [attributesDict objectForKey:indexKey];
-            UICollectionViewLayoutAttributes *nextItemAttributes;
-            NSIndexPath *nextPath = [NSIndexPath indexPathForItem:indexKey.item inSection:indexKey.section + 1];
-            
-            if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) {
-                nextItemAttributes = [attributesDict objectForKey:nextPath];
-            }
-            
-            CGFloat y;
-            
-            if (key == SupKind) { //двигать только сапы
-                CGRect supFrame = attributes.frame;
-                
-                if (self.cardBehaviourEnabled) {
-                    NSIndexPath *decorationIndexPath = indexKey;
-                    UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine"
-                                                                                                                                         withIndexPath:decorationIndexPath];
-                        
-                    decorationAttributes.frame = CGRectMake(0.0f,
-                                                            supFrame.origin.y + supFrame.size.height,
-                                                            self.collectionViewContentSize.width,
-                                                            1);
-                    
-                    decorationAttributes.zIndex = indexKey.section;
-                
-                    
-                    CGFloat yOffset = self.collectionView.contentOffset.y;
-                    CGFloat minimumTopOffset = MIN(8 * indexKey.section, 8 * 2);
-                    
-                    NSIndexPath *firstCardIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexKey.section];
-                    UICollectionViewLayoutAttributes *cardAttributes = self.layoutInfo[CardCell][firstCardIndexInCurrentSection];
-                    CGFloat zN = (cardAttributes.frame.origin.y - yOffset - minimumTopOffset) / supFrame.size.height;
-                    
-                    CGFloat d = MIN(1, 1 - zN);
-                    
-                    decorationAttributes.alpha = d;
-                   // NSLog(@"Z: %f", zN);
-                 //   NSLog(@"%f %f", attributes.frame.origin.y, nextItemAttributes.frame.origin.y);
+            if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
 
-                    if (attributes.frame.origin.y < nextItemAttributes.frame.origin.y - supFrame.size.height + 20 || !nextItemAttributes) {
+                if (self.cardBehaviourEnabled) {
+                   
+                    UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementartViewAttributes:currentItemAttributes indexPath:indexKey];
                     
+                    if (decorationAttributes) {
                         [allAttributes addObject:decorationAttributes];
                     }
-                
-                
                     
-                } else {
-                    y = supFrame.origin.y;
-                }
-
-                if (self.cardBehaviourEnabled) {
-             //   attributes.frame = CGRectMake(supFrame.origin.x, y, supFrame.size.width, supFrame.size.height); // кароч, они тупо не сихнронятся
-                //NSLog(@"я:%lu,  %f", indexKey.section, attributes.frame.origin.y);
-               // NSLog(@"ПИДОР СЛЕДУЮЩИЙ %lu %f", nextPath.section, nextItemAttributes.frame.origin.y);
                 }
 
             }
 
             
-            if (CGRectIntersectsRect(rect, attributes.frame)) {
+            if (CGRectIntersectsRect(rect, currentItemAttributes.frame)) {
                 
-                [allAttributes addObject:attributes];
+                [allAttributes addObject:currentItemAttributes];
                 
             }
         }
@@ -276,6 +230,8 @@ static NSString * const SupKind = @"title";
     return [NSNumber numberWithInteger:tag];
 }
 
+#pragma mark - IndexPath
+
 - (NSIndexPath *)previousIndexPathForIndexPath:(NSIndexPath *)indexPath {
     NSInteger item = indexPath.item;
     NSInteger section = indexPath.section;
@@ -303,6 +259,10 @@ static NSString * const SupKind = @"title";
 
 #pragma mark - Card Behaviour
 
+- (CGFloat)clingYOffsetForIndexPath:(NSIndexPath *)indexPath {
+    return self.clingYOffset;
+}
+
 #pragma mark - Size
 
 - (CGSize)sizeForCardAtIndexPath:(NSIndexPath *)indexPath {
@@ -328,10 +288,51 @@ static NSString * const SupKind = @"title";
     return arc4random() % 300 + 200;
 }
 
+#pragma mark - Layout Info
+
+- (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementartViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
+    CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
+    
+    UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine" withIndexPath:indexPath];
+    
+    decorationAttributes.frame = CGRectMake(0.0f,
+                                            supplemetaryViewFrame.origin.y + supplemetaryViewFrame.size.height,
+                                            self.collectionViewContentSize.width,
+                                            1);
+    
+    decorationAttributes.zIndex = indexPath.section;
+    
+    
+    // --- тут высчитывается alpha
+    
+    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
+    CGFloat clingYOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
+    
+    NSIndexPath *firstCardIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section];
+    UICollectionViewLayoutAttributes *cardAttributes = self.layoutInfo[CardCell][firstCardIndexInCurrentSection];
+    
+    CGFloat decorationAlpha = (cardAttributes.frame.origin.y - collectionViewYOffset - clingYOffset) / supplemetaryViewFrame.size.height;
+    decorationAlpha = MIN(1, 1 - decorationAlpha);
+    decorationAttributes.alpha = decorationAlpha;
+    
+    // --- тут высчитывается alpha
+    
+    
+    NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
+    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[SupplementaryViewKind] objectForKey:nextItemIndexPath];
+    
+    if (supplemetaryViewFrame.origin.y < nextItemAttributes.frame.origin.y - supplemetaryViewFrame.size.height + 20 || !nextItemAttributes) {
+        
+        return decorationAttributes;
+        
+    }
+ 
+    return nil;
+}
+
 - (NSDictionary *)layoutInfoForIndexPath:(NSIndexPath *)indexPath {
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
-  //  NSLog(@"PATH: %@", previousIndexPath);
     NSNumber *tag = [self tagForIndexPath:previousIndexPath];
     
     CGFloat previousBottomY = [self.cellBottomY[tag] floatValue];
@@ -349,8 +350,8 @@ static NSString * const SupKind = @"title";
     NSDictionary *info = @{@"previousBottomY": [NSNumber numberWithFloat:previousBottomY],
                            @"sectionOffset": [NSNumber numberWithFloat:sectionOffset],
                            @"itemOffset": [NSNumber numberWithFloat:itemOffset],
-                           @"cardSize": [NSValue valueWithCGSize:cardSize],
                            @"supplementaryViewSize": [NSValue valueWithCGSize:supplementaryViewSize],
+                           @"cardSize": [NSValue valueWithCGSize:cardSize],
                            @"currentBottomY": [NSNumber numberWithFloat:currentBottomY]};
 
     return info;
