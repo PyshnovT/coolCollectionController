@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SupplementaryCell : UICollectionViewCell
+@interface CoolCardSupplementaryCell : UICollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) NSString *title;
+
+@property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
+
 @property (weak, nonatomic) IBOutlet UIView *decorationView;
-
 @property (weak, nonatomic) IBOutlet UIView *backView;
 
 @end

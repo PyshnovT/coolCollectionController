@@ -6,9 +6,9 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "DecorationView.h"
+#import "CoolCardDecorationView.h"
 
-@implementation DecorationView
+@implementation CoolCardDecorationView
 
 #pragma mark - Life cycle
 

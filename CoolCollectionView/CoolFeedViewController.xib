@@ -15,10 +15,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cip-cF-PX9" customClass="CoolCollectionView">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cip-cF-PX9" customClass="CoolCardCollectionView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <animations/>
-                    <collectionViewLayout key="collectionViewLayout" id="RQw-aM-uts" customClass="CoolCollectionViewLayout"/>
+                    <collectionViewLayout key="collectionViewLayout" id="RQw-aM-uts" customClass="CoolCardCollectionViewLayout"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="0ot-Bp-EPF"/>
                         <outlet property="delegate" destination="-1" id="ADS-RA-1mW"/>

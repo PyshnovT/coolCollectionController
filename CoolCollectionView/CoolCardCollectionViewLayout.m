@@ -6,11 +6,11 @@
 //  Copyright © 2015 RocketBank. All rights reserved.
 //
 
-#import "CoolCollectionViewLayout.h"
-#import "CoolCollectionView.h"
-#import "DecorationView.h"
+#import "CoolCardCollectionViewLayout.h"
+#import "CoolCardCollectionView.h"
+#import "CoolCardDecorationView.h"
 
-@interface CoolCollectionViewLayout ()
+@interface CoolCardCollectionViewLayout ()
 
 @property (nonatomic, strong) NSDictionary *layoutInfo; 
 @property (nonatomic, strong) NSMutableDictionary *cellBottomY;
@@ -20,7 +20,7 @@
 static NSString * const CardCell = @"CardCell";
 static NSString * const SupKind = @"title";
 
-@implementation CoolCollectionViewLayout
+@implementation CoolCardCollectionViewLayout
 
 #pragma mark - Setup
 
@@ -40,9 +40,10 @@ static NSString * const SupKind = @"title";
     self.cellHeight = 40;
     self.interItemSpaceY = 0;
     self.interSectionSpaceY = 20;
+    
     self.cellBottomY = [NSMutableDictionary dictionary];
     
-    [self registerClass:[DecorationView class] forDecorationViewOfKind:@"bottomLine"];
+    [self registerClass:[CoolCardDecorationView class] forDecorationViewOfKind:@"bottomLine"];
 }
 
 #pragma mark - Layout
@@ -57,7 +58,7 @@ static NSString * const SupKind = @"title";
     
     
     NSNumber *tag = [self tagForIndexPath:indexPathForLastCard];
-    CGFloat height = [self.cellBottomY[tag] floatValue] + 50;
+    CGFloat height = [self.cellBottomY[tag] floatValue] + 1000;
    // NSLog(@"%f", height);
     
     
@@ -112,7 +113,7 @@ static NSString * const SupKind = @"title";
                 
                 CGFloat minimumTopOffset = MIN(8 * indexPath.section, 8 * 2);
                 
-                if ((y < yOffset + minimumTopOffset) && ((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) { // всё, пошла цепочечка
+                if ((y < yOffset + minimumTopOffset) && ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) { // всё, пошла цепочечка
                     y = yOffset + minimumTopOffset;
                 }
                 
@@ -154,7 +155,7 @@ static NSString * const SupKind = @"title";
             if (key == SupKind) { //двигать только сапы
                 CGRect supFrame = attributes.frame;
                 
-                if (((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
+                if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     NSIndexPath *decorationIndexPath = indexKey;
                     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine"
                                                                                                                                          withIndexPath:decorationIndexPath];
@@ -191,7 +192,7 @@ static NSString * const SupKind = @"title";
                     y = supFrame.origin.y;
                 }
 
-                if (((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
+                if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
              //   attributes.frame = CGRectMake(supFrame.origin.x, y, supFrame.size.width, supFrame.size.height); // кароч, они тупо не сихнронятся
                 //NSLog(@"я:%lu,  %f", indexKey.section, attributes.frame.origin.y);
                // NSLog(@"ПИДОР СЛЕДУЮЩИЙ %lu %f", nextPath.section, nextItemAttributes.frame.origin.y);
@@ -231,7 +232,7 @@ static NSString * const SupKind = @"title";
         return YES;
     }
     
-    return ((CoolCollectionView *)self.collectionView).cardBehaviourEnabled;
+    return ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
 }
 
 #pragma mark - Taging
@@ -299,7 +300,7 @@ static NSString * const SupKind = @"title";
 - (CGPoint)cardOffsetForIndexPath:(NSIndexPath *)indexPath {
     CGPoint offset = CGPointZero;
     
-    if (!((CoolCollectionView *)self.collectionView).cardBehaviourEnabled) {
+    if (!((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
         return offset;
     }
     

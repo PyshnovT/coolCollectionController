@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SupplementaryCell">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CoolCardSupplementaryCell">
             <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -56,11 +56,11 @@
             </constraints>
             <size key="customSize" width="234" height="60"/>
             <connections>
-                <outlet property="backView" destination="T6V-8I-Esu" id="zK3-jv-VMY"/>
-                <outlet property="decorationView" destination="caE-q6-szA" id="Fgh-7S-kVq"/>
-                <outlet property="titleLabel" destination="IPy-Wg-PwR" id="Vpu-i4-ebd"/>
+                <outlet property="backView" destination="T6V-8I-Esu" id="xzL-8J-boM"/>
+                <outlet property="decorationView" destination="caE-q6-szA" id="LVG-01-HWE"/>
+                <outlet property="titleLabel" destination="IPy-Wg-PwR" id="bTP-qP-o3V"/>
             </connections>
-            <point key="canvasLocation" x="472" y="511"/>
+            <point key="canvasLocation" x="563" y="488"/>
         </collectionViewCell>
     </objects>
 </document>

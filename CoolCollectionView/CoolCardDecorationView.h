@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DecorationView : UICollectionReusableView
+@interface CoolCardDecorationView : UICollectionReusableView
 
 @end

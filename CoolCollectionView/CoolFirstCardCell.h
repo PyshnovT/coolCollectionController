@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CollectionCardCell.h"
-#import "CollectionCard.h"
+#import "CoolCollectionCard.h"
 
-@interface FirstCardCell : UICollectionViewCell <CollectionCard>
+@interface CoolFirstCardCell : UICollectionViewCell <CoolCollectionCard>
 
 @property (nonatomic, strong) NSString *title;
 

@@ -1,6 +1,5 @@
-
 //
-//  CollectionCard.h
+//  CardItem.h
 //  CoolCollectionView
 //
 //  Created by Тимофей Пышнов on 06/10/15.
@@ -8,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CardItem.h"
 
-@protocol CollectionCard <NSObject>
+typedef NS_ENUM(NSInteger, CardItemType) {
+    CardItemTypeNone,
+    CardItemTypeFirst
+};
 
-@property (nonatomic, strong) NSString *title;
+@interface CoolCardItem : NSObject
 
-+ (BOOL)handleItem:(CardItem *)item;
+@property (nonatomic) CardItemType type;
 
 @end

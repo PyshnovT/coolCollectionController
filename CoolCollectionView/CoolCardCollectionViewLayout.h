@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CoolCollectionViewLayout : UICollectionViewLayout
+@interface CoolCardCollectionViewLayout : UICollectionViewLayout
 
 @property (nonatomic) CGFloat interSectionSpaceY;
 @property (nonatomic) CGFloat interItemSpaceY;

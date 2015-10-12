@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CoolCollectionView : UICollectionView
+@interface CoolCardCollectionView : UICollectionView
 
 @property (nonatomic) BOOL cardBehaviourEnabled;
 

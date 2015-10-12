@@ -6,21 +6,21 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "FirstCardCell.h"
+#import "CoolFirstCardCell.h"
 
-@interface FirstCardCell ()
+@interface CoolFirstCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
-@implementation FirstCardCell
+@implementation CoolFirstCardCell
 
 - (void)awakeFromNib {
     // Initialization code
 }
 
-+ (BOOL)handleItem:(CardItem *)item {
++ (BOOL)handleItem:(CoolCardItem *)item {
     return item.type == CardItemTypeFirst;
 }
 

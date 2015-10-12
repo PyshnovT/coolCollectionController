@@ -6,10 +6,10 @@
 //  Copyright © 2015 RocketBank. All rights reserved.
 //
 
-#import "CoolCollectionView.h"
+#import "CoolCardCollectionView.h"
 
 
-@implementation CoolCollectionView
+@implementation CoolCardCollectionView
 
 
 - (void)awakeFromNib {
