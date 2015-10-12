@@ -8,8 +8,7 @@
 
 #import "CoolCardCollectionView.h"
 
-
-@implementation CoolCardCollectionView
+@implementation CoolCardCollectionView 
 
 
 - (void)awakeFromNib {

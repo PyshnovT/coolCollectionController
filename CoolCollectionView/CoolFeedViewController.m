@@ -12,11 +12,16 @@
 
 #import "CoolCardSupplementaryCell.h"
 #import "CollectionCardCell.h"
-#import "CoolFirstCardCell.h"
-#import "CoolCollectionCard.h"
+
+#import "CoolCollectionCell.h"
 #import "CoolCardItem.h"
 
-@interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+#import "CoolCardCollectionViewLayout.h"
+
+#import "CoolFirstCardCell.h"
+#import "CoolSecondCardCell.h"
+
+@interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
 @property (weak, nonatomic) IBOutlet CoolCardCollectionView *collectionView;
 @property (nonatomic, strong) NSArray *cellClasses;
@@ -46,23 +51,23 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
-    NSString *title = [sectionData objectAtIndex:indexPath.item];
+    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
     
-    CoolCardItem *item = [[CoolCardItem alloc] init];
-    item.type = CardItemTypeFirst;
+    NSString *title = item.title;
     
-    UICollectionViewCell <CoolCollectionCard> *cardCell;
+    UICollectionViewCell <CoolCollectionCell> *cell;
     
-    for (Class<CoolCollectionCard> cellClass in self.cellClasses) {
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         if ([cellClass handleItem:item]) {
-            cardCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cellClass) forIndexPath:indexPath];
+            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cellClass) forIndexPath:indexPath];
         }
     }
     
-    cardCell.layer.zPosition = -1;
-    cardCell.title = title;
     
-    return cardCell;
+    cell.layer.zPosition = -1;
+    cell.title = title;
+    
+    return cell;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -84,9 +89,10 @@ static NSString * const viewReuseIdentifier = @"View";
 
 - (void)registerCells {
     
-    self.cellClasses = @[[CoolFirstCardCell class]];
+    self.cellClasses = @[[CoolFirstCardCell class],
+                         [CoolSecondCardCell class]];
     
-    for (Class<CoolCollectionCard> cellClass in self.cellClasses) {
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
     }
     
@@ -94,12 +100,29 @@ static NSString * const viewReuseIdentifier = @"View";
     
 }
 
+#pragma mark - <CardColletionViewLayoutDelegate>
+
+- (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionKey = [self.data allKeys][indexPath.section];
+    NSArray *sectionData = [self.data objectForKey:sectionKey];
+    
+    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
+    
+    if (item.type == CardItemTypeFirst) {
+        return 40;
+    } else if (item.type == CardItemTypeSecond) {
+        return 80;
+    }
+    
+    return 0;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSDictionary *dict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
+    NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
                            @"Вата": @[@"Ва", @"Вы", @"Вивы"],
                            @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                            @"Тёрка": @[@"Твац", @"Тцуацуа"],
@@ -115,7 +138,26 @@ static NSString * const viewReuseIdentifier = @"View";
                            @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
                   };
     
-    self.data = [NSMutableDictionary dictionaryWithDictionary:dict];
+    NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
+    
+    for (NSString *key in nameDict) {
+        NSArray *array = nameDict[key];
+        
+        NSMutableArray *itemsArray = [NSMutableArray array];
+        for (int i = 0; i < array.count; i++) {
+            CoolCardItem *item = [[CoolCardItem alloc] init];
+            item.title = array[i];
+            item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
+            
+            [itemsArray addObject:item];
+        }
+        
+        itemDict[key] = itemsArray;
+    }
+    
+    self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
+    
+    ((CoolCardCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
     
     [self registerCells];
     

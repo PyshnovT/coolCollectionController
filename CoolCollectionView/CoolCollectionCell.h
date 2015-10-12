@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 #import "CoolCardItem.h"
 
-@protocol CoolCollectionCard <NSObject>
+@protocol CoolCollectionCell <NSObject>
 
 @property (nonatomic, strong) NSString *title;
 

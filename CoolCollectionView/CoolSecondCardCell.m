@@ -1,29 +1,30 @@
 //
-//  FirstCardCell.m
+//  CoolSecondCardCell.m
 //  CoolCollectionView
 //
-//  Created by Тимофей Пышнов on 06/10/15.
+//  Created by Timothy Pyshnov on 12/10/15.
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolFirstCardCell.h"
+#import "CoolSecondCardCell.h"
+#import "CoolCardItem.h"
 
-@interface CoolFirstCardCell ()
-
-
+@interface CoolSecondCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
+
 @end
 
-@implementation CoolFirstCardCell
+@implementation CoolSecondCardCell
+
 
 - (void)awakeFromNib {
-    // Initialization cod
+    // Initialization code
 }
 
 + (BOOL)handleItem:(CoolCardItem *)item {
-    return item.type == CardItemTypeFirst;
+    return item.type == CardItemTypeSecond;
 }
 
 - (void)setTitle:(NSString *)title {
@@ -31,7 +32,4 @@
     
     self.titleLabel.text = title;
 }
-
-
-
 @end
