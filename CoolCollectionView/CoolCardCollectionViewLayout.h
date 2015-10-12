@@ -20,6 +20,5 @@
 
 @property (nonatomic) CGFloat interSectionSpaceY;
 @property (nonatomic) CGFloat interItemSpaceY;
-//@property (nonatomic) CGFloat cellHeight;
 
 @end

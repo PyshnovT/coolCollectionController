@@ -44,14 +44,13 @@ static NSString * const SupplementaryViewKind = @"title";
 }
 
 - (void)setupLayout {
-    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(-10, 0, 100, 0);
     
     self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
     
     self.numberOfClingedCards = 3;
     self.clingYOffset = 8;
     
-   // self.cellHeight = 40;
     self.interItemSpaceY = 0;
     self.interSectionSpaceY = 20;
     
@@ -111,19 +110,59 @@ static NSString * const SupplementaryViewKind = @"title";
             if (!indexPath.item) { // тут создаётся supplementary
                 CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryViewKind withIndexPath:indexPath];
                 supAttributes.size = supplementaryViewSize;
+                
+                
+                
+                NSIndexPath *prevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 1];
+                CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[prevSupIndexPath];
     
+                NSIndexPath *prevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 2];
+                CoolSupplementaryLayoutAttributes *prevprevAttributes = supplementaryInfo[prevprevSupIndexPath];
+                
+                NSIndexPath *prevprevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 3];
+                CoolSupplementaryLayoutAttributes *prevprevprevAttributes = supplementaryInfo[prevprevprevSupIndexPath];
+                
+                
+                
+                
                 CGFloat supplementaryY = previousBottomY;
                 CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-                CGFloat minimumTopOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
+                CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
                 
-                if ((supplementaryY < collectionViewYOffset + minimumTopOffset) && self.cardBehaviourEnabled) { // всё прицепился
-                    supplementaryY = collectionViewYOffset + minimumTopOffset;
+                if (self.cardBehaviourEnabled) {
+                
+                    CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
                     
-                    if (indexPath.section > self.numberOfClingedCards - 1) {
-                        supAttributes.shadowVisible = NO;
+                    if (d <= 8) {
+                        if (indexPath.section > self.numberOfClingedCards - 1) {
+                            
+                            CGFloat dFactor = MIN(8 - (d / 8 * 8), 8);
+                            
+                            prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - dFactor);
+                            supplementaryInfo[prevSupIndexPath] = prevAttributes;
+                            
+                            prevprevAttributes.center = CGPointMake(prevprevAttributes.center.x, prevprevAttributes.center.y - dFactor);
+                            supplementaryInfo[prevprevSupIndexPath] = prevprevAttributes;
+                            
+                           // NSLog(@"%f", lFactor);
+                            
+                            prevprevprevAttributes.center = CGPointMake(prevprevprevAttributes.center.x, prevprevprevAttributes.center.y + dFactor);
+                            supplementaryInfo[prevprevprevSupIndexPath] = prevprevprevAttributes;
+                            
+                    //        NSLog(@"prev:%@", prevAttributes);//NSStringFromCGRect(prevAttributes.frame));
+                        }
                     }
+                    
+                    if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё прицепился
+                        supplementaryY = collectionViewYOffset + clingYOfsset;
+                        
+                        if (indexPath.section > self.numberOfClingedCards - 1) {
+                     //       supAttributes.shadowVisible = NO;
+                        }
+                    }
+                    
                 }
                 
                 supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);

@@ -111,7 +111,7 @@ static NSString * const viewReuseIdentifier = @"View";
     if (item.type == CardItemTypeFirst) {
         return 40;
     } else if (item.type == CardItemTypeSecond) {
-        return 80;
+        return 30;
     }
     
     return 0;
