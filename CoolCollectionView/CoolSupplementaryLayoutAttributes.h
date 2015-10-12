@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CardLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
+@interface CoolSupplementaryLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
-@property (nonatomic) CGPoint cardOffset;
+@property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
 
 @end

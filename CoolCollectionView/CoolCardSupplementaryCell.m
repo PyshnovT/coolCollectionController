@@ -7,6 +7,7 @@
 //
 
 #import "CoolCardSupplementaryCell.h"
+#import "CoolSupplementaryLayoutAttributes.h"
 
 @interface CoolCardSupplementaryCell ()
 
@@ -58,5 +59,14 @@
     self.titleLabel.text = title;
 }
 
+#pragma mark - Apply
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [super applyLayoutAttributes:layoutAttributes];
+    
+    CoolSupplementaryLayoutAttributes *supLayoutAttributes = (CoolSupplementaryLayoutAttributes *)layoutAttributes;
+    
+    self.shadowVisible = supLayoutAttributes.isShadowVisible;
+}
 
 @end
