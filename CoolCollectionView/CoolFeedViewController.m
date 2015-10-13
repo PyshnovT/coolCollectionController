@@ -74,18 +74,18 @@ static NSString * const viewReuseIdentifier = @"View";
     
     NSString *title = [self.data allKeys][indexPath.section];
     
-    NSLog(@"SUPVIEW %@", title);
+   NSLog(@"SUPVIEW %@", title);
     
     CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;
   //  supCell.backView.hidden = !!indexPath.section;
-    
+  /*
     if ([title isEqualToString:@"Тёрка"]) {
         supCell.backgroundColor = [UIColor redColor];
     } else {
         supCell.backgroundColor = [UIColor clearColor];
-    }
+    }*/
     
     return supCell;
 }

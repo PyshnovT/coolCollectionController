@@ -124,7 +124,7 @@ static NSString * const SupplementaryViewKind = @"title";
                 
                 supAttributes.shadowVisible = YES;
           //      supAttributes.backViewHidden = !!indexPath.section;
-          
+                
                 if (self.cardBehaviourEnabled) {
                 
                     
@@ -143,18 +143,18 @@ static NSString * const SupplementaryViewKind = @"title";
                             NSInteger rDelta = round(delta);
                         
                             
-                            
                             for (int i = 1; i <= 3; i++) {
                                 
                                 if (i == 3) {
                                     rDelta = -rDelta;
                                 }
+
                                 
                                 NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
                                 CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[previousSupplementaryIndexPath];
-                            
                                 
                                 prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+
                                 
                                 supplementaryInfo[previousSupplementaryIndexPath] = prevAttributes;
                             }
@@ -166,7 +166,7 @@ static NSString * const SupplementaryViewKind = @"title";
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё, прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         
-            //            NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
+                     //   NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
                         
                         if (indexPath.section > self.numberOfClingedCards - 1) {
                             supAttributes.shadowVisible = self.cardMagicEnabled;
@@ -178,6 +178,7 @@ static NSString * const SupplementaryViewKind = @"title";
                 }
                 
                 
+                //NSLog(@"%f %d", currentDelta, indexPath.section);
                 supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
                 supplementaryInfo[indexPath] = supAttributes;
                 
