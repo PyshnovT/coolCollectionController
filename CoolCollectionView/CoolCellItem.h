@@ -11,10 +11,11 @@
 typedef NS_ENUM(NSInteger, CardItemType) {
     CardItemTypeNone,
     CardItemTypeFirst,
-    CardItemTypeSecond
+    CardItemTypeSecond,
+    CardItemTypeWow
 };
 
-@interface CoolCardItem : NSObject
+@interface CoolCellItem : NSObject
 
 @property (nonatomic) CardItemType type;
 

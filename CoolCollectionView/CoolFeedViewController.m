@@ -14,12 +14,13 @@
 #import "CollectionCardCell.h"
 
 #import "CoolCollectionCell.h"
-#import "CoolCardItem.h"
+#import "CoolCellItem.h"
 
 #import "CoolCardCollectionViewLayout.h"
 
 #import "CoolFirstCardCell.h"
 #import "CoolSecondCardCell.h"
+#import "CoolWowCardCell.h"
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
@@ -51,7 +52,7 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
-    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
+    CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
     NSString *title = item.title;
     
@@ -63,7 +64,7 @@ static NSString * const viewReuseIdentifier = @"View";
         }
     }
     
-    
+  //  cell.backgroundColor = [UIColor redColor];
     cell.layer.zPosition = -2;
     cell.title = title;
     
@@ -98,7 +99,8 @@ static NSString * const viewReuseIdentifier = @"View";
 - (void)registerCells {
     
     self.cellClasses = @[[CoolFirstCardCell class],
-                         [CoolSecondCardCell class]];
+                         [CoolSecondCardCell class],
+                         [CoolWowCardCell class]];
     
     for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
@@ -114,12 +116,14 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
-    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
+    CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
     if (item.type == CardItemTypeFirst) {
         return 40;
     } else if (item.type == CardItemTypeSecond) {
         return 30;
+    } else if (item.type == CardItemTypeWow) {
+        return 70;
     }
     
     return 0;
@@ -147,7 +151,8 @@ static NSString * const viewReuseIdentifier = @"View";
                            @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                            @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                            @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
-                           @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
+                           @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
+                               @"Wow": @[@"Особая акция"]
                   };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
@@ -157,9 +162,14 @@ static NSString * const viewReuseIdentifier = @"View";
         
         NSMutableArray *itemsArray = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
-            CoolCardItem *item = [[CoolCardItem alloc] init];
+            CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
-            item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
+            
+            if ([key isEqualToString:@"Wow"]) {
+                item.type = CardItemTypeWow;
+            } else {
+                item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
+            }
             
             [itemsArray addObject:item];
         }

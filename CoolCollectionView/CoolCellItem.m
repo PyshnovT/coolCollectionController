@@ -6,8 +6,8 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolCardItem.h"
+#import "CoolCellItem.h"
 
-@implementation CoolCardItem
+@implementation CoolCellItem
 
 @end

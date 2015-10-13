@@ -11,7 +11,7 @@
 		0930CD751BC3C38E0038227F /* CoolCardSupplementaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0930CD731BC3C38E0038227F /* CoolCardSupplementaryCell.xib */; settings = {ASSET_TAGS = (); }; };
 		098B06721BC42BF000C9DDF8 /* CoolFirstCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06701BC42BF000C9DDF8 /* CoolFirstCardCell.m */; settings = {ASSET_TAGS = (); }; };
 		098B06731BC42BF000C9DDF8 /* CoolFirstCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 098B06711BC42BF000C9DDF8 /* CoolFirstCardCell.xib */; settings = {ASSET_TAGS = (); }; };
-		098B06771BC42FE900C9DDF8 /* CoolCardItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06761BC42FE900C9DDF8 /* CoolCardItem.m */; settings = {ASSET_TAGS = (); }; };
+		098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06761BC42FE900C9DDF8 /* CoolCellItem.m */; settings = {ASSET_TAGS = (); }; };
 		099E3EFC1BC00F7A0054B604 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3EFB1BC00F7A0054B604 /* main.m */; };
 		099E3EFF1BC00F7A0054B604 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3EFE1BC00F7A0054B604 /* AppDelegate.m */; };
 		099E3F011BC00F7A0054B604 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 099E3F001BC00F7A0054B604 /* Assets.xcassets */; };
@@ -25,6 +25,8 @@
 		6E00A6A71BCC0B0800990DD1 /* CoolSecondCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E00A6A51BCC0B0800990DD1 /* CoolSecondCardCell.xib */; settings = {ASSET_TAGS = (); }; };
 		6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */; settings = {ASSET_TAGS = (); }; };
 		6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */; settings = {ASSET_TAGS = (); }; };
+		6EA718AE1BCD54A900FD9F9A /* CoolWowCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA718AC1BCD54A900FD9F9A /* CoolWowCardCell.m */; settings = {ASSET_TAGS = (); }; };
+		6EA718AF1BCD54A900FD9F9A /* CoolWowCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA718AD1BCD54A900FD9F9A /* CoolWowCardCell.xib */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +37,8 @@
 		098B06701BC42BF000C9DDF8 /* CoolFirstCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolFirstCardCell.m; sourceTree = "<group>"; };
 		098B06711BC42BF000C9DDF8 /* CoolFirstCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolFirstCardCell.xib; sourceTree = "<group>"; };
 		098B06741BC42F3D00C9DDF8 /* CoolCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCollectionCell.h; sourceTree = "<group>"; };
-		098B06751BC42FE900C9DDF8 /* CoolCardItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCardItem.h; sourceTree = "<group>"; };
-		098B06761BC42FE900C9DDF8 /* CoolCardItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardItem.m; sourceTree = "<group>"; };
+		098B06751BC42FE900C9DDF8 /* CoolCellItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCellItem.h; sourceTree = "<group>"; };
+		098B06761BC42FE900C9DDF8 /* CoolCellItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCellItem.m; sourceTree = "<group>"; };
 		099E3EF71BC00F7A0054B604 /* CoolCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoolCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		099E3EFB1BC00F7A0054B604 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		099E3EFD1BC00F7A0054B604 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -60,6 +62,10 @@
 		6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardTopDecorationView.m; sourceTree = "<group>"; };
 		6E4BB97A1BCAB97C0079F4D2 /* CoolCardDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCardDecorationView.h; sourceTree = "<group>"; };
 		6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardDecorationView.m; sourceTree = "<group>"; };
+		6EA718AB1BCD54A900FD9F9A /* CoolWowCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolWowCardCell.h; sourceTree = "<group>"; };
+		6EA718AC1BCD54A900FD9F9A /* CoolWowCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolWowCardCell.m; sourceTree = "<group>"; };
+		6EA718AD1BCD54A900FD9F9A /* CoolWowCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolWowCardCell.xib; sourceTree = "<group>"; };
+		6EA718B11BCD5AE800FD9F9A /* CoolCollectionSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCollectionSupplementaryView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,8 +170,9 @@
 			isa = PBXGroup;
 			children = (
 				098B06741BC42F3D00C9DDF8 /* CoolCollectionCell.h */,
-				098B06751BC42FE900C9DDF8 /* CoolCardItem.h */,
-				098B06761BC42FE900C9DDF8 /* CoolCardItem.m */,
+				6EA718B11BCD5AE800FD9F9A /* CoolCollectionSupplementaryView.h */,
+				098B06751BC42FE900C9DDF8 /* CoolCellItem.h */,
+				098B06761BC42FE900C9DDF8 /* CoolCellItem.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -175,6 +182,7 @@
 			children = (
 				6E00A6A81BCC0B0E00990DD1 /* First */,
 				6E00A6A91BCC0B1500990DD1 /* Second */,
+				6EA718B01BCD54AE00FD9F9A /* Wow */,
 			);
 			name = "Cell Types";
 			sourceTree = "<group>";
@@ -229,6 +237,16 @@
 				6E00A6A51BCC0B0800990DD1 /* CoolSecondCardCell.xib */,
 			);
 			name = Second;
+			sourceTree = "<group>";
+		};
+		6EA718B01BCD54AE00FD9F9A /* Wow */ = {
+			isa = PBXGroup;
+			children = (
+				6EA718AB1BCD54A900FD9F9A /* CoolWowCardCell.h */,
+				6EA718AC1BCD54A900FD9F9A /* CoolWowCardCell.m */,
+				6EA718AD1BCD54A900FD9F9A /* CoolWowCardCell.xib */,
+			);
+			name = Wow;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +312,7 @@
 				6E00A6A71BCC0B0800990DD1 /* CoolSecondCardCell.xib in Resources */,
 				099E3F151BC00FF60054B604 /* CoolFeedViewController.xib in Resources */,
 				099E3F041BC00F7A0054B604 /* LaunchScreen.storyboard in Resources */,
+				6EA718AF1BCD54A900FD9F9A /* CoolWowCardCell.xib in Resources */,
 				098B06731BC42BF000C9DDF8 /* CoolFirstCardCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,8 +327,9 @@
 				099E3EFF1BC00F7A0054B604 /* AppDelegate.m in Sources */,
 				099E3F141BC00FF60054B604 /* CoolFeedViewController.m in Sources */,
 				6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */,
-				098B06771BC42FE900C9DDF8 /* CoolCardItem.m in Sources */,
+				098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */,
 				6E00A6A61BCC0B0800990DD1 /* CoolSecondCardCell.m in Sources */,
+				6EA718AE1BCD54A900FD9F9A /* CoolWowCardCell.m in Sources */,
 				099E3F171BC00FF60054B604 /* CoolCardCollectionViewLayout.m in Sources */,
 				099E3EFC1BC00F7A0054B604 /* main.m in Sources */,
 				6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */,

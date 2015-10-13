@@ -1,30 +1,29 @@
 //
-//  CoolSecondCardCell.m
+//  CoolWowCardCell.m
 //  CoolCollectionView
 //
-//  Created by Timothy Pyshnov on 12/10/15.
+//  Created by Timothy Pyshnov on 13/10/15.
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolSecondCardCell.h"
+#import "CoolWowCardCell.h"
 #import "CoolCellItem.h"
 
-@interface CoolSecondCardCell ()
+@interface CoolWowCardCell ()
+
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-
 @end
 
-@implementation CoolSecondCardCell
-
+@implementation CoolWowCardCell
 
 - (void)awakeFromNib {
     // Initialization code
 }
 
 + (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeSecond;
+    return item.type == CardItemTypeWow;
 }
 
 - (void)setTitle:(NSString *)title {

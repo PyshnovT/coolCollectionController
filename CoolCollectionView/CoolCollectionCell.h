@@ -8,12 +8,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CoolCardItem.h"
+#import "CoolCellItem.h"
 
 @protocol CoolCollectionCell <NSObject>
 
 @property (nonatomic, strong) NSString *title;
 
-+ (BOOL)handleItem:(CoolCardItem *)item;
++ (BOOL)handleItem:(CoolCellItem *)item;
 
 @end
