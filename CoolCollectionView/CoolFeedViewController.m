@@ -10,7 +10,7 @@
 
 #import "CoolCardCollectionView.h"
 
-#import "CoolCardSupplementaryCell.h"
+#import "CoolSecondSup.h"
 #import "CollectionCardCell.h"
 
 #import "CoolCollectionCell.h"
@@ -20,12 +20,18 @@
 
 #import "CoolFirstCardCell.h"
 #import "CoolSecondCardCell.h"
-#import "CoolWowCardCell.h"
+
+#import "CoolSupplementaryItem.h"
+#import "CoolCollectionSupplementaryView.h"
+#import "CoolFirstSup.h"
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
 @property (weak, nonatomic) IBOutlet CoolCardCollectionView *collectionView;
+
 @property (nonatomic, strong) NSArray *cellClasses;
+@property (nonatomic, strong) NSArray *supplementaryClasses;
+
 @property (strong, nonatomic) NSMutableDictionary *data;
 
 @end
@@ -75,9 +81,11 @@ static NSString * const viewReuseIdentifier = @"View";
     
     NSString *title = [self.data allKeys][indexPath.section];
     
-   NSLog(@"SUPVIEW %@", title);
+    NSLog(@"SUPVIEW %@", title);
     
-    CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
+   // CoolSupplementaryItem *item = []
+    
+    CoolSecondSup *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;
   //  supCell.backView.hidden = !!indexPath.section;
@@ -99,14 +107,22 @@ static NSString * const viewReuseIdentifier = @"View";
 - (void)registerCells {
     
     self.cellClasses = @[[CoolFirstCardCell class],
-                         [CoolSecondCardCell class],
-                         [CoolWowCardCell class]];
+                         [CoolSecondCardCell class]
+                         ];
     
     for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
     }
     
-    [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
+    self.supplementaryClasses = @[[CoolFirstSup class],
+                                  [CoolSecondSup class]
+                         ];
+    
+    for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
+        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:NSStringFromClass(supClass) withReuseIdentifier:viewReuseIdentifier];
+    }
+    
+ //   [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
     
 }
 
@@ -118,13 +134,11 @@ static NSString * const viewReuseIdentifier = @"View";
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
-    if (item.type == CardItemTypeFirst) {
+    if (item.type == CellItemTypeFirst) {
         return 40;
-    } else if (item.type == CardItemTypeSecond) {
+    } else if (item.type == CellItemTypeSecond) {
         return 30;
-    } else if (item.type == CardItemTypeWow) {
-        return 70;
-    }
+    } 
     
     return 0;
 }
@@ -165,11 +179,8 @@ static NSString * const viewReuseIdentifier = @"View";
             CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
             
-            if ([key isEqualToString:@"Wow"]) {
-                item.type = CardItemTypeWow;
-            } else {
-                item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
-            }
+            item.type = arc4random() % 2 ? CellItemTypeFirst : CellItemTypeSecond;
+            
             
             [itemsArray addObject:item];
         }

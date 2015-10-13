@@ -24,7 +24,7 @@
 }
 
 + (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeSecond;
+    return item.type == CellItemTypeSecond;
 }
 
 - (void)setTitle:(NSString *)title {

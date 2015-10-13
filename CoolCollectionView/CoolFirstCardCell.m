@@ -10,8 +10,6 @@
 
 @interface CoolFirstCardCell ()
 
-
-
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
@@ -19,11 +17,11 @@
 @implementation CoolFirstCardCell
 
 - (void)awakeFromNib {
-    // Initialization cod
+    // Initialization code
 }
 
 + (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeFirst;
+    return item.type == CellItemTypeFirst;
 }
 
 - (void)setTitle:(NSString *)title {

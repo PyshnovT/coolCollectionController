@@ -8,16 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, CardItemType) {
-    CardItemTypeNone,
-    CardItemTypeFirst,
-    CardItemTypeSecond,
-    CardItemTypeWow
+typedef NS_ENUM(NSInteger, CellItemType) {
+    CellItemTypeNone,
+    CellItemTypeFirst,
+    CellItemTypeSecond
 };
 
 @interface CoolCellItem : NSObject
 
-@property (nonatomic) CardItemType type;
+@property (nonatomic) CellItemType type;
 
 @property (nonatomic, strong) NSString *title;
 

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CoolCollectionCell.h"
 
-@interface CoolWowCardCell : UICollectionViewCell <CoolCollectionCell>
+
+@interface CoolFirstSup : UICollectionViewCell
 
 @property (nonatomic, strong) NSString *title;
 

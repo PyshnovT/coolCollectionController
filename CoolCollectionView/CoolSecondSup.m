@@ -6,10 +6,13 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolCardSupplementaryCell.h"
+#import "CoolSecondSup.h"
 #import "CoolSupplementaryLayoutAttributes.h"
 
-@interface CoolCardSupplementaryCell ()
+#import "CoolSupplementaryItem.h"
+#import "CoolCollectionSupplementaryView.h"
+
+@interface CoolSecondSup () <CoolCollectionSupplementaryView>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
@@ -18,7 +21,13 @@
 
 @end
 
-@implementation CoolCardSupplementaryCell
+@implementation CoolSecondSup
+
+#pragma mark - SupItem
+
++ (BOOL)handleItem:(CoolSupplementaryItem *)item {
+    return item.type == SupItemTypeSecond;
+}
 
 #pragma mark - UIView
 
@@ -55,6 +64,8 @@
     
     self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
 }
+
+
 
 - (void)setTitle:(NSString *)title {
     _title = title;

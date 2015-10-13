@@ -13,6 +13,7 @@
 #import "CoolCardTopDecorationView.h"
 
 #import "CoolSupplementaryLayoutAttributes.h"
+#import "CoolSecondSup.h"
 
 @interface CoolCardCollectionViewLayout ()
 
@@ -115,7 +116,11 @@ static NSString * const SupplementaryViewKind = @"title";
             
             
             if (!indexPath.item) { // тут создаётся supplementary
-                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryViewKind withIndexPath:indexPath];
+                
+#warning ChangeSupKind
+                
+                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withIndexPath:indexPath];
+                
                 supAttributes.size = supplementaryViewSize;
                 
                 CGFloat supplementaryY = previousBottomY;

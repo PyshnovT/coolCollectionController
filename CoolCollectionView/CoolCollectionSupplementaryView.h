@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CoolSupplementaryItem.h"
 
 @protocol CoolCollectionSupplementaryView <NSObject>
 
-+ (BOOL)handleItem:(CoolCardItem *)item;
++ (BOOL)handleItem:(CoolSupplementaryItem *)item;
 
 @end

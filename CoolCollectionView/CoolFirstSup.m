@@ -6,24 +6,24 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolWowCardCell.h"
-#import "CoolCellItem.h"
+#import "CoolFirstSup.h"
+#import "CoolSupplementaryItem.h"
 
-@interface CoolWowCardCell ()
+@interface CoolFirstSup ()
 
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
-@implementation CoolWowCardCell
+@implementation CoolFirstSup
 
 - (void)awakeFromNib {
     // Initialization code
 }
 
-+ (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeWow;
++ (BOOL)handleItem:(CoolSupplementaryItem *)item {
+    return item.type == SupItemTypeFirst;
 }
 
 - (void)setTitle:(NSString *)title {
