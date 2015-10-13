@@ -81,6 +81,12 @@ static NSString * const viewReuseIdentifier = @"View";
     supCell.layer.zPosition = indexPath.section;
   //  supCell.backView.hidden = !!indexPath.section;
     
+    if ([title isEqualToString:@"Тёрка"]) {
+        supCell.backgroundColor = [UIColor redColor];
+    } else {
+        supCell.backgroundColor = [UIColor clearColor];
+    }
+    
     return supCell;
 }
 

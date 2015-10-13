@@ -25,6 +25,8 @@
 @property (nonatomic) BOOL cardBehaviourEnabled;
 @property (nonatomic) BOOL cardMagicEnabled;
 
+@property (nonatomic) NSInteger topMostSupIndex;
+
 @end
 
 static NSString * const CardCell = @"CardCell";
@@ -132,6 +134,8 @@ static NSString * const SupplementaryViewKind = @"title";
                         NSInteger magicN = 40;
                         
                         if (d <= magicN && magicN >= 0) {
+                            
+                            self.topMostSupIndex = indexPath.section;
                           //  NSLog(@"считаем delta для %d", indexPath.section);
                             
                         
@@ -162,7 +166,7 @@ static NSString * const SupplementaryViewKind = @"title";
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё, прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         
-                //        NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
+            //            NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
                         
                         if (indexPath.section > self.numberOfClingedCards - 1) {
                             supAttributes.shadowVisible = self.cardMagicEnabled;
@@ -210,6 +214,8 @@ static NSString * const SupplementaryViewKind = @"title";
                 CGFloat currentSupY = currentItemAttributes.frame.origin.y;
                 CGFloat nextSupY = nextItemAttributes.frame.origin.y;
                 
+             //   NSLog(@"%f -- current (%d) %f -- next (%d) (topMost: %d)", currentSupY, indexKey.section, nextSupY, nextSupPath.section, self.topMostSupIndex);
+                
                 if (self.cardBehaviourEnabled) {
                     
                     UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
@@ -224,7 +230,7 @@ static NSString * const SupplementaryViewKind = @"title";
                     
                 }
 
-                if (CGRectIntersectsRect(rect, currentItemAttributes.frame) && currentSupY != nextSupY) {
+                if (CGRectIntersectsRect(rect, currentItemAttributes.frame) && indexKey.section >= self.topMostSupIndex - self.numberOfClingedCards) {
                     [allAttributes addObject:currentItemAttributes];
                 }
                 
