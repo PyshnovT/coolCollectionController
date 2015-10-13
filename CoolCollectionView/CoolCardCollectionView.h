@@ -11,5 +11,6 @@
 @interface CoolCardCollectionView : UICollectionView
 
 @property (nonatomic) BOOL cardBehaviourEnabled;
+@property (nonatomic) BOOL cardMagicEnabled;
 
 @end

@@ -6,17 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CoolCardSupplementaryCell">
+        <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CoolCardSupplementaryCell">
             <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6V-8I-Esu">
-                        <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caE-q6-szA">
                         <rect key="frame" x="0.0" y="8" width="234" height="90"/>
                         <subviews>
@@ -46,17 +41,12 @@
             </view>
             <animations/>
             <constraints>
-                <constraint firstItem="T6V-8I-Esu" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="2cP-HA-MrV"/>
                 <constraint firstItem="caE-q6-szA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6TZ-j0-qdB"/>
-                <constraint firstAttribute="bottom" secondItem="T6V-8I-Esu" secondAttribute="bottom" id="Bjq-ae-BwG"/>
-                <constraint firstAttribute="trailing" secondItem="T6V-8I-Esu" secondAttribute="trailing" id="KmA-yu-QNX"/>
                 <constraint firstItem="caE-q6-szA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="QYm-f9-oEc"/>
-                <constraint firstItem="T6V-8I-Esu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Zgj-32-Ffc"/>
                 <constraint firstAttribute="trailing" secondItem="caE-q6-szA" secondAttribute="trailing" id="agq-Z1-0aT"/>
             </constraints>
             <size key="customSize" width="234" height="60"/>
             <connections>
-                <outlet property="backView" destination="T6V-8I-Esu" id="xzL-8J-boM"/>
                 <outlet property="decorationView" destination="caE-q6-szA" id="LVG-01-HWE"/>
                 <outlet property="titleLabel" destination="IPy-Wg-PwR" id="bTP-qP-o3V"/>
             </connections>

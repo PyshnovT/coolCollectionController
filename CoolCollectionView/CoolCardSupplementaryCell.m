@@ -56,12 +56,6 @@
     self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
 }
 
-- (void)setBackViewHidden:(BOOL)backViewHidden {
-    _backViewHidden = backViewHidden;
-    
-    self.backView.hidden = backViewHidden;
-}
-
 - (void)setTitle:(NSString *)title {
     _title = title;
     
@@ -74,9 +68,9 @@
     [super applyLayoutAttributes:layoutAttributes];
     
     CoolSupplementaryLayoutAttributes *supLayoutAttributes = (CoolSupplementaryLayoutAttributes *)layoutAttributes;
-    
-    self.backViewHidden = supLayoutAttributes.isBackViewHidden;
+
     self.shadowVisible = supLayoutAttributes.isShadowVisible;
 }
+ 
 
 @end

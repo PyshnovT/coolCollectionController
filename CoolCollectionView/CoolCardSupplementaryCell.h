@@ -14,6 +14,5 @@
 
 
 @property (weak, nonatomic) IBOutlet UIView *decorationView;
-@property (weak, nonatomic) IBOutlet UIView *backView;
 
 @end

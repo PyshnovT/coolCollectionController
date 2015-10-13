@@ -21,8 +21,9 @@
 
 @property (nonatomic) NSInteger numberOfClingedCards;
 @property (nonatomic) CGFloat clingYOffset;
-@property (nonatomic) BOOL cardBehaviourEnabled;
 
+@property (nonatomic) BOOL cardBehaviourEnabled;
+@property (nonatomic) BOOL cardMagicEnabled;
 
 @end
 
@@ -46,9 +47,10 @@ static NSString * const SupplementaryViewKind = @"title";
 }
 
 - (void)setupLayout {
-    self.collectionView.contentInset = UIEdgeInsetsMake(-10, 0, 100, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
     
     self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
+    self.cardMagicEnabled = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
     
     self.numberOfClingedCards = 3;
     self.clingYOffset = 8;
@@ -114,35 +116,40 @@ static NSString * const SupplementaryViewKind = @"title";
                 CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryViewKind withIndexPath:indexPath];
                 supAttributes.size = supplementaryViewSize;
                 
-                
-                
-                NSIndexPath *prevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 1];
-                CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[prevSupIndexPath];
-    
-                NSIndexPath *prevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 2];
-                CoolSupplementaryLayoutAttributes *prevprevAttributes = supplementaryInfo[prevprevSupIndexPath];
-                
-                NSIndexPath *prevprevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 3];
-                CoolSupplementaryLayoutAttributes *prevprevprevAttributes = supplementaryInfo[prevprevprevSupIndexPath];
-                
-                
-                
-                
                 CGFloat supplementaryY = previousBottomY;
                 CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
                 CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
-                supAttributes.backViewHidden = !!indexPath.section;
-                
+          //      supAttributes.backViewHidden = !!indexPath.section;
+          
                 if (self.cardBehaviourEnabled) {
                 
-                    CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
                     
-                    if (d <= 8) {
-                        if (indexPath.section > self.numberOfClingedCards - 1) {
+                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) {
+                        CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
+                        
+                        if (d <= 8) {
+                    //        NSLog(@"считаем d %f %d для %ldu", d, (long)indexPath.section);
                             
-                            CGFloat dFactor = MIN(8 - (d / 8 * 8), 8);
+                            
+                            
+                            NSIndexPath *prevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 1];
+                            CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[prevSupIndexPath];
+                            
+                            NSIndexPath *prevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 2];
+                            CoolSupplementaryLayoutAttributes *prevprevAttributes = supplementaryInfo[prevprevSupIndexPath];
+                            
+                            NSIndexPath *prevprevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 3];
+                            CoolSupplementaryLayoutAttributes *prevprevprevAttributes = supplementaryInfo[prevprevprevSupIndexPath];
+                            
+                            
+                            CGFloat rFactor = MIN(8 - (d / 8 * 8), 8);
+                        
+                            NSInteger dFactor = round(rFactor);
+                            
+                       //     NSLog(@"%d", dFactor);
+                            
                             
                             prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - dFactor);
                             supplementaryInfo[prevSupIndexPath] = prevAttributes;
@@ -157,16 +164,17 @@ static NSString * const SupplementaryViewKind = @"title";
                           //  prevprevprevAttributes.backViewHidden = NO;
                             supplementaryInfo[prevprevprevSupIndexPath] = prevprevprevAttributes;
                             
-                            
+                           
                     //        NSLog(@"prev:%@", prevAttributes);//NSStringFromCGRect(prevAttributes.frame));
                         }
+                        
+                        
                     }
-                    
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         
                         if (indexPath.section > self.numberOfClingedCards - 1) {
-                     //       supAttributes.shadowVisible = NO;
+                            supAttributes.shadowVisible = self.cardMagicEnabled;
                         }
                     }
                     
@@ -202,8 +210,6 @@ static NSString * const SupplementaryViewKind = @"title";
             if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
 
                 if (self.cardBehaviourEnabled) {
-                    
-#warning Put decoration view to the top
                     
                     UICollectionViewLayoutAttributes *topAt = [self decorationAttributesForTopView];
                     
