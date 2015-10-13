@@ -62,7 +62,7 @@ static NSString * const viewReuseIdentifier = @"View";
     
     NSString *title = item.title;
     
-    UICollectionViewCell <CoolCollectionCell> *cell;
+    UICollectionViewCell<CoolCollectionCell> *cell;
     
     for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         if ([cellClass handleItem:item]) {
@@ -83,9 +83,23 @@ static NSString * const viewReuseIdentifier = @"View";
     
     NSLog(@"SUPVIEW %@", title);
     
-   // CoolSupplementaryItem *item = []
+#warning HOW TO SYNC
+    // Надо решить вопрос с синхронизацией сапов тут и у лэйаута
     
-    CoolSecondSup *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
+    CoolSupplementaryItem *item = [[CoolSupplementaryItem alloc] init];
+    item.type = SupItemTypeSecond;
+    
+   // UICollectionViewCell<CoolCollectionSupplementaryView> *supCell;
+    
+   /* for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
+        if ([supClass handleItem:item]) {
+            supCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(supClass) forIndexPath:indexPath];
+        }
+    }*/
+    
+    CoolSecondSup *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withReuseIdentifier:NSStringFromClass([CoolSecondSup class]) forIndexPath:indexPath];
+    
+    
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;
   //  supCell.backView.hidden = !!indexPath.section;
@@ -119,10 +133,8 @@ static NSString * const viewReuseIdentifier = @"View";
                          ];
     
     for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
-        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:NSStringFromClass(supClass) withReuseIdentifier:viewReuseIdentifier];
+        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:NSStringFromClass(supClass) withReuseIdentifier:NSStringFromClass(supClass)];
     }
-    
- //   [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
     
 }
 
@@ -166,7 +178,7 @@ static NSString * const viewReuseIdentifier = @"View";
                            @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                            @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
                            @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
-                               @"Wow": @[@"Особая акция"]
+                               @"Wow": @[@"Wo"]
                   };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
