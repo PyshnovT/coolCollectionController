@@ -129,47 +129,40 @@ static NSString * const SupplementaryViewKind = @"title";
                     if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) {
                         CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
                         
-                        if (d <= 8) {
+                        NSInteger magicN = 40;
+                        
+                        if (d <= magicN) {
                     //        NSLog(@"считаем d %f %d для %ldu", d, (long)indexPath.section);
                             
                             
                             
-                            NSIndexPath *prevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 1];
-                            CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[prevSupIndexPath];
                             
-                            NSIndexPath *prevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 2];
-                            CoolSupplementaryLayoutAttributes *prevprevAttributes = supplementaryInfo[prevprevSupIndexPath];
-                            
-                            NSIndexPath *prevprevprevSupIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - 3];
-                            CoolSupplementaryLayoutAttributes *prevprevprevAttributes = supplementaryInfo[prevprevprevSupIndexPath];
-                            
-                            
-                            CGFloat rFactor = MIN(8 - (d / 8 * 8), 8);
                         
-                            NSInteger dFactor = round(rFactor);
+                            CGFloat delta = MIN((magicN - (d / magicN * magicN)) / 4, self.clingYOffset);
+                            NSInteger rDelta = round(delta);
+                        
                             
-                       //     NSLog(@"%d", dFactor);
                             
+                            for (int i = 1; i <= 3; i++) {
+                                
+                                if (i == 3) {
+                                    rDelta = -rDelta;
+                                }
+                                
+                                NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
+                                
+                                CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[previousSupplementaryIndexPath];
                             
-                            prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - dFactor);
-                            supplementaryInfo[prevSupIndexPath] = prevAttributes;
-                            
-                            prevprevAttributes.center = CGPointMake(prevprevAttributes.center.x, prevprevAttributes.center.y - dFactor);
-                           // prevprevAttributes.backViewHidden = NO;
-                            supplementaryInfo[prevprevSupIndexPath] = prevprevAttributes;
-                            
-                           // NSLog(@"%f", lFactor);
-                            
-                            prevprevprevAttributes.center = CGPointMake(prevprevprevAttributes.center.x, prevprevprevAttributes.center.y + dFactor);
-                          //  prevprevprevAttributes.backViewHidden = NO;
-                            supplementaryInfo[prevprevprevSupIndexPath] = prevprevprevAttributes;
-                            
-                           
-                    //        NSLog(@"prev:%@", prevAttributes);//NSStringFromCGRect(prevAttributes.frame));
+                                
+                                prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+                                
+                                supplementaryInfo[previousSupplementaryIndexPath] = prevAttributes;
+                            }
+
                         }
-                        
-                        
+                
                     }
+                    
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         

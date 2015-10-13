@@ -119,6 +119,10 @@ static NSString * const viewReuseIdentifier = @"View";
 
 #pragma mark - UIViewController
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
