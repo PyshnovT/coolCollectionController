@@ -74,6 +74,8 @@ static NSString * const viewReuseIdentifier = @"View";
     
     NSString *title = [self.data allKeys][indexPath.section];
     
+    NSLog(@"SUPVIEW %@", title);
+    
     CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;

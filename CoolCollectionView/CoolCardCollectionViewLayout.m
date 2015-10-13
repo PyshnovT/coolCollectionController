@@ -126,16 +126,13 @@ static NSString * const SupplementaryViewKind = @"title";
                 if (self.cardBehaviourEnabled) {
                 
                     
-                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) {
+                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { //
                         CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
                         
                         NSInteger magicN = 40;
                         
-                        if (d <= magicN) {
-                    //        NSLog(@"считаем d %f %d для %ldu", d, (long)indexPath.section);
-                            
-                            
-                            
+                        if (d <= magicN && magicN >= 0) {
+                          //  NSLog(@"считаем delta для %d", indexPath.section);
                             
                         
                             CGFloat delta = MIN((magicN - (d / magicN * magicN)) / 4, self.clingYOffset);
@@ -150,7 +147,6 @@ static NSString * const SupplementaryViewKind = @"title";
                                 }
                                 
                                 NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
-                                
                                 CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[previousSupplementaryIndexPath];
                             
                                 
@@ -163,15 +159,20 @@ static NSString * const SupplementaryViewKind = @"title";
                 
                     }
                     
-                    if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё прицепился
+                    if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё, прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
+                        
+                //        NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
                         
                         if (indexPath.section > self.numberOfClingedCards - 1) {
                             supAttributes.shadowVisible = self.cardMagicEnabled;
                         }
+                        
+                        
                     }
                     
                 }
+                
                 
                 supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
                 supplementaryInfo[indexPath] = supAttributes;
@@ -202,11 +203,18 @@ static NSString * const SupplementaryViewKind = @"title";
             
             if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
 
+                NSIndexPath *nextSupPath = [NSIndexPath indexPathForItem:0 inSection:indexKey.section + 1];
+                
+                UICollectionViewLayoutAttributes *nextItemAttributes = [attributesDict objectForKey:nextSupPath];
+                
+                CGFloat currentSupY = currentItemAttributes.frame.origin.y;
+                CGFloat nextSupY = nextItemAttributes.frame.origin.y;
+                
                 if (self.cardBehaviourEnabled) {
                     
-                    UICollectionViewLayoutAttributes *topAt = [self decorationAttributesForTopView];
+                    UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
                     
-                    [allAttributes addObject:topAt];
+                    [allAttributes addObject:topDecorationViewAttributes];
                    
                     UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementartViewAttributes:currentItemAttributes indexPath:indexKey];
                     
@@ -216,13 +224,17 @@ static NSString * const SupplementaryViewKind = @"title";
                     
                 }
 
-            }
-
-            
-            if (CGRectIntersectsRect(rect, currentItemAttributes.frame)) {
+                if (CGRectIntersectsRect(rect, currentItemAttributes.frame) && currentSupY != nextSupY) {
+                    [allAttributes addObject:currentItemAttributes];
+                }
                 
-                [allAttributes addObject:currentItemAttributes];
+            } else {
                 
+                if (CGRectIntersectsRect(rect, currentItemAttributes.frame)) {
+                    
+                    [allAttributes addObject:currentItemAttributes];
+                    
+                }
             }
         }
     }
