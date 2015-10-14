@@ -16,6 +16,7 @@ static NSString * const supplementaryKind = @"Header";
 @protocol CardColletionViewLayoutDelegate <NSObject>
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)heightForSupplementartViewAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

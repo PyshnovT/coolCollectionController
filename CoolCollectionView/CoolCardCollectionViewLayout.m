@@ -338,9 +338,7 @@ static NSString * const supplementaryKind = @"Header";
 
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.item) return CGSizeZero;
-    
-    CGFloat height = 60;
+    CGFloat height = [self.delegate heightForSupplementartViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
     
     return CGSizeMake(width, height);

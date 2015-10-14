@@ -74,18 +74,12 @@
     
     NSString *title = [self.data allKeys][indexPath.section];
     
-   NSLog(@"SUPVIEW %@", title);
+    NSLog(@"SUPVIEW %@", title);
     
     CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier forIndexPath:indexPath];
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;
-  //  supCell.backView.hidden = !!indexPath.section;
-  /*
-    if ([title isEqualToString:@"Тёрка"]) {
-        supCell.backgroundColor = [UIColor redColor];
-    } else {
-        supCell.backgroundColor = [UIColor clearColor];
-    }*/
+
     
     return supCell;
 }
@@ -93,22 +87,7 @@
 #pragma mark - UICollectionViewDelegate
 
 
-#pragma mark - Cells
-
-- (void)registerCells {
-    
-    self.cellClasses = @[[CoolBuyCardCell class],
-                         [CoolNoteCardCell class]];
-    
-    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
-        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
-    }
-    
-    [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier];
-    
-}
-
-#pragma mark - <CardColletionViewLayoutDelegate>
+#pragma mark - CardColletionViewLayoutDelegate
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sectionKey = [self.data allKeys][indexPath.section];
@@ -125,7 +104,11 @@
     return 0;
 }
 
-#pragma mark - Data
+- (CGFloat)heightForSupplementartViewAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
+
+#pragma mark - Setup
 
 - (void)setupData {
     NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
@@ -163,6 +146,19 @@
     }
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
+}
+
+- (void)registerCells {
+    
+    self.cellClasses = @[[CoolBuyCardCell class],
+                         [CoolNoteCardCell class]];
+    
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
+        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
+    }
+    
+    [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier];
+    
 }
 
 #pragma mark - UIViewController
