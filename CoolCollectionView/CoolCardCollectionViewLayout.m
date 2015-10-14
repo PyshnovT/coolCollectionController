@@ -106,10 +106,11 @@ static NSString * const supplementaryKind = @"Header";
             CGSize supplementaryViewSize = [[cellLayout objectForKey:@"supplementaryViewSize"] CGSizeValue];
             CGFloat previousBottomY = [[cellLayout objectForKey:@"previousBottomY"] floatValue];
         
+            CGFloat cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
             
             UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             itemAttributes.size = cellSize;
-            itemAttributes.center = CGPointMake(cellSize.width / 2.0, previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height);
+            itemAttributes.center = CGPointMake(cellSize.width / 2.0, cellCenterY);
             
             cellLayoutInfo[indexPath] = itemAttributes;
             

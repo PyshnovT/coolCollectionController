@@ -121,6 +121,14 @@
     return 60;
 }
 
+- (CellItemType)cellItemTypeForCellAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionKey = [self.data allKeys][indexPath.section];
+    NSArray *sectionData = [self.data objectForKey:sectionKey];
+    
+    CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
+    return item.type;
+}
+
 #pragma mark - Setup
 
 - (void)setupData {
