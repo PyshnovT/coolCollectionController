@@ -6,31 +6,40 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolFirstCardCell.h"
+#import "CoolBuyCardCell.h"
 
-@interface CoolFirstCardCell ()
-
-
+@interface CoolBuyCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
-@implementation CoolFirstCardCell
+@implementation CoolBuyCardCell
+
+#pragma mark - UIView
 
 - (void)awakeFromNib {
     // Initialization cod
 }
 
-+ (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeFirst;
-}
+#pragma mark - Setter
 
 - (void)setTitle:(NSString *)title {
     _title = title;
     
     self.titleLabel.text = title;
 }
+
+#pragma mark - CoolCollectionCell
+
++ (BOOL)handleItem:(CoolCellItem *)item {
+    return item.type == CardItemTypeBuy;
+}
+
++ (CGFloat)heightOfCell {
+    return 40;
+}
+
 
 
 

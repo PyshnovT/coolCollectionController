@@ -18,8 +18,8 @@
 
 #import "CoolCardCollectionViewLayout.h"
 
-#import "CoolFirstCardCell.h"
-#import "CoolSecondCardCell.h"
+#import "CoolBuyCardCell.h"
+#import "CoolNoteCardCell.h"
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
@@ -31,9 +31,6 @@
 @end
 
 @implementation CoolFeedViewController
-
-static NSString * const cellReuseIdentifier = @"Cell";
-static NSString * const viewReuseIdentifier = @"View";
 
 #pragma mark - UICollectionViewDataSource
 
@@ -49,6 +46,7 @@ static NSString * const viewReuseIdentifier = @"View";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
@@ -69,6 +67,7 @@ static NSString * const viewReuseIdentifier = @"View";
     cell.title = title;
     
     return cell;
+    
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -77,7 +76,7 @@ static NSString * const viewReuseIdentifier = @"View";
     
    NSLog(@"SUPVIEW %@", title);
     
-    CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier forIndexPath:indexPath];
+    CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier forIndexPath:indexPath];
     supCell.title = title;
     supCell.layer.zPosition = indexPath.section;
   //  supCell.backView.hidden = !!indexPath.section;
@@ -98,14 +97,14 @@ static NSString * const viewReuseIdentifier = @"View";
 
 - (void)registerCells {
     
-    self.cellClasses = @[[CoolFirstCardCell class],
-                         [CoolSecondCardCell class]];
+    self.cellClasses = @[[CoolBuyCardCell class],
+                         [CoolNoteCardCell class]];
     
     for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
     }
     
-    [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:@"title" withReuseIdentifier:viewReuseIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"CoolCardSupplementaryCell" bundle:nil] forSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier];
     
 }
 
@@ -117,24 +116,18 @@ static NSString * const viewReuseIdentifier = @"View";
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
-    if (item.type == CardItemTypeFirst) {
+    if (item.type == CardItemTypeBuy) {
         return 40;
-    } else if (item.type == CardItemTypeSecond) {
+    } else if (item.type == CardItemTypeNote) {
         return 30;
     }
     
     return 0;
 }
 
-#pragma mark - UIViewController
+#pragma mark - Data
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
+- (void)setupData {
     NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
                                @"Вата": @[@"Ва", @"Вы", @"Вивы"],
                                @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
@@ -149,18 +142,19 @@ static NSString * const viewReuseIdentifier = @"View";
                                @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                                @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
                                @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
-                  };
+                               };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
     
     for (NSString *key in nameDict) {
-        NSArray *array = nameDict[key];
         
+        NSArray *array = nameDict[key];
         NSMutableArray *itemsArray = [NSMutableArray array];
+        
         for (int i = 0; i < array.count; i++) {
             CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
-            item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
+            item.type = arc4random() % 2 ? CardItemTypeBuy : CardItemTypeNote;
             
             [itemsArray addObject:item];
         }
@@ -169,12 +163,21 @@ static NSString * const viewReuseIdentifier = @"View";
     }
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
+}
+
+#pragma mark - UIViewController
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    ((CoolCardCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
-    
+    [self setupData];
     [self registerCells];
     
-    
+    ((CoolCardCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
 }
 
 @end

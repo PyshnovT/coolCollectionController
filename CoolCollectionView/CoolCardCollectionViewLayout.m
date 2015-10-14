@@ -28,10 +28,10 @@
 @property (nonatomic) NSInteger topMostSupIndex;
 
 @end
-
+/*
 static NSString * const CardCell = @"CardCell";
-static NSString * const SupplementaryViewKind = @"title";
-
+static NSString * const supplementaryKind = @"Header";
+*/
 @implementation CoolCardCollectionViewLayout
 
 #pragma mark - Setup
@@ -115,7 +115,7 @@ static NSString * const SupplementaryViewKind = @"title";
             
             
             if (!indexPath.item) { // тут создаётся supplementary
-                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryViewKind withIndexPath:indexPath];
+                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
                 supAttributes.size = supplementaryViewSize;
                 
                 CGFloat supplementaryY = previousBottomY;
@@ -184,8 +184,8 @@ static NSString * const SupplementaryViewKind = @"title";
         }
     }
     
-    newLayoutInfo[CardCell] = cellLayoutInfo;
-    newLayoutInfo[SupplementaryViewKind] = supplementaryInfo;
+    newLayoutInfo[cellReuseIdentifier] = cellLayoutInfo;
+    newLayoutInfo[supplementaryKind] = supplementaryInfo;
     
     self.layoutInfo = newLayoutInfo;
 }
@@ -238,7 +238,7 @@ static NSString * const SupplementaryViewKind = @"title";
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    UICollectionViewLayoutAttributes *attributes = self.layoutInfo[CardCell][indexPath];
+    UICollectionViewLayoutAttributes *attributes = self.layoutInfo[cellReuseIdentifier][indexPath];
     
     return attributes;
 }
@@ -386,7 +386,7 @@ static NSString * const SupplementaryViewKind = @"title";
     CGFloat clingYOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
     
     NSIndexPath *firstCardIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section];
-    UICollectionViewLayoutAttributes *cardAttributes = self.layoutInfo[CardCell][firstCardIndexInCurrentSection];
+    UICollectionViewLayoutAttributes *cardAttributes = self.layoutInfo[cellReuseIdentifier][firstCardIndexInCurrentSection];
     
     CGFloat decorationAlpha = (cardAttributes.frame.origin.y - collectionViewYOffset - clingYOffset) / supplemetaryViewFrame.size.height;
     decorationAlpha = MIN(1, 1 - decorationAlpha);
@@ -396,7 +396,7 @@ static NSString * const SupplementaryViewKind = @"title";
     
     
     NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
-    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[SupplementaryViewKind] objectForKey:nextItemIndexPath];
+    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
     
     if (supplemetaryViewFrame.origin.y < nextItemAttributes.frame.origin.y - supplemetaryViewFrame.size.height + 20 || !nextItemAttributes) {
         

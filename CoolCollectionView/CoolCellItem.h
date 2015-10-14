@@ -10,8 +10,8 @@
 
 typedef NS_ENUM(NSInteger, CardItemType) {
     CardItemTypeNone,
-    CardItemTypeFirst,
-    CardItemTypeSecond
+    CardItemTypeBuy,
+    CardItemTypeNote
 };
 
 @interface CoolCellItem : NSObject

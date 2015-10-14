@@ -6,30 +6,41 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolSecondCardCell.h"
+#import "CoolNoteCardCell.h"
 #import "CoolCellItem.h"
 
-@interface CoolSecondCardCell ()
+@interface CoolNoteCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 
 @end
 
-@implementation CoolSecondCardCell
+@implementation CoolNoteCardCell
 
+#pragma mark - UIView
 
 - (void)awakeFromNib {
-    // Initialization code
+    // Initialization cod
 }
 
-+ (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeSecond;
-}
+#pragma mark - Setter
 
 - (void)setTitle:(NSString *)title {
     _title = title;
     
     self.titleLabel.text = title;
 }
+
+#pragma mark - CoolCollectionCell
+
++ (BOOL)handleItem:(CoolCellItem *)item {
+    return item.type == CardItemTypeNote;
+}
+
++ (CGFloat)heightOfCell {
+    return 40;
+}
+
+
 @end
