@@ -59,21 +59,13 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     
-    NSString *title = [self.data allKeys][indexPath.section];
+    return [self configuredSupplementaryViewAtIndexPath:indexPath];
     
-    NSLog(@"SUPVIEW %@", title);
-    
-    CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier forIndexPath:indexPath];
-    supCell.title = title;
-    supCell.layer.zPosition = indexPath.section;
-
-    
-    return supCell;
 }
 
 #pragma mark - Cell config
 
-- (UICollectionViewCell<CoolCollectionCell> *)configuredCellForItem:(CoolCellItem *)item atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)configuredCellForItem:(CoolCellItem *)item atIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionViewCell <CoolCollectionCell> *cell;
     
@@ -87,9 +79,22 @@
     
     cell.layer.zPosition = -2;
     cell.title = title;
-    cell.backgroundColor = [UIColor redColor];
     
     return cell;
+}
+
+- (UICollectionViewCell *)configuredSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier forIndexPath:indexPath];
+    
+    NSString *title = [self.data allKeys][indexPath.section];
+    supCell.title = title;
+    supCell.layer.zPosition = indexPath.section;
+    
+    NSLog(@"SUPPLEMENTARY %@", title);
+    
+    return supCell;
 }
 
 #pragma mark - UICollectionViewDelegate

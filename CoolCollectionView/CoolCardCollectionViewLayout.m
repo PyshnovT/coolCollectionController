@@ -105,8 +105,7 @@ static NSString * const supplementaryKind = @"Header";
             CGSize cellSize = [[cellLayout objectForKey:@"cellSize"] CGSizeValue];
             CGSize supplementaryViewSize = [[cellLayout objectForKey:@"supplementaryViewSize"] CGSizeValue];
             CGFloat previousBottomY = [[cellLayout objectForKey:@"previousBottomY"] floatValue];
-            
-            NSLog(@"%f", previousBottomY);
+        
             
             UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             itemAttributes.size = cellSize;
@@ -344,6 +343,7 @@ static NSString * const supplementaryKind = @"Header";
 
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
 
+    if (indexPath.item) return CGSizeZero;
     
     CGFloat height = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
@@ -430,8 +430,6 @@ static NSString * const supplementaryKind = @"Header";
                            @"supplementaryViewSize": [NSValue valueWithCGSize:supplementaryViewSize],
                            @"cellSize": [NSValue valueWithCGSize:cellSize],
                            @"currentBottomY": [NSNumber numberWithFloat:currentBottomY]};
-
-    NSLog(@"%@", info);
     
     return info;
 }
