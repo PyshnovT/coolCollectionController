@@ -24,7 +24,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <animations/>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.96556637216404884" green="0.96556637216404884" blue="0.96556637216404884" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="7lB-B0-2IW" secondAttribute="trailing" constant="40" id="825-iS-DzF"/>
                 <constraint firstItem="7lB-B0-2IW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="crp-AA-O3B"/>

@@ -85,7 +85,6 @@
 
 - (UICollectionViewCell *)configuredSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     
-    
     CoolCardSupplementaryCell *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:supplementaryReuseIdentifier forIndexPath:indexPath];
     
     NSString *title = [self.data allKeys][indexPath.section];

@@ -28,11 +28,10 @@
 @property (nonatomic) NSInteger topMostSupIndex;
 
 @end
-/*
-static NSString * const CardCell = @"CardCell";
-static NSString * const supplementaryKind = @"Header";
-*/
+
 @implementation CoolCardCollectionViewLayout
+
+#warning Simplier!
 
 #pragma mark - Setup
 
@@ -115,6 +114,9 @@ static NSString * const supplementaryKind = @"Header";
             cellLayoutInfo[indexPath] = itemAttributes;
             
             
+            CellItemType itemType = CellItemTypeNone;
+            
+            itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
             
             if (!indexPath.item) { // тут создаётся supplementary
                 CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
@@ -192,8 +194,6 @@ static NSString * const supplementaryKind = @"Header";
     self.layoutInfo = newLayoutInfo;
 }
 
-#pragma mark -
-
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
     
     NSMutableArray *allAttributes = [NSMutableArray arrayWithCapacity:self.layoutInfo.count];
@@ -253,8 +253,6 @@ static NSString * const supplementaryKind = @"Header";
     
     return attributes;
 }
-
-#pragma mark -
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     if (newBounds.size.width != self.collectionView.bounds.size.width) {
@@ -353,7 +351,7 @@ static NSString * const supplementaryKind = @"Header";
     
 }
 
-#pragma mark - Layout Info
+#pragma mark - Decorations
 
 - (UICollectionViewLayoutAttributes *)decorationAttributesForTopView {
     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"topLine" withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
@@ -370,6 +368,7 @@ static NSString * const supplementaryKind = @"Header";
 }
 
 - (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
+    
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
     
     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine" withIndexPath:indexPath];
@@ -408,22 +407,29 @@ static NSString * const supplementaryKind = @"Header";
     return nil;
 }
 
+#pragma mark - Cell Layout Info
+
 - (NSDictionary *)cellLayoutInfoForIndexPath:(NSIndexPath *)indexPath {
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
     NSNumber *tag = [self tagForIndexPath:previousIndexPath];
     
+    
     CGFloat previousBottomY = [self.cellBottomY[tag] floatValue];
+    
     
     NSInteger sectionCount = [self.collectionView numberOfSections];
     CGFloat sectionOffset = [self isTheLastItemInSectionForIndexPath:indexPath] && indexPath.section != sectionCount-1 ? self.interSectionSpaceY : 0;
+
     
     CGFloat itemOffset = [self isTheLastItemInSectionForIndexPath:indexPath] ? 0 : self.interItemSpaceY;
     
     CGSize cellSize = [self sizeForCellAtIndexPath:indexPath];
     CGSize supplementaryViewSize = [self sizeForSupplementaryViewAtIndexPath:indexPath];
     
+    
     CGFloat currentBottomY = previousBottomY + itemOffset + cellSize.height + sectionOffset + supplementaryViewSize.height;
+    
     
     NSDictionary *info = @{@"previousBottomY": [NSNumber numberWithFloat:previousBottomY],
                            @"sectionOffset": [NSNumber numberWithFloat:sectionOffset],
