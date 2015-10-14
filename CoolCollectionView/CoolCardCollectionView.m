@@ -27,7 +27,7 @@
     self.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
     self.showsVerticalScrollIndicator = NO;
     
-    self.cardMagicEnabled = NO;
+    self.cardMagicEnabled = YES;
     self.cardBehaviourEnabled = YES;
 }
 
