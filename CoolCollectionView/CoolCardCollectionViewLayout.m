@@ -131,16 +131,16 @@
                 if (self.cardBehaviourEnabled) {
                     
                     if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { //
-                        CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
                         
-                        NSInteger magicN = 40;
+                        CGFloat relativeSupplementaryY = previousBottomY - collectionViewYOffset - clingYOfsset;
+                        NSInteger magicOffset = 40; // Когда начинать "подъезд" к карточке
                         
-                        if (d <= magicN && magicN >= 0) {
+                        if (relativeSupplementaryY <= magicOffset && magicOffset >= 0) {
                             
                             self.topMostSupIndex = indexPath.section;
 
                         
-                            CGFloat delta = MIN((magicN - (d / magicN * magicN)) / 4, self.clingYOffset);
+                            CGFloat delta = MIN((magicOffset - (relativeSupplementaryY / magicOffset * magicOffset)) / 4, self.clingYOffset);
                             NSInteger rDelta = round(delta);
                         
                             
@@ -164,13 +164,12 @@
                 
                     }
                     
-                    if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё, прицепился
+                    if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // цепляем к верху
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         
                         if (indexPath.section > self.numberOfClingedCards - 1) {
                             supAttributes.shadowVisible = self.cardMagicEnabled;
                         }
-                        
                         
                     }
                     
@@ -318,12 +317,6 @@
 
 - (BOOL)isTheLastItemInSectionForIndexPath:(NSIndexPath *)indexPath {
     return indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
-}
-
-#pragma mark - Card Behaviour
-
-- (CGFloat)clingYOffsetForIndexPath:(NSIndexPath *)indexPath {
-    return self.clingYOffset;
 }
 
 #pragma mark - Size
