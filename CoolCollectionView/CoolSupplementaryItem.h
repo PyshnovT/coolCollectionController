@@ -10,8 +10,8 @@
 
 typedef NS_ENUM(NSInteger, SupItemType) {
     SupItemTypeNone,
-    SupItemTypeFirst,
-    SupItemTypeSecond
+    SupItemTypeNote,
+    SupItemTypeDate
 };
 
 @interface CoolSupplementaryItem : NSObject

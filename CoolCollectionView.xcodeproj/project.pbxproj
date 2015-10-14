@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0930CD741BC3C38E0038227F /* CoolSecondSup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930CD721BC3C38E0038227F /* CoolSecondSup.m */; settings = {ASSET_TAGS = (); }; };
-		0930CD751BC3C38E0038227F /* CoolSecondSup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0930CD731BC3C38E0038227F /* CoolSecondSup.xib */; settings = {ASSET_TAGS = (); }; };
+		0930CD741BC3C38E0038227F /* CoolDateSup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930CD721BC3C38E0038227F /* CoolDateSup.m */; settings = {ASSET_TAGS = (); }; };
+		0930CD751BC3C38E0038227F /* CoolDateSup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0930CD731BC3C38E0038227F /* CoolDateSup.xib */; settings = {ASSET_TAGS = (); }; };
 		098B06721BC42BF000C9DDF8 /* CoolFirstCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06701BC42BF000C9DDF8 /* CoolFirstCardCell.m */; settings = {ASSET_TAGS = (); }; };
 		098B06731BC42BF000C9DDF8 /* CoolFirstCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 098B06711BC42BF000C9DDF8 /* CoolFirstCardCell.xib */; settings = {ASSET_TAGS = (); }; };
 		098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06761BC42FE900C9DDF8 /* CoolCellItem.m */; settings = {ASSET_TAGS = (); }; };
@@ -26,14 +26,16 @@
 		6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */; settings = {ASSET_TAGS = (); }; };
 		6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */; settings = {ASSET_TAGS = (); }; };
 		6E5C0A1F1BCD5CAC0095BD24 /* CoolSupplementaryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5C0A1E1BCD5CAC0095BD24 /* CoolSupplementaryItem.m */; settings = {ASSET_TAGS = (); }; };
-		6EA718AE1BCD54A900FD9F9A /* CoolFirstSup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA718AC1BCD54A900FD9F9A /* CoolFirstSup.m */; settings = {ASSET_TAGS = (); }; };
-		6EA718AF1BCD54A900FD9F9A /* CoolFirstSup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA718AD1BCD54A900FD9F9A /* CoolFirstSup.xib */; settings = {ASSET_TAGS = (); }; };
+		6EA718AE1BCD54A900FD9F9A /* CoolNoteSup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EA718AC1BCD54A900FD9F9A /* CoolNoteSup.m */; settings = {ASSET_TAGS = (); }; };
+		6EA718AF1BCD54A900FD9F9A /* CoolNoteSup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EA718AD1BCD54A900FD9F9A /* CoolNoteSup.xib */; settings = {ASSET_TAGS = (); }; };
+		6EDE7F911BCE91EA005B2542 /* CoolEmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EDE7F8F1BCE91EA005B2542 /* CoolEmptyCell.m */; settings = {ASSET_TAGS = (); }; };
+		6EDE7F921BCE91EA005B2542 /* CoolEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6EDE7F901BCE91EA005B2542 /* CoolEmptyCell.xib */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0930CD711BC3C38E0038227F /* CoolSecondSup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolSecondSup.h; sourceTree = "<group>"; };
-		0930CD721BC3C38E0038227F /* CoolSecondSup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolSecondSup.m; sourceTree = "<group>"; };
-		0930CD731BC3C38E0038227F /* CoolSecondSup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolSecondSup.xib; sourceTree = "<group>"; };
+		0930CD711BC3C38E0038227F /* CoolDateSup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolDateSup.h; sourceTree = "<group>"; };
+		0930CD721BC3C38E0038227F /* CoolDateSup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolDateSup.m; sourceTree = "<group>"; };
+		0930CD731BC3C38E0038227F /* CoolDateSup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolDateSup.xib; sourceTree = "<group>"; };
 		098B066F1BC42BF000C9DDF8 /* CoolFirstCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolFirstCardCell.h; sourceTree = "<group>"; };
 		098B06701BC42BF000C9DDF8 /* CoolFirstCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolFirstCardCell.m; sourceTree = "<group>"; };
 		098B06711BC42BF000C9DDF8 /* CoolFirstCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolFirstCardCell.xib; sourceTree = "<group>"; };
@@ -65,10 +67,13 @@
 		6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardDecorationView.m; sourceTree = "<group>"; };
 		6E5C0A1D1BCD5CAC0095BD24 /* CoolSupplementaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolSupplementaryItem.h; sourceTree = "<group>"; };
 		6E5C0A1E1BCD5CAC0095BD24 /* CoolSupplementaryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolSupplementaryItem.m; sourceTree = "<group>"; };
-		6EA718AB1BCD54A900FD9F9A /* CoolFirstSup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolFirstSup.h; sourceTree = "<group>"; };
-		6EA718AC1BCD54A900FD9F9A /* CoolFirstSup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolFirstSup.m; sourceTree = "<group>"; };
-		6EA718AD1BCD54A900FD9F9A /* CoolFirstSup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolFirstSup.xib; sourceTree = "<group>"; };
+		6EA718AB1BCD54A900FD9F9A /* CoolNoteSup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolNoteSup.h; sourceTree = "<group>"; };
+		6EA718AC1BCD54A900FD9F9A /* CoolNoteSup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolNoteSup.m; sourceTree = "<group>"; };
+		6EA718AD1BCD54A900FD9F9A /* CoolNoteSup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolNoteSup.xib; sourceTree = "<group>"; };
 		6EA718B11BCD5AE800FD9F9A /* CoolCollectionSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCollectionSupplementaryView.h; sourceTree = "<group>"; };
+		6EDE7F8E1BCE91EA005B2542 /* CoolEmptyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolEmptyCell.h; sourceTree = "<group>"; };
+		6EDE7F8F1BCE91EA005B2542 /* CoolEmptyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolEmptyCell.m; sourceTree = "<group>"; };
+		6EDE7F901BCE91EA005B2542 /* CoolEmptyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolEmptyCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +187,7 @@
 			children = (
 				6E00A6A81BCC0B0E00990DD1 /* First */,
 				6E00A6A91BCC0B1500990DD1 /* Second */,
+				6EDE7F931BCE91EF005B2542 /* Empty */,
 			);
 			name = "Cell Types";
 			sourceTree = "<group>";
@@ -251,9 +257,9 @@
 		6E5C0A201BCD5DCB0095BD24 /* Second */ = {
 			isa = PBXGroup;
 			children = (
-				0930CD711BC3C38E0038227F /* CoolSecondSup.h */,
-				0930CD721BC3C38E0038227F /* CoolSecondSup.m */,
-				0930CD731BC3C38E0038227F /* CoolSecondSup.xib */,
+				0930CD711BC3C38E0038227F /* CoolDateSup.h */,
+				0930CD721BC3C38E0038227F /* CoolDateSup.m */,
+				0930CD731BC3C38E0038227F /* CoolDateSup.xib */,
 			);
 			name = Second;
 			sourceTree = "<group>";
@@ -271,11 +277,21 @@
 		6EA718B01BCD54AE00FD9F9A /* First */ = {
 			isa = PBXGroup;
 			children = (
-				6EA718AB1BCD54A900FD9F9A /* CoolFirstSup.h */,
-				6EA718AC1BCD54A900FD9F9A /* CoolFirstSup.m */,
-				6EA718AD1BCD54A900FD9F9A /* CoolFirstSup.xib */,
+				6EA718AB1BCD54A900FD9F9A /* CoolNoteSup.h */,
+				6EA718AC1BCD54A900FD9F9A /* CoolNoteSup.m */,
+				6EA718AD1BCD54A900FD9F9A /* CoolNoteSup.xib */,
 			);
 			name = First;
+			sourceTree = "<group>";
+		};
+		6EDE7F931BCE91EF005B2542 /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				6EDE7F8E1BCE91EA005B2542 /* CoolEmptyCell.h */,
+				6EDE7F8F1BCE91EA005B2542 /* CoolEmptyCell.m */,
+				6EDE7F901BCE91EA005B2542 /* CoolEmptyCell.xib */,
+			);
+			name = Empty;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,12 +352,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0930CD751BC3C38E0038227F /* CoolSecondSup.xib in Resources */,
+				0930CD751BC3C38E0038227F /* CoolDateSup.xib in Resources */,
 				099E3F011BC00F7A0054B604 /* Assets.xcassets in Resources */,
 				6E00A6A71BCC0B0800990DD1 /* CoolSecondCardCell.xib in Resources */,
 				099E3F151BC00FF60054B604 /* CoolFeedViewController.xib in Resources */,
 				099E3F041BC00F7A0054B604 /* LaunchScreen.storyboard in Resources */,
-				6EA718AF1BCD54A900FD9F9A /* CoolFirstSup.xib in Resources */,
+				6EA718AF1BCD54A900FD9F9A /* CoolNoteSup.xib in Resources */,
+				6EDE7F921BCE91EA005B2542 /* CoolEmptyCell.xib in Resources */,
 				098B06731BC42BF000C9DDF8 /* CoolFirstCardCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,13 +376,14 @@
 				6E5C0A1F1BCD5CAC0095BD24 /* CoolSupplementaryItem.m in Sources */,
 				098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */,
 				6E00A6A61BCC0B0800990DD1 /* CoolSecondCardCell.m in Sources */,
-				6EA718AE1BCD54A900FD9F9A /* CoolFirstSup.m in Sources */,
+				6EA718AE1BCD54A900FD9F9A /* CoolNoteSup.m in Sources */,
 				099E3F171BC00FF60054B604 /* CoolCardCollectionViewLayout.m in Sources */,
 				099E3EFC1BC00F7A0054B604 /* main.m in Sources */,
 				6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */,
 				098B06721BC42BF000C9DDF8 /* CoolFirstCardCell.m in Sources */,
-				0930CD741BC3C38E0038227F /* CoolSecondSup.m in Sources */,
+				0930CD741BC3C38E0038227F /* CoolDateSup.m in Sources */,
 				6E00A6A21BCBDE9500990DD1 /* CoolSupplementaryLayoutAttributes.m in Sources */,
+				6EDE7F911BCE91EA005B2542 /* CoolEmptyCell.m in Sources */,
 				099E3F161BC00FF60054B604 /* CoolCardCollectionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

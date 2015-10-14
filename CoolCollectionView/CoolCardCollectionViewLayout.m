@@ -13,7 +13,7 @@
 #import "CoolCardTopDecorationView.h"
 
 #import "CoolSupplementaryLayoutAttributes.h"
-#import "CoolSecondSup.h"
+#import "CoolDateSup.h"
 
 @interface CoolCardCollectionViewLayout ()
 
@@ -31,7 +31,7 @@
 @end
 
 static NSString * const CardCell = @"CardCell";
-static NSString * const SupplementaryViewKind = @"title";
+static NSString * const SupplementaryKind = @"Head";
 
 @implementation CoolCardCollectionViewLayout
 
@@ -115,20 +115,19 @@ static NSString * const SupplementaryViewKind = @"title";
             
             
             
-            if (!indexPath.item) { // тут создаётся supplementary
+            if (indexPath.item == 0) { // тут создаётся supplementary
                 
-#warning ChangeSupKind
                 
-                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withIndexPath:indexPath];
+                CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:SupplementaryKind withIndexPath:indexPath];
                 
                 supAttributes.size = supplementaryViewSize;
                 
                 CGFloat supplementaryY = previousBottomY;
+                
                 CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
                 CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
-          //      supAttributes.backViewHidden = !!indexPath.section;
                 
                 if (self.cardBehaviourEnabled) {
                 
@@ -195,7 +194,7 @@ static NSString * const SupplementaryViewKind = @"title";
     }
     
     newLayoutInfo[CardCell] = cellLayoutInfo;
-    newLayoutInfo[SupplementaryViewKind] = supplementaryInfo;
+    newLayoutInfo[SupplementaryKind] = supplementaryInfo;
     
     self.layoutInfo = newLayoutInfo;
 }
@@ -212,13 +211,7 @@ static NSString * const SupplementaryViewKind = @"title";
             UICollectionViewLayoutAttributes *currentItemAttributes = [attributesDict objectForKey:indexKey];
             
             if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
-
-                NSIndexPath *nextSupPath = [NSIndexPath indexPathForItem:0 inSection:indexKey.section + 1];
                 
-                UICollectionViewLayoutAttributes *nextItemAttributes = [attributesDict objectForKey:nextSupPath];
-                
-                CGFloat currentSupY = currentItemAttributes.frame.origin.y;
-                CGFloat nextSupY = nextItemAttributes.frame.origin.y;
                 
              //   NSLog(@"%f -- current (%d) %f -- next (%d) (topMost: %d)", currentSupY, indexKey.section, nextSupY, nextSupPath.section, self.topMostSupIndex);
                 
@@ -359,7 +352,7 @@ static NSString * const SupplementaryViewKind = @"title";
     
     if (indexPath.item) return CGSizeZero;
     
-    CGFloat height = 60;
+    CGFloat height = [self.delegate heightForSupplementrayViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
     
     return CGSizeMake(width, height);
@@ -415,7 +408,7 @@ static NSString * const SupplementaryViewKind = @"title";
     
     
     NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
-    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[SupplementaryViewKind] objectForKey:nextItemIndexPath];
+    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[SupplementaryKind] objectForKey:nextItemIndexPath];
     
     if (supplemetaryViewFrame.origin.y < nextItemAttributes.frame.origin.y - supplemetaryViewFrame.size.height + 20 || !nextItemAttributes) {
         

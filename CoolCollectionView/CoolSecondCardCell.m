@@ -18,19 +18,30 @@
 
 @implementation CoolSecondCardCell
 
+#pragma mark - UIView
 
 - (void)awakeFromNib {
     // Initialization code
 }
 
-+ (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CellItemTypeSecond;
-}
+#pragma mark - Setters
 
 - (void)setTitle:(NSString *)title {
     _title = title;
     
     self.titleLabel.text = title;
 }
+
+
+#pragma mark - <CoolCollectionCell>
+
++ (BOOL)handleItem:(CoolCellItem *)item {
+    return item.type == CellItemTypeSecond;
+}
+
++ (CGFloat)heightOfCell {
+    return 50;
+}
+
 
 @end

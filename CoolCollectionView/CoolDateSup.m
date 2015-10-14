@@ -6,27 +6,26 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolSecondSup.h"
+#import "CoolDateSup.h"
 #import "CoolSupplementaryLayoutAttributes.h"
 
 #import "CoolSupplementaryItem.h"
 #import "CoolCollectionSupplementaryView.h"
 
-@interface CoolSecondSup () <CoolCollectionSupplementaryView>
+@interface CoolDateSup () <CoolCollectionSupplementaryView>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
-@property (nonatomic, getter=isBackViewHidden) BOOL backViewHidden;
 
 @end
 
-@implementation CoolSecondSup
+@implementation CoolDateSup
 
 #pragma mark - SupItem
 
 + (BOOL)handleItem:(CoolSupplementaryItem *)item {
-    return item.type == SupItemTypeSecond;
+    return item.type == SupItemTypeDate;
 }
 
 #pragma mark - UIView
@@ -62,7 +61,7 @@
 - (void)setShadowVisible:(BOOL)shadowVisible {
     _shadowVisible = shadowVisible;
     
-    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
+    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.22 : 0.0;
 }
 
 

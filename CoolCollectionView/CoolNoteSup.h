@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 
-@interface CoolFirstSup : UICollectionViewCell
+@interface CoolNoteSup : UICollectionViewCell
 
 @property (nonatomic, strong) NSString *title;
+
+@property (weak, nonatomic) IBOutlet UIView *decorationView;
 
 @end

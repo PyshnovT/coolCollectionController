@@ -10,7 +10,7 @@
 
 #import "CoolCardCollectionView.h"
 
-#import "CoolSecondSup.h"
+#import "CoolDateSup.h"
 #import "CollectionCardCell.h"
 
 #import "CoolCollectionCell.h"
@@ -20,10 +20,13 @@
 
 #import "CoolFirstCardCell.h"
 #import "CoolSecondCardCell.h"
+#import "CoolEmptyCell.h"
 
 #import "CoolSupplementaryItem.h"
 #import "CoolCollectionSupplementaryView.h"
-#import "CoolFirstSup.h"
+#import "CoolNoteSup.h"
+
+
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
@@ -38,8 +41,7 @@
 
 @implementation CoolFeedViewController
 
-static NSString * const cellReuseIdentifier = @"Cell";
-static NSString * const viewReuseIdentifier = @"View";
+static NSString * const supplementaryKind = @"Head";
 
 #pragma mark - UICollectionViewDataSource
 
@@ -49,6 +51,9 @@ static NSString * const viewReuseIdentifier = @"View";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSString *sectionKey = [self.data allKeys][section];
+    
+    if ([sectionKey hasPrefix:@"УВЕДОМЛЕНИЕ"]) return 1;
+    
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     return sectionData.count;
@@ -56,6 +61,16 @@ static NSString * const viewReuseIdentifier = @"View";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sectionKey = [self.data allKeys][indexPath.section];
+    
+   // NSLog(@"KEY: %@", sectionKey);
+    
+    if ([sectionKey hasPrefix:@"УВЕДОМЛЕНИЕ"]) {
+        CoolEmptyCell *emptyCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([CoolEmptyCell class]) forIndexPath:indexPath];
+        
+        return emptyCell;
+    }
+    
+    
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
@@ -70,7 +85,6 @@ static NSString * const viewReuseIdentifier = @"View";
         }
     }
     
-  //  cell.backgroundColor = [UIColor redColor];
     cell.layer.zPosition = -2;
     cell.title = title;
     
@@ -82,41 +96,45 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *title = [self.data allKeys][indexPath.section];
     
     NSLog(@"SUPVIEW %@", title);
-    
-#warning HOW TO SYNC
-    // Надо решить вопрос с синхронизацией сапов тут и у лэйаута
+
     
     CoolSupplementaryItem *item = [[CoolSupplementaryItem alloc] init];
-    item.type = SupItemTypeSecond;
     
-   // UICollectionViewCell<CoolCollectionSupplementaryView> *supCell;
+    NSString *section = [[self.data allKeys] objectAtIndex:indexPath.section];
     
-   /* for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
-        if ([supClass handleItem:item]) {
-            supCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(supClass) forIndexPath:indexPath];
-        }
-    }*/
-    
-    CoolSecondSup *supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:NSStringFromClass([CoolSecondSup class]) withReuseIdentifier:NSStringFromClass([CoolSecondSup class]) forIndexPath:indexPath];
-    
-    
-    supCell.title = title;
-    supCell.layer.zPosition = indexPath.section;
-  //  supCell.backView.hidden = !!indexPath.section;
-  /*
-    if ([title isEqualToString:@"Тёрка"]) {
-        supCell.backgroundColor = [UIColor redColor];
+    if ([section hasPrefix:@"УВЕДОМЛЕНИЕ"]) {
+        item.type = SupItemTypeNote;
     } else {
-        supCell.backgroundColor = [UIColor clearColor];
-    }*/
+        item.type = SupItemTypeDate;
+    }
     
+    NSLog(@"секция:    %@", section);
+    
+    
+    UICollectionViewCell<CoolCollectionSupplementaryView> *supCell;
+    
+    for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
+        if ([supClass handleItem:item]) {
+           // NSLog(@"%@", NSStringFromClass(supClass));
+            supCell = [self.collectionView dequeueReusableSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:NSStringFromClass(supClass) forIndexPath:indexPath];
+    //        supCell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(supClass) forIndexPath:indexPath];
+            
+            if (supClass == [CoolDateSup class]) {
+                ((CoolDateSup *)supCell).title = title;
+            }
+        }
+    }
+    
+
+    supCell.layer.zPosition = indexPath.section;
+
     return supCell;
 }
 
 #pragma mark - UICollectionViewDelegate
 
 
-#pragma mark - Cells
+#pragma mark - Registering cells
 
 - (void)registerCells {
     
@@ -128,12 +146,15 @@ static NSString * const viewReuseIdentifier = @"View";
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];
     }
     
-    self.supplementaryClasses = @[[CoolFirstSup class],
-                                  [CoolSecondSup class]
+    [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([CoolEmptyCell class]) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass([CoolEmptyCell class])];
+    
+    self.supplementaryClasses = @[[CoolNoteSup class],
+                                  [CoolDateSup class]
                          ];
     
     for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
-        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:NSStringFromClass(supClass) withReuseIdentifier:NSStringFromClass(supClass)];
+   //     [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:NSStringFromClass(supClass) withReuseIdentifier:NSStringFromClass(supClass)];
+        [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(supClass) bundle:nil]  forSupplementaryViewOfKind:supplementaryKind withReuseIdentifier:NSStringFromClass(supClass)];
     }
     
 }
@@ -142,16 +163,34 @@ static NSString * const viewReuseIdentifier = @"View";
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sectionKey = [self.data allKeys][indexPath.section];
+    
+    if ([sectionKey hasPrefix:@"УВЕДОМЛЕНИЕ"]) return 0;
+    
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
-    if (item.type == CellItemTypeFirst) {
-        return 40;
-    } else if (item.type == CellItemTypeSecond) {
-        return 30;
-    } 
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
+        if ([cellClass handleItem:item]) {
+            return [cellClass heightOfCell];
+        }
+    }
     
+    return 0;
+}
+
+- (CGFloat)heightForSupplementrayViewAtIndexPath:(NSIndexPath *)indexPath {
+    /*
+    NSString *sectionKey = [self.data allKeys][indexPath.section];
+    
+    CoolSupplementaryItem *item = [sectionData objectAtIndex:indexPath.section];
+    
+    for (Class<CoolCollectionSupplementaryView> supClass in self.supplementaryClasses) {
+        if ([supClass handleItem:item]) {
+            return [supClass heightOfCell];
+        }
+    }
+    */
     return 0;
 }
 
@@ -165,40 +204,51 @@ static NSString * const viewReuseIdentifier = @"View";
     [super viewDidLoad];
     
     NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
-                           @"Вата": @[@"Ва", @"Вы", @"Вивы"],
-                           @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Тёрка": @[@"Твац", @"Тцуацуа"],
-                           @"Чdучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чуaчмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Дaыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
-                           @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
+                               @"Вата": @[@"Ва", @"Вы", @"Вивы"],
+                               @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Тёрка": @[@"Твац", @"Тцуацуа"],
+                               @"Чdучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чуaчмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Дaыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"УВЕДОМЛЕНИЕ 3": @[@""],
+                               @"УВЕДОМЛЕНИЕ 7": @[@"", @"", @""],
+                               @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
+                               @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
                                @"Wow": @[@"Wo"]
-                  };
+                               };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
     
     for (NSString *key in nameDict) {
-        NSArray *array = nameDict[key];
         
-        NSMutableArray *itemsArray = [NSMutableArray array];
-        for (int i = 0; i < array.count; i++) {
-            CoolCellItem *item = [[CoolCellItem alloc] init];
-            item.title = array[i];
+        if ([key hasPrefix:@"УВЕДОМЛЕНИЕ"]) {
+            itemDict[key] = [NSNull null];
+        } else {
+        
+            NSArray *array = nameDict[key];
             
-            item.type = arc4random() % 2 ? CellItemTypeFirst : CellItemTypeSecond;
+            NSMutableArray *itemsArray = [NSMutableArray array];
             
+            for (int i = 0; i < array.count; i++) {
+                
+                
+                CoolCellItem *item = [[CoolCellItem alloc] init];
+                item.title = array[i];
+                item.type = arc4random() % 2 ? CellItemTypeFirst : CellItemTypeSecond;
+                
+                [itemsArray addObject:item];
+            }
             
-            [itemsArray addObject:item];
+            itemDict[key] = itemsArray;
         }
-        
-        itemDict[key] = itemsArray;
     }
+    
+    NSLog(@"%@", itemDict);
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
     

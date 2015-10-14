@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSString *title;
 
 + (BOOL)handleItem:(CoolCellItem *)item;
++ (CGFloat)heightOfCell;
 
 @end

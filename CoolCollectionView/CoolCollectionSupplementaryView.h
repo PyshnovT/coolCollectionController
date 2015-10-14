@@ -12,5 +12,6 @@
 @protocol CoolCollectionSupplementaryView <NSObject>
 
 + (BOOL)handleItem:(CoolSupplementaryItem *)item;
++ (CGFloat)heightOfCell;
 
 @end

@@ -16,13 +16,13 @@
 
 @implementation CoolFirstCardCell
 
+#pragma mark - UIView
+
 - (void)awakeFromNib {
     // Initialization code
 }
 
-+ (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CellItemTypeFirst;
-}
+#pragma mark - Setters
 
 - (void)setTitle:(NSString *)title {
     _title = title;
@@ -30,6 +30,15 @@
     self.titleLabel.text = title;
 }
 
+#pragma mark - <CoolCollectionCell>
+
++ (BOOL)handleItem:(CoolCellItem *)item {
+    return item.type == CellItemTypeFirst;
+}
+
++ (CGFloat)heightOfCell {
+    return 40;
+}
 
 
 @end

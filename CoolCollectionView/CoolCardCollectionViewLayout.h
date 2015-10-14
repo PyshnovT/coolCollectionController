@@ -11,6 +11,7 @@
 @protocol CardColletionViewLayoutDelegate <NSObject>
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)heightForSupplementrayViewAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
