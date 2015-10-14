@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CoolCellItem.h"
 
 static NSString * const cellReuseIdentifier = @"Cell";
 static NSString * const supplementaryReuseIdentifier = @"View";
@@ -16,7 +17,7 @@ static NSString * const supplementaryKind = @"Header";
 @protocol CardColletionViewLayoutDelegate <NSObject>
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)heightForSupplementartViewAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)heightForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

@@ -35,7 +35,7 @@
 #pragma mark - CoolCollectionCell
 
 + (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeNote;
+    return item.type == CellItemTypeNote;
 }
 
 + (CGFloat)heightOfCell {

@@ -33,11 +33,11 @@
 #pragma mark - CoolCollectionCell
 
 + (BOOL)handleItem:(CoolCellItem *)item {
-    return item.type == CardItemTypeBuy;
+    return item.type == CellItemTypeBuy;
 }
 
 + (CGFloat)heightOfCell {
-    return 40;
+    return 50;
 }
 
 

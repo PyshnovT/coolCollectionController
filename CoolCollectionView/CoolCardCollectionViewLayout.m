@@ -58,7 +58,7 @@ static NSString * const supplementaryKind = @"Header";
     self.clingYOffset = 8;
     
     self.interItemSpaceY = 0;
-    self.interSectionSpaceY = 20;
+    self.interSectionSpaceY = 0;
     
     self.cellBottomY = [NSMutableDictionary dictionary];
     
@@ -105,6 +105,8 @@ static NSString * const supplementaryKind = @"Header";
             CGSize cellSize = [[cellLayout objectForKey:@"cellSize"] CGSizeValue];
             CGSize supplementaryViewSize = [[cellLayout objectForKey:@"supplementaryViewSize"] CGSizeValue];
             CGFloat previousBottomY = [[cellLayout objectForKey:@"previousBottomY"] floatValue];
+            
+            NSLog(@"%f", previousBottomY);
             
             UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
             itemAttributes.size = cellSize;
@@ -190,6 +192,8 @@ static NSString * const supplementaryKind = @"Header";
     self.layoutInfo = newLayoutInfo;
 }
 
+#pragma mark -
+
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
     
     NSMutableArray *allAttributes = [NSMutableArray arrayWithCapacity:self.layoutInfo.count];
@@ -209,7 +213,7 @@ static NSString * const supplementaryKind = @"Header";
                     
                     [allAttributes addObject:topDecorationViewAttributes];
                    
-                    UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementartViewAttributes:currentItemAttributes indexPath:indexKey];
+                    UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:currentItemAttributes indexPath:indexKey];
                     
                     if (decorationAttributes) {
                         [allAttributes addObject:decorationAttributes];
@@ -249,6 +253,8 @@ static NSString * const supplementaryKind = @"Header";
     
     return attributes;
 }
+
+#pragma mark -
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     if (newBounds.size.width != self.collectionView.bounds.size.width) {
@@ -293,7 +299,7 @@ static NSString * const supplementaryKind = @"Header";
     return [NSNumber numberWithInteger:tag];
 }
 
-#pragma mark - IndexPath
+#pragma mark IndexPath
 
 - (NSIndexPath *)previousIndexPathForIndexPath:(NSIndexPath *)indexPath {
     NSInteger item = indexPath.item;
@@ -337,16 +343,13 @@ static NSString * const supplementaryKind = @"Header";
 }
 
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
+
     
-    CGFloat height = [self.delegate heightForSupplementartViewAtIndexPath:indexPath];
+    CGFloat height = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
     
     return CGSizeMake(width, height);
     
-}
-
-- (NSInteger)randomHeight {
-    return arc4random() % 300 + 200;
 }
 
 #pragma mark - Layout Info
@@ -365,7 +368,7 @@ static NSString * const supplementaryKind = @"Header";
     return decorationAttributes;
 }
 
-- (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementartViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
     
     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine" withIndexPath:indexPath];
@@ -391,7 +394,6 @@ static NSString * const supplementaryKind = @"Header";
     decorationAttributes.alpha = decorationAlpha;
     
     // --- тут высчитывается alpha
-    
     
     NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
     CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
@@ -429,6 +431,8 @@ static NSString * const supplementaryKind = @"Header";
                            @"cellSize": [NSValue valueWithCGSize:cellSize],
                            @"currentBottomY": [NSNumber numberWithFloat:currentBottomY]};
 
+    NSLog(@"%@", info);
+    
     return info;
 }
 

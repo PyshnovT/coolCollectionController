@@ -51,21 +51,8 @@
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
-    
-    NSString *title = item.title;
-    
-    UICollectionViewCell <CoolCollectionCell> *cell;
-    
-    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
-        if ([cellClass handleItem:item]) {
-            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cellClass) forIndexPath:indexPath];
-        }
-    }
-    
-    
-    cell.layer.zPosition = -2;
-    cell.title = title;
-    
+    UICollectionViewCell *cell = [self configuredCellForItem:item atIndexPath:indexPath];
+
     return cell;
     
 }
@@ -84,6 +71,27 @@
     return supCell;
 }
 
+#pragma mark - Cell config
+
+- (UICollectionViewCell<CoolCollectionCell> *)configuredCellForItem:(CoolCellItem *)item atIndexPath:(NSIndexPath *)indexPath {
+    
+    UICollectionViewCell <CoolCollectionCell> *cell;
+    
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
+        if ([cellClass handleItem:item]) {
+            cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cellClass) forIndexPath:indexPath];
+        }
+    }
+    
+    NSString *title = item.title;
+    
+    cell.layer.zPosition = -2;
+    cell.title = title;
+    cell.backgroundColor = [UIColor redColor];
+    
+    return cell;
+}
+
 #pragma mark - UICollectionViewDelegate
 
 
@@ -95,16 +103,16 @@
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
-    if (item.type == CardItemTypeBuy) {
-        return 40;
-    } else if (item.type == CardItemTypeNote) {
-        return 30;
+    for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
+        if ([cellClass handleItem:item]) {
+            return [cellClass heightOfCell];
+        }
     }
     
     return 0;
 }
 
-- (CGFloat)heightForSupplementartViewAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)heightForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
 }
 
@@ -137,7 +145,7 @@
         for (int i = 0; i < array.count; i++) {
             CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
-            item.type = arc4random() % 2 ? CardItemTypeBuy : CardItemTypeNote;
+            item.type = arc4random() % 2 ? CellItemTypeBuy : CellItemTypeNote;
             
             [itemsArray addObject:item];
         }
