@@ -25,7 +25,7 @@
 @property (nonatomic) BOOL cardBehaviourEnabled;
 @property (nonatomic) BOOL cardMagicEnabled;
 
-@property (nonatomic) NSInteger topMostSupIndex;
+@property (nonatomic) NSInteger nextClingSupplementaryViewIndex;
 
 @end
 
@@ -68,13 +68,14 @@
 #pragma mark - Layout
 
 - (CGSize)collectionViewContentSize {
+    
     NSInteger numberOfSections = [self.collectionView numberOfSections];
     NSInteger lastItemIndex = MAX(0, [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:numberOfSections - 1] - 1);
-    
     NSIndexPath *indexPathForLastCard = [NSIndexPath indexPathForItem:lastItemIndex inSection:numberOfSections-1];
     
-    NSNumber *tag = [self tagForIndexPath:indexPathForLastCard];
-    CGFloat height = self.collectionView.contentInset.top + [self.cellBottomY[tag] floatValue] + self.collectionView.contentInset.bottom;
+    
+    CGFloat bottomYForLastCell = [self bottomYForIndexPath:indexPathForLastCard];
+    CGFloat height = self.collectionView.contentInset.top + bottomYForLastCell + self.collectionView.contentInset.bottom;
     
     CGSize size = CGSizeMake(self.collectionView.bounds.size.width, height);
     
@@ -87,19 +88,17 @@
     NSMutableDictionary *supplementaryInfo = [NSMutableDictionary dictionary];
     
     NSInteger sectionCount = [self.collectionView numberOfSections];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    NSIndexPath *indexPath;
     
     for (NSInteger section = 0; section < sectionCount; section++) {
         NSInteger itemCount = [self.collectionView numberOfItemsInSection:section];
         
         for (NSInteger item = 0; item < itemCount; item++) {
             
-            
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-            NSNumber *tag = [self tagForIndexPath:indexPath];
-            
             NSDictionary *cellLayout = [self cellLayoutInfoForIndexPath:indexPath];
-            self.cellBottomY[tag] = [cellLayout objectForKey:@"currentBottomY"];
+            
+            [self setBottomY:[[cellLayout objectForKey:@"currentBottomY"] floatValue] forCellAtIndexPath:indexPath];
             
             CGSize cellSize = [[cellLayout objectForKey:@"cellSize"] CGSizeValue];
             CGSize supplementaryViewSize = [[cellLayout objectForKey:@"supplementaryViewSize"] CGSizeValue];
@@ -117,51 +116,52 @@
             CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
             
             
+            // -- SUPPLEMENTARY VIEWS
             
             if (!indexPath.item) { // тут создаётся supplementary
+                
                 CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
                 supAttributes.size = supplementaryViewSize;
+                supAttributes.shadowVisible = YES;
                 
                 CGFloat supplementaryY = previousBottomY;
                 CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-                CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
+                CGFloat clingYOfsset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
                 
-                supAttributes.shadowVisible = YES;
-                
-                if (self.cardBehaviourEnabled) {
+                if (self.cardBehaviourEnabled) { // делаем карточные фичи
                     
-                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { //
+                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { // тут двигаем подъезд карточек друг к другу
                         
                         CGFloat relativeSupplementaryY = previousBottomY - collectionViewYOffset - clingYOfsset;
                         NSInteger magicOffset = 40; // Когда начинать "подъезд" к карточке
                         
                         if (relativeSupplementaryY <= magicOffset && magicOffset >= 0) {
                             
-                            self.topMostSupIndex = indexPath.section;
-
-                        
+                            self.nextClingSupplementaryViewIndex = indexPath.section;
+                            
+                            
                             CGFloat delta = MIN((magicOffset - (relativeSupplementaryY / magicOffset * magicOffset)) / 4, self.clingYOffset);
                             NSInteger rDelta = round(delta);
-                        
+                            
                             
                             for (int i = 1; i <= 3; i++) {
                                 
                                 if (i == 3) {
                                     rDelta = -rDelta;
                                 }
-
+                                
                                 
                                 NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
                                 CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[previousSupplementaryIndexPath];
                                 
                                 prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
-
+                                
                                 
                                 supplementaryInfo[previousSupplementaryIndexPath] = prevAttributes;
                             }
-
+                            
                         }
-                
+                        
                     }
                     
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // цепляем к верху
@@ -179,9 +179,10 @@
                 supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
                 supplementaryInfo[indexPath] = supAttributes;
                 
+                
             }
             
-            
+            // -- SUPPLEMENTARY VIEWS
             
         }
     }
@@ -218,7 +219,7 @@
                     
                 }
 
-                if (CGRectIntersectsRect(rect, attributes.frame) && indexKey.section >= self.topMostSupIndex - self.numberOfClingedCards) {
+                if (CGRectIntersectsRect(rect, attributes.frame) && indexKey.section >= self.nextClingSupplementaryViewIndex - self.numberOfClingedCards) {
                     [allAttributes addObject:attributes];
                 }
                 
@@ -319,6 +320,12 @@
     return indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
 }
 
+#pragma mark - Card Behaviour 
+
+- (CGFloat)clingYOffsetForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
+    return MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
+}
+
 #pragma mark - Size
 
 - (CGSize)sizeForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -397,18 +404,100 @@
 }
 
 #pragma mark - Supplementary Layout Info
+/*
+- (NSDictionary *)layoutInfo {
+    
+    CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
+    supAttributes.size = [self sizeForSupplementaryViewAtIndexPath:indexPath]; //supplementaryViewSize;
+    supAttributes.shadowVisible = YES;
+    
+    CGFloat supplementaryY = previousBottomY;
+    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
+    CGFloat clingYOfsset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
+    
+    if (self.cardBehaviourEnabled) { // делаем карточные фичи
+        
+        if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { // тут двигаем подъезд карточек друг к другу
+            
+            CGFloat relativeSupplementaryY = previousBottomY - collectionViewYOffset - clingYOfsset;
+            NSInteger magicOffset = 40; // Когда начинать "подъезд" к карточке
+            
+            if (relativeSupplementaryY <= magicOffset && magicOffset >= 0) {
+                
+                self.nextClingSupplementaryViewIndex = indexPath.section;
+                
+                
+                CGFloat delta = MIN((magicOffset - (relativeSupplementaryY / magicOffset * magicOffset)) / 4, self.clingYOffset);
+                NSInteger rDelta = round(delta);
+                
+                
+                for (int i = 1; i <= 3; i++) {
+                    
+                    if (i == 3) {
+                        rDelta = -rDelta;
+                    }
+                    
+                    
+                    NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
+                    CoolSupplementaryLayoutAttributes *prevAttributes = supplementaryInfo[previousSupplementaryIndexPath];
+                    
+                    prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+                    
+                    
+                    supplementaryInfo[previousSupplementaryIndexPath] = prevAttributes;
+                }
+                
+            }
+            
+        }
+        
+        if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // цепляем к верху
+            supplementaryY = collectionViewYOffset + clingYOfsset;
+            
+            if (indexPath.section > self.numberOfClingedCards - 1) {
+                supAttributes.shadowVisible = self.cardMagicEnabled;
+            }
+            
+        }
+        
+    }
+    
+    
+    supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
+    
+    return supAttributes;
+}
+*/
 
+#pragma mark - Layout Info
 
-#pragma mark - Cell Layout Info
+- (void)setBottomY:(CGFloat)bottomY forCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSNumber *tag = [self tagForIndexPath:indexPath];
+    
+    self.cellBottomY[tag] = [NSNumber numberWithFloat:bottomY];
+    
+}
 
-- (NSDictionary *)cellLayoutInfoForIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)bottomYForIndexPath:(NSIndexPath *)indexPath {
+    
+    NSNumber *tag = [self tagForIndexPath:indexPath];
+    return [self.cellBottomY[tag] floatValue];
+    
+}
+
+- (CGFloat)previousBottomYForIndexPath:(NSIndexPath *)indexPath {
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
     NSNumber *tag = [self tagForIndexPath:previousIndexPath];
     
+    return [self.cellBottomY[tag] floatValue];
     
-    CGFloat previousBottomY = [self.cellBottomY[tag] floatValue];
+}
+
+- (NSDictionary *)cellLayoutInfoForIndexPath:(NSIndexPath *)indexPath {
     
+    CGFloat previousBottomY = [self previousBottomYForIndexPath:indexPath];
     
     NSInteger sectionCount = [self.collectionView numberOfSections];
     CGFloat sectionOffset = [self isTheLastItemInSectionForIndexPath:indexPath] && indexPath.section != sectionCount-1 ? self.interSectionSpaceY : 0;
