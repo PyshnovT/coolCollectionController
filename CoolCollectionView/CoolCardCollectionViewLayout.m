@@ -123,7 +123,6 @@ static NSString * const SupplementaryViewKind = @"title";
                 CGFloat clingYOfsset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
                 
                 supAttributes.shadowVisible = YES;
-          //      supAttributes.backViewHidden = !!indexPath.section;
                 
                 if (self.cardBehaviourEnabled) {
                 
@@ -136,8 +135,7 @@ static NSString * const SupplementaryViewKind = @"title";
                         if (d <= magicN && magicN >= 0) {
                             
                             self.topMostSupIndex = indexPath.section;
-                          //  NSLog(@"считаем delta для %d", indexPath.section);
-                            
+
                         
                             CGFloat delta = MIN((magicN - (d / magicN * magicN)) / 4, self.clingYOffset);
                             NSInteger rDelta = round(delta);
@@ -166,8 +164,6 @@ static NSString * const SupplementaryViewKind = @"title";
                     if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // всё, прицепился
                         supplementaryY = collectionViewYOffset + clingYOfsset;
                         
-                     //   NSLog(@"Y %f для секции %d", supplementaryY, indexPath.section);
-                        
                         if (indexPath.section > self.numberOfClingedCards - 1) {
                             supAttributes.shadowVisible = self.cardMagicEnabled;
                         }
@@ -178,7 +174,6 @@ static NSString * const SupplementaryViewKind = @"title";
                 }
                 
                 
-                //NSLog(@"%f %d", currentDelta, indexPath.section);
                 supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
                 supplementaryInfo[indexPath] = supAttributes;
                 
@@ -207,15 +202,6 @@ static NSString * const SupplementaryViewKind = @"title";
             UICollectionViewLayoutAttributes *currentItemAttributes = [attributesDict objectForKey:indexKey];
             
             if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
-
-                NSIndexPath *nextSupPath = [NSIndexPath indexPathForItem:0 inSection:indexKey.section + 1];
-                
-                UICollectionViewLayoutAttributes *nextItemAttributes = [attributesDict objectForKey:nextSupPath];
-                
-                CGFloat currentSupY = currentItemAttributes.frame.origin.y;
-                CGFloat nextSupY = nextItemAttributes.frame.origin.y;
-                
-             //   NSLog(@"%f -- current (%d) %f -- next (%d) (topMost: %d)", currentSupY, indexKey.section, nextSupY, nextSupPath.section, self.topMostSupIndex);
                 
                 if (self.cardBehaviourEnabled) {
                     

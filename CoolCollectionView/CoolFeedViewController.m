@@ -14,7 +14,7 @@
 #import "CollectionCardCell.h"
 
 #import "CoolCollectionCell.h"
-#import "CoolCardItem.h"
+#import "CoolCellItem.h"
 
 #import "CoolCardCollectionViewLayout.h"
 
@@ -24,6 +24,7 @@
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
 @property (weak, nonatomic) IBOutlet CoolCardCollectionView *collectionView;
+
 @property (nonatomic, strong) NSArray *cellClasses;
 @property (strong, nonatomic) NSMutableDictionary *data;
 
@@ -51,7 +52,7 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
-    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
+    CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
     NSString *title = item.title;
     
@@ -114,7 +115,7 @@ static NSString * const viewReuseIdentifier = @"View";
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
-    CoolCardItem *item = [sectionData objectAtIndex:indexPath.item];
+    CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
     
     if (item.type == CardItemTypeFirst) {
         return 40;
@@ -135,19 +136,19 @@ static NSString * const viewReuseIdentifier = @"View";
     [super viewDidLoad];
     
     NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
-                           @"Вата": @[@"Ва", @"Вы", @"Вивы"],
-                           @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Тёрка": @[@"Твац", @"Тцуацуа"],
-                           @"Чdучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чуaчмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                           @"Дaыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                           @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
-                           @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
+                               @"Вата": @[@"Ва", @"Вы", @"Вивы"],
+                               @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Тёрка": @[@"Твац", @"Тцуацуа"],
+                               @"Чdучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чуaчмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Дaыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
+                               @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
                   };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
@@ -157,7 +158,7 @@ static NSString * const viewReuseIdentifier = @"View";
         
         NSMutableArray *itemsArray = [NSMutableArray array];
         for (int i = 0; i < array.count; i++) {
-            CoolCardItem *item = [[CoolCardItem alloc] init];
+            CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
             item.type = arc4random() % 2 ? CardItemTypeFirst : CardItemTypeSecond;
             

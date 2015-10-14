@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, CardItemType) {
     CardItemTypeSecond
 };
 
-@interface CoolCardItem : NSObject
+@interface CoolCellItem : NSObject
 
 @property (nonatomic) CardItemType type;
 

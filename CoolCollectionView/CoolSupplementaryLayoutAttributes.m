@@ -23,7 +23,6 @@
     NSAssert([copy isKindOfClass:[self class]], @"copy must have the same class");
     
     copy.shadowVisible = self.isShadowVisible;
-    copy.backViewHidden = self.isBackViewHidden;
     
     return copy;
 }
@@ -38,10 +37,7 @@
     if (otherObject.isShadowVisible != self.isShadowVisible) {
         return NO;
     }
-    if (otherObject.isBackViewHidden != self.isBackViewHidden) {
-        return NO;
-    }
-    
+
     return [super isEqual:otherObject];
 }
 

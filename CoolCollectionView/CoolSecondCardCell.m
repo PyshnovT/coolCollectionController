@@ -7,7 +7,7 @@
 //
 
 #import "CoolSecondCardCell.h"
-#import "CoolCardItem.h"
+#import "CoolCellItem.h"
 
 @interface CoolSecondCardCell ()
 
@@ -23,7 +23,7 @@
     // Initialization code
 }
 
-+ (BOOL)handleItem:(CoolCardItem *)item {
++ (BOOL)handleItem:(CoolCellItem *)item {
     return item.type == CardItemTypeSecond;
 }
 

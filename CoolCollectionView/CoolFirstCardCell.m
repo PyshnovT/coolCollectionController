@@ -22,7 +22,7 @@
     // Initialization cod
 }
 
-+ (BOOL)handleItem:(CoolCardItem *)item {
++ (BOOL)handleItem:(CoolCellItem *)item {
     return item.type == CardItemTypeFirst;
 }
 
