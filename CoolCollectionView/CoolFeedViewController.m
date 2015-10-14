@@ -121,11 +121,18 @@
 }
 
 - (CellItemType)cellItemTypeForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
     CoolCellItem *item = [sectionData objectAtIndex:indexPath.item];
-    return item.type;
+    
+    if (item) {
+        return item.type;
+    }
+    
+    return CellItemTypeNone;
+    
 }
 
 #pragma mark - Setup

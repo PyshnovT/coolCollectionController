@@ -113,10 +113,10 @@
             
             cellLayoutInfo[indexPath] = itemAttributes;
             
+
+            CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
             
-            CellItemType itemType = CellItemTypeNone;
             
-            itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
             
             if (!indexPath.item) { // тут создаётся supplementary
                 CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
@@ -129,7 +129,6 @@
                 supAttributes.shadowVisible = YES;
                 
                 if (self.cardBehaviourEnabled) {
-                
                     
                     if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) { //
                         CGFloat d = previousBottomY - collectionViewYOffset - clingYOfsset;
@@ -203,17 +202,16 @@
         
         for (NSIndexPath *indexKey in attributesDict) {
             
-            UICollectionViewLayoutAttributes *currentItemAttributes = [attributesDict objectForKey:indexKey];
+            UICollectionViewLayoutAttributes *attributes = [attributesDict objectForKey:indexKey];
             
-            if (currentItemAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
+            if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
                 if (self.cardBehaviourEnabled) {
                     
                     UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
-                    
                     [allAttributes addObject:topDecorationViewAttributes];
                    
-                    UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:currentItemAttributes indexPath:indexKey];
+                    UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:attributes indexPath:indexKey];
                     
                     if (decorationAttributes) {
                         [allAttributes addObject:decorationAttributes];
@@ -221,16 +219,14 @@
                     
                 }
 
-                if (CGRectIntersectsRect(rect, currentItemAttributes.frame) && indexKey.section >= self.topMostSupIndex - self.numberOfClingedCards) {
-                    [allAttributes addObject:currentItemAttributes];
+                if (CGRectIntersectsRect(rect, attributes.frame) && indexKey.section >= self.topMostSupIndex - self.numberOfClingedCards) {
+                    [allAttributes addObject:attributes];
                 }
                 
             } else {
                 
-                if (CGRectIntersectsRect(rect, currentItemAttributes.frame)) {
-                    
-                    [allAttributes addObject:currentItemAttributes];
-                    
+                if (CGRectIntersectsRect(rect, attributes.frame)) {
+                    [allAttributes addObject:attributes];
                 }
             }
         }
@@ -406,6 +402,9 @@
  
     return nil;
 }
+
+#pragma mark - Supplementary Layout Info
+
 
 #pragma mark - Cell Layout Info
 
