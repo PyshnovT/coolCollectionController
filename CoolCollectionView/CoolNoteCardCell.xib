@@ -12,25 +12,38 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="356" height="50"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lB-B0-2IW">
-                        <rect key="frame" x="274" y="8" width="42" height="21"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCY-xj-BhW">
+                        <rect key="frame" x="0.0" y="8" width="356" height="80"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lB-B0-2IW">
+                                <rect key="frame" x="157" y="11" width="42" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <animations/>
-                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7lB-B0-2IW" firstAttribute="top" secondItem="oCY-xj-BhW" secondAttribute="top" constant="11" id="hq8-ss-sNn"/>
+                            <constraint firstAttribute="trailing" secondItem="7lB-B0-2IW" secondAttribute="trailing" constant="157" id="zaR-mr-6ZY"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <animations/>
-            <color key="backgroundColor" red="0.96556637216404884" green="0.96556637216404884" blue="0.96556637216404884" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="7lB-B0-2IW" secondAttribute="trailing" constant="40" id="825-iS-DzF"/>
-                <constraint firstItem="7lB-B0-2IW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="crp-AA-O3B"/>
+                <constraint firstAttribute="bottom" secondItem="oCY-xj-BhW" secondAttribute="bottom" constant="-38" id="5rI-a7-Ote"/>
+                <constraint firstItem="oCY-xj-BhW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="EHZ-5v-u7z"/>
+                <constraint firstAttribute="trailing" secondItem="oCY-xj-BhW" secondAttribute="trailing" id="Jav-GL-svj"/>
+                <constraint firstItem="oCY-xj-BhW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="bMJ-oM-1oS"/>
             </constraints>
             <size key="customSize" width="356" height="50"/>
             <connections>
+                <outlet property="decorationView" destination="oCY-xj-BhW" id="6kN-Uj-jiB"/>
                 <outlet property="titleLabel" destination="7lB-B0-2IW" id="IDM-SK-eDz"/>
             </connections>
             <point key="canvasLocation" x="292" y="387"/>

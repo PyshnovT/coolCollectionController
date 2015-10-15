@@ -166,7 +166,14 @@
         for (int i = 0; i < array.count; i++) {
             CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
-            item.type = arc4random() % 2 ? CellItemTypeBuy : CellItemTypeNote;
+            
+            NSInteger i = arc4random() % 10;
+            if (i) {
+                item.type = CellItemTypeBuy;
+            } else {
+                item.type = CellItemTypeNote;
+            }
+          //  item.type = arc4random() % 2 ? CellItemTypeBuy : CellItemTypeNote;
             
             [itemsArray addObject:item];
         }
@@ -200,8 +207,8 @@
     [super viewDidLoad];
     /*
     CoolCardCollectionViewLayout *collectionViewLayout = [[CoolCardCollectionViewLayout alloc] init];
-    collectionViewLayout.interSectionSpaceY = 30;
-    collectionViewLayout.interItemSpaceY = 20;
+    collectionViewLayout.interSectionSpaceY = 0;
+    collectionViewLayout.interItemSpaceY = 0;
     
     self.collectionView = [[CoolCardCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:collectionViewLayout];
     self.collectionView.collectionViewLayout = collectionViewLayout;

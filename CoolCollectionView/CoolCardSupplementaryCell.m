@@ -14,7 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
-@property (nonatomic, getter=isBackViewHidden) BOOL backViewHidden;
 
 @end
 
@@ -39,8 +38,8 @@
 }
 
 - (void)setupDecorationView {
-    self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:14] CGPath]; //bezierPathWithRect:self.bounds] CGPath];
-  //  self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:self.bounds] CGPath];
+    
+    self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:14] CGPath];
     self.decorationView.layer.cornerRadius = 14;
     self.decorationView.layer.shadowOffset = CGSizeMake(0, 0);
     self.decorationView.layer.shadowOpacity = self.isShadowVisible ? 0.22 : 0.0;

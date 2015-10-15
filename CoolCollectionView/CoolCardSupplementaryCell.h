@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) NSString *title;
 
-
 @property (weak, nonatomic) IBOutlet UIView *decorationView;
 
 @end

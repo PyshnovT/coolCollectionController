@@ -8,11 +8,14 @@
 
 #import "CoolNoteCardCell.h"
 #import "CoolCellItem.h"
+#import "CoolCardLayoutAttributes.h"
 
 @interface CoolNoteCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *decorationView;
 
+@property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
 
 @end
 
@@ -21,15 +24,53 @@
 #pragma mark - UIView
 
 - (void)awakeFromNib {
-    // Initialization cod
+    [self commonInit];
 }
 
-#pragma mark - Setter
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self setupDecorationView];
+}
+
+#pragma mark - Setups
+
+- (void)commonInit {
+    self.shadowVisible = YES;
+}
+
+- (void)setupDecorationView {
+    
+    self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:14] CGPath];
+    self.decorationView.layer.cornerRadius = 14;
+    self.decorationView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.decorationView.layer.shadowOpacity = self.isShadowVisible ? 0.22 : 0.0;
+    self.decorationView.layer.shadowColor = [UIColor blackColor].CGColor;
+    
+}
+
+#pragma mark - Setters
+
+- (void)setShadowVisible:(BOOL)shadowVisible {
+    _shadowVisible = shadowVisible;
+    
+    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
+}
 
 - (void)setTitle:(NSString *)title {
     _title = title;
     
     self.titleLabel.text = title;
+}
+
+#pragma mark - Apply
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [super applyLayoutAttributes:layoutAttributes];
+    
+    CoolCardLayoutAttributes *supLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
+    
+    self.shadowVisible = supLayoutAttributes.isShadowVisible;
 }
 
 #pragma mark - CoolCollectionCell

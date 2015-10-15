@@ -68,8 +68,8 @@
         self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
         self.cardMagicEnabled = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
     } else {
-        self.cardBehaviourEnabled = YES;
-        self.cardMagicEnabled = YES;
+        self.cardBehaviourEnabled = NO;
+        self.cardMagicEnabled = NO;
     }
     
     
@@ -122,13 +122,13 @@
             cellLayoutFullInfo[indexPath] = [self cellLayoutAttributesForCellLayoutInfo:cellLayoutInfo atIndexPath:indexPath];
             
             
-         //   CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
+            CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
             
             if (!indexPath.item) { // тут создаётся supplementary
                
-                if (self.cardBehaviourEnabled) {
+                if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    if (self.cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
+                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
                         
                         [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
@@ -169,7 +169,7 @@
             
             if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
-                if (self.cardBehaviourEnabled) {
+                if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
                     UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
                     [allAttributes addObject:topDecorationViewAttributes];
@@ -199,9 +199,9 @@
     return allAttributes;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CoolCardLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    UICollectionViewLayoutAttributes *attributes = self.layoutInfo[cellReuseIdentifier][indexPath];
+    CoolCardLayoutAttributes *attributes = self.layoutInfo[cellReuseIdentifier][indexPath];
     
     return attributes;
 }
@@ -218,7 +218,7 @@
         return YES;
     }
     
-    return self.cardBehaviourEnabled;
+    return ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
 }
 
 #pragma mark - Taging
@@ -355,10 +355,10 @@
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat clingYOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
     
-    NSIndexPath *firstCardIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section];
-    UICollectionViewLayoutAttributes *cardAttributes = self.layoutInfo[cellReuseIdentifier][firstCardIndexInCurrentSection];
+    NSIndexPath *firstCellIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section];
+    UICollectionViewLayoutAttributes *cellAttributes = self.layoutInfo[cellReuseIdentifier][firstCellIndexInCurrentSection];
     
-    CGFloat decorationAlpha = (cardAttributes.frame.origin.y - collectionViewYOffset - clingYOffset) / supplemetaryViewFrame.size.height;
+    CGFloat decorationAlpha = (cellAttributes.frame.origin.y - collectionViewYOffset - clingYOffset) / supplemetaryViewFrame.size.height;
     decorationAlpha = MIN(1, 1 - decorationAlpha);
     decorationAttributes.alpha = decorationAlpha;
     
@@ -405,7 +405,7 @@
     return info;
 }
 
-- (UICollectionViewLayoutAttributes *)cellLayoutAttributesForCellLayoutInfo:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
+- (CoolCardLayoutAttributes *)cellLayoutAttributesForCellLayoutInfo:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
     
     // -- start info
     CGSize cellSize = [[cellLayoutInfo objectForKey:@"cellSize"] CGSizeValue];
@@ -414,10 +414,10 @@
     CGFloat cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
     // -- start info
     
-    UICollectionViewLayoutAttributes *itemAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+    CoolCardLayoutAttributes *itemAttributes = [CoolCardLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     itemAttributes.size = cellSize;
     itemAttributes.center = CGPointMake(cellSize.width / 2.0, cellCenterY);
-    
+    itemAttributes.shadowVisible = YES;
     return itemAttributes;
     
 }
@@ -441,13 +441,13 @@
     supAttributes.size = supplementaryViewSize;
     supAttributes.shadowVisible = YES;
     
-    if (self.cardBehaviourEnabled) { // цеплять наверх
+    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) { // цеплять наверх
         
         if ((supplementaryY < collectionViewYOffset + clingYOfsset)) { // цепляем
             supplementaryY = collectionViewYOffset + clingYOfsset;
             
             if (indexPath.section > self.numberOfClingedCards - 1) {
-                supAttributes.shadowVisible = self.cardMagicEnabled;
+                supAttributes.shadowVisible = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
             }
             
         }
