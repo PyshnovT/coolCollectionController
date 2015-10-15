@@ -128,7 +128,7 @@
                         
                         //CGFloat relativeSupplementaryY = previousBottomY - collectionViewYOffset - clingYOfsset;
                         
-            //            [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo beforeSupplementaryViewAtIndexPath:indexPath];
+                       [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo beforeSupplementaryViewAtIndexPath:indexPath];
                         /*
                         
                                                  */
@@ -149,6 +149,8 @@
             
         }
     }
+    
+  //  NSLog(@"FullInfo: %@", supplementaryFullInfo);
     
     newLayoutFullInfo[cellReuseIdentifier] = cellLayoutFullInfo;
     newLayoutFullInfo[supplementaryKind] = supplementaryFullInfo;
@@ -461,12 +463,14 @@
     
     
     
-    CGFloat supplementaryY = [self bottomYForIndexPath:indexPath];
+    CGFloat supplementaryY = [self previousBottomYForIndexPath:indexPath];
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
     
     CGFloat relativeSupplementaryY = supplementaryY - collectionViewYOffset - clingYOffset;
 
+ //   NSLog(@"%f %d", relativeSupplementaryY, indexPath.section);
+    
     NSInteger magicOffset = 40; // Когда начинать "подъезд" к карточке
     
     if (relativeSupplementaryY <= magicOffset && magicOffset >= 0) {
@@ -478,17 +482,20 @@
         NSInteger rDelta = round(delta);
         
         
+     //   NSLog(@"Delta: %d", rDelta);
+        
         for (int i = 1; i <= 3; i++) {
             
             if (i == 3) {
                 rDelta = -rDelta;
             }
             
+       //     NSLog(@"%@", *supplementaryInfo);
             
             NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
             CoolSupplementaryLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousSupplementaryIndexPath];
             
-          //  prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+            prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
             
         //    NSMutableDictionary *dict;
          //   dict[@""] = nil;
