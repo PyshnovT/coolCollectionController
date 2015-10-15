@@ -7,19 +7,19 @@
 //  Copyright © 2015 Pyshnov. All rights reserved.
 //
 
-#import "CoolSupplementaryLayoutAttributes.h"
+#import "CoolCardLayoutAttributes.h"
 
-@interface CoolSupplementaryLayoutAttributes ()
+@interface CoolCardLayoutAttributes ()
 
 
 
 @end
 
-@implementation CoolSupplementaryLayoutAttributes
+@implementation CoolCardLayoutAttributes
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CoolSupplementaryLayoutAttributes *copy = [super copyWithZone:zone];
+    CoolCardLayoutAttributes *copy = [super copyWithZone:zone];
     NSAssert([copy isKindOfClass:[self class]], @"copy must have the same class");
     
     copy.shadowVisible = self.isShadowVisible;
@@ -29,11 +29,11 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if (![object isKindOfClass:[CoolSupplementaryLayoutAttributes class]]) {
+    if (![object isKindOfClass:[CoolCardLayoutAttributes class]]) {
         return NO;
     }
     
-    CoolSupplementaryLayoutAttributes *otherObject = object;
+    CoolCardLayoutAttributes *otherObject = object;
     if (otherObject.isShadowVisible != self.isShadowVisible) {
         return NO;
     }

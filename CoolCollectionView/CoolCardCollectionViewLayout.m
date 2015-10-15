@@ -12,7 +12,7 @@
 
 #import "CoolCardTopDecorationView.h"
 
-#import "CoolSupplementaryLayoutAttributes.h"
+#import "CoolCardLayoutAttributes.h"
 
 @interface CoolCardCollectionViewLayout ()
 
@@ -137,7 +137,7 @@
                 }
                 
                 
-                CoolSupplementaryLayoutAttributes *supAttributes = [self supplementaryViewLayoutAttributesForCellLayoutAttributes:cellLayoutInfo atIndexPath:indexPath];
+                CoolCardLayoutAttributes *supAttributes = [self supplementaryViewLayoutAttributesForCellLayoutAttributes:cellLayoutInfo atIndexPath:indexPath];
                     
                 supplementaryFullInfo[indexPath] = supAttributes;
                 
@@ -206,9 +206,9 @@
     return attributes;
 }
 
-- (CoolSupplementaryLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+- (CoolCardLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     
-    CoolSupplementaryLayoutAttributes *attributes = self.layoutInfo[elementKind][indexPath];
+    CoolCardLayoutAttributes *attributes = self.layoutInfo[elementKind][indexPath];
     
     return attributes;
 }
@@ -365,7 +365,7 @@
     // --- тут высчитывается alpha
     
     NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
-    CoolSupplementaryLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
+    CoolCardLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
     
     if (supplemetaryViewFrame.origin.y < nextItemAttributes.frame.origin.y - supplemetaryViewFrame.size.height + 20 || !nextItemAttributes) {
         
@@ -422,7 +422,7 @@
     
 }
 
-- (CoolSupplementaryLayoutAttributes *)supplementaryViewLayoutAttributesForCellLayoutAttributes:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
+- (CoolCardLayoutAttributes *)supplementaryViewLayoutAttributesForCellLayoutAttributes:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
  
     // -- start info
     CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSize"] CGSizeValue];
@@ -437,7 +437,7 @@
     
     
     
-    CoolSupplementaryLayoutAttributes *supAttributes = [CoolSupplementaryLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
+    CoolCardLayoutAttributes *supAttributes = [CoolCardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
     supAttributes.size = supplementaryViewSize;
     supAttributes.shadowVisible = YES;
     
@@ -486,7 +486,7 @@
             
             
             NSIndexPath *previousSupplementaryIndexPath = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
-            CoolSupplementaryLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousSupplementaryIndexPath];
+            CoolCardLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousSupplementaryIndexPath];
             prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
             
             (*supplementaryInfo)[previousSupplementaryIndexPath] = prevAttributes;

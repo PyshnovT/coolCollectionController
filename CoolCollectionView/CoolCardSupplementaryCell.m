@@ -7,7 +7,7 @@
 //
 
 #import "CoolCardSupplementaryCell.h"
-#import "CoolSupplementaryLayoutAttributes.h"
+#import "CoolCardLayoutAttributes.h"
 
 @interface CoolCardSupplementaryCell ()
 
@@ -67,7 +67,7 @@
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
     [super applyLayoutAttributes:layoutAttributes];
     
-    CoolSupplementaryLayoutAttributes *supLayoutAttributes = (CoolSupplementaryLayoutAttributes *)layoutAttributes;
+    CoolCardLayoutAttributes *supLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
 
     self.shadowVisible = supLayoutAttributes.isShadowVisible;
 }

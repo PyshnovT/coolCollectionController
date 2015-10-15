@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CoolSupplementaryLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
+@interface CoolCardLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
 
