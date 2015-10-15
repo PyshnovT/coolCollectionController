@@ -23,9 +23,9 @@
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
-//@property (weak, nonatomic) IBOutlet CoolCardCollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet CoolCardCollectionView *collectionView;
 
-@property (strong, nonatomic) CoolCardCollectionView *collectionView;
+//@property (strong, nonatomic) CoolCardCollectionView *collectionView;
 
 @property (nonatomic, strong) NSArray *cellClasses;
 @property (strong, nonatomic) NSMutableDictionary *data;
@@ -198,7 +198,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    /*
     CoolCardCollectionViewLayout *collectionViewLayout = [[CoolCardCollectionViewLayout alloc] init];
     collectionViewLayout.interSectionSpaceY = 30;
     collectionViewLayout.interItemSpaceY = 20;
@@ -208,7 +208,7 @@
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [self.view addSubview:self.collectionView];
-    
+    */
     [self setupData];
     [self registerCells];
     

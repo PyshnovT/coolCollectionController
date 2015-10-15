@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CoolFeedViewController">
             <connections>
+                <outlet property="collectionView" destination="cip-cF-PX9" id="Qfs-XV-cAe"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -13,8 +14,25 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cip-cF-PX9" customClass="CoolCardCollectionView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <animations/>
+                    <collectionViewLayout key="collectionViewLayout" id="RQw-aM-uts" customClass="CoolCardCollectionViewLayout"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="0ot-Bp-EPF"/>
+                        <outlet property="delegate" destination="-1" id="ADS-RA-1mW"/>
+                    </connections>
+                </collectionView>
+            </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="cip-cF-PX9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="L2G-Ht-2oA"/>
+                <constraint firstAttribute="bottom" secondItem="cip-cF-PX9" secondAttribute="bottom" id="bnD-VW-kLG"/>
+                <constraint firstAttribute="trailing" secondItem="cip-cF-PX9" secondAttribute="trailing" id="imp-m1-hVX"/>
+                <constraint firstItem="cip-cF-PX9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="r2d-6f-ExB"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="558" y="481"/>
         </view>

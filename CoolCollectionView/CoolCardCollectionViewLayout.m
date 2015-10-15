@@ -90,12 +90,9 @@
 
 - (CGSize)collectionViewContentSize {
     
-    NSInteger numberOfSections = [self.collectionView numberOfSections];
-    NSInteger lastItemIndex = MAX(0, [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:numberOfSections - 1] - 1);
-    NSIndexPath *indexPathForLastCard = [NSIndexPath indexPathForItem:lastItemIndex inSection:numberOfSections-1];
+    NSIndexPath *lastCellIndexPath = [self indexPathForLastCell];
     
-    
-    CGFloat bottomYForLastCell = [self bottomYForIndexPath:indexPathForLastCard];
+    CGFloat bottomYForLastCell = [self bottomYForIndexPath:lastCellIndexPath];
     CGFloat height = self.collectionView.contentInset.top + bottomYForLastCell + self.collectionView.contentInset.bottom;
     
     CGSize size = CGSizeMake(self.collectionView.bounds.size.width, height);
@@ -286,6 +283,16 @@
     return indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
 }
 
+- (NSIndexPath *)indexPathForLastCell {
+    
+    NSInteger numberOfSections = [self.collectionView numberOfSections];
+    NSInteger lastSectionIndex = MAX(numberOfSections - 1, 0);
+    NSInteger lastItemIndex = MAX(0, [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:lastSectionIndex] - 1);
+    
+    return [NSIndexPath indexPathForItem:lastItemIndex inSection:lastSectionIndex];
+    
+}
+
 #pragma mark - Card Behaviour 
 
 - (CGFloat)clingYOffsetForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
@@ -368,13 +375,6 @@
  
     return nil;
 }
-
-#pragma mark - Supplementary Layout Info
-/*
-- (NSDictionary *)layoutInfo {
- 
-}
-*/
 
 #pragma mark - Cell Layout Info
 
