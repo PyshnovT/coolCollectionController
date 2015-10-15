@@ -15,9 +15,10 @@
     [self commonInit];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
+    self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
+        NSLog(@"common itit");
         [self commonInit];
     }
     return self;
