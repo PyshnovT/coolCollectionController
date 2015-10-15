@@ -10,7 +10,6 @@
 
 @implementation CoolCardCollectionView 
 
-
 - (void)awakeFromNib {
     [self commonInit];
 }

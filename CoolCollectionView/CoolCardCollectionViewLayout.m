@@ -34,7 +34,7 @@
 
 @implementation CoolCardCollectionViewLayout
 
-#pragma mark - Setup
+#pragma mark - Base
 
 - (void)awakeFromNib {
     [self setupLayout];
@@ -48,43 +48,42 @@
     return self;
 }
 
+#pragma mark - Setups
+
 - (void)setupLayout {
+
+    [self setupDefaultValues];
+    [self registerDecorationViews];
+    
+}
+
+- (void)setupDefaultValues {
     
     // External
-    
-    if (!self.interItemSpaceY) {
-        self.interItemSpaceY = 0;
-    }
-    
-    if (!self.interSectionSpaceY) {
-        self.interSectionSpaceY = 0;
-    }
-    
+    self.interItemSpaceY = 0;
+    self.interSectionSpaceY = 0;
     // External
-    
-    
-    // Internal
     
     if (self.collectionView) {
         self.cardBehaviourEnabled = ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
         self.cardMagicEnabled = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
     } else {
-        self.cardBehaviourEnabled = self.cardMagicEnabled = YES;
+        self.cardBehaviourEnabled = YES;
+        self.cardMagicEnabled = YES;
     }
+    
     
     self.numberOfClingedCards = 3;
     self.clingYOffset = 8;
     self.magicOffset = 40;
     self.nextClingSupplementaryViewIndex = self.numberOfClingedCards;
-    
-
-    
     self.cellBottomY = [NSMutableDictionary dictionary];
     
+}
+
+- (void)registerDecorationViews {
     [self registerClass:[CoolCardDecorationView class] forDecorationViewOfKind:@"bottomLine"];
     [self registerClass:[CoolCardTopDecorationView class] forDecorationViewOfKind:@"topLine"];
-    
-    // Internal
 }
 
 #pragma mark - Layout
