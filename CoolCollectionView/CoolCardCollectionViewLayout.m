@@ -14,10 +14,18 @@
 
 #import "CoolCardLayoutAttributes.h"
 
+typedef NS_ENUM(NSInteger, ViewType) {
+    ViewTypeNone,
+    ViewTypeCell,
+    ViewTypeSupplementaryView,
+    ViewTypeDecorationView
+};
+
 @interface CoolCardCollectionViewLayout ()
 
 @property (nonatomic, strong) NSDictionary *layoutInfo; 
 @property (nonatomic, strong) NSMutableDictionary *cellBottomY;
+@property (nonatomic) NSInteger numberOfShownClingingCells;
 
 @property (nonatomic) NSInteger numberOfClingedCards;
 @property (nonatomic) CGFloat clingYOffset;
@@ -77,7 +85,10 @@
     self.clingYOffset = 8;
     self.magicOffset = 40;
     self.nextClingSupplementaryViewIndex = self.numberOfClingedCards;
+    
+    
     self.cellBottomY = [NSMutableDictionary dictionary];
+    self.numberOfShownClingingCells = 0;
     
 }
 
@@ -121,9 +132,8 @@
             
             cellLayoutFullInfo[indexPath] = [self cellLayoutAttributesForCellLayoutInfo:cellLayoutInfo atIndexPath:indexPath];
             
-            
-            CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
-            
+
+           //
             if (!indexPath.item) { // тут создаётся supplementary
                
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
@@ -299,6 +309,25 @@
     return MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
 }
 
+- (NSInteger)zIndexForIndexPath:(NSIndexPath *)indexPath forViewOfType:(ViewType)viewType {
+    
+    if (viewType == ViewTypeDecorationView) {
+        return indexPath.section - 1;
+    } else if (viewType == ViewTypeSupplementaryView) {
+        return indexPath.section;
+    } else if (ViewTypeCell) {
+        CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
+        
+        if (itemType == CellItemTypeBuy) {
+            return -2;
+        } else if (itemType == CellItemTypeNote) {
+            return indexPath.section;
+        }
+    }
+    
+    return indexPath.section;
+}
+
 #pragma mark - Size
 
 - (CGSize)sizeForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -347,7 +376,7 @@
                                             self.collectionViewContentSize.width,
                                             1);
     
-    decorationAttributes.zIndex = indexPath.section;
+    decorationAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeDecorationView];
     
     
     // --- тут высчитывается alpha
@@ -412,11 +441,46 @@
     CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSize"] CGSizeValue];
     CGFloat previousBottomY = [[cellLayoutInfo objectForKey:@"previousBottomY"] floatValue];
     CGFloat cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
+    
+    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     // -- start info
     
+    
     CoolCardLayoutAttributes *itemAttributes = [CoolCardLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+    
+    CGFloat cellY = previousBottomY + supplementaryViewSize.height;
+    
+    CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
+    
+    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled && itemType == CellItemTypeNote) { // цеплять наверх
+        
+        if ((cellY < collectionViewYOffset)) { // цепляем
+        //    NSLog(@"Цепляем");
+            cellY = collectionViewYOffset;
+            
+            if (indexPath.section > self.numberOfClingedCards - 1) {
+               itemAttributes.shadowVisible = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
+            }
+            
+        }
+        
+    }
+
+    itemAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeCell];
+  //  NSLog(@"%ld - zIndex для cell %ld", itemAttributes.zIndex, (long)indexPath.section);
+    /*
+    if (itemType == CellItemTypeNote) {
+//        self.numberOfShownClingingCells++;
+        NSInteger zIndex = [self zIndexForIndexPath:indexPath];//indexPath.section + self.numberOfShownClingingCells;
+        itemAttributes.zIndex = zIndex;
+        
+
+    } else {
+        itemAttributes.zIndex = -2;
+    }
+    */
     itemAttributes.size = cellSize;
-    itemAttributes.center = CGPointMake(cellSize.width / 2.0, cellCenterY);
+    itemAttributes.center = CGPointMake(cellSize.width / 2.0, cellY + cellSize.height / 2.0);
     itemAttributes.shadowVisible = YES;
     return itemAttributes;
     
@@ -453,6 +517,11 @@
         }
         
     }
+    
+    NSInteger zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeSupplementaryView];//indexPath.section + self.numberOfShownClingingCells;
+    supAttributes.zIndex = zIndex;
+    
+ //   NSLog(@"%ld - zIndex для supp %ld", (long)zIndex, (long)indexPath.section);
     
     supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
     

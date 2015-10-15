@@ -79,7 +79,7 @@
     
     NSString *title = item.title;
     
-    cell.layer.zPosition = -2;
+ //   cell.layer.zPosition = 9000;
     cell.title = title;
     
     return cell;
@@ -91,7 +91,7 @@
     
     NSString *title = [self.data allKeys][indexPath.section];
     supCell.title = title;
-    supCell.layer.zPosition = indexPath.section;
+   // supCell.layer.zPosition = indexPath.section;
     
     NSLog(@"SUPPLEMENTARY %@", title);
     

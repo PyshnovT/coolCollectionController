@@ -80,7 +80,7 @@
 }
 
 + (CGFloat)heightOfCell {
-    return 40;
+    return 60;
 }
 
 
