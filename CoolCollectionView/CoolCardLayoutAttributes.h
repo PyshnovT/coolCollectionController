@@ -12,6 +12,4 @@
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
 
-@property (nonatomic) NSInteger internalCellOffset;
-
 @end

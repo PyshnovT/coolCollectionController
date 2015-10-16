@@ -6,49 +6,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CoolBuyCardCell">
+        <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CoolBuyCardCell">
             <rect key="frame" x="0.0" y="0.0" width="168" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="168" height="50"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edN-eA-Ux7">
-                        <rect key="frame" x="0.0" y="0.0" width="168" height="50"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Первый" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cF-qu-Sel">
-                                <rect key="frame" x="52" y="15" width="63" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Первый" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cF-qu-Sel">
+                        <rect key="frame" x="52" y="15" width="63" height="21"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.078629369260000859" green="0.27016052745074093" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="50" id="h8x-5k-GpS"/>
-                        </constraints>
-                    </view>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <animations/>
-            <constraints>
-                <constraint firstItem="edN-eA-Ux7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="1Vq-Pv-tIf"/>
-                <constraint firstAttribute="trailing" secondItem="edN-eA-Ux7" secondAttribute="trailing" id="RBm-8s-Lru"/>
-                <constraint firstItem="edN-eA-Ux7" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="swc-XO-dvu"/>
-                <constraint firstAttribute="bottom" secondItem="edN-eA-Ux7" secondAttribute="bottom" id="xeA-de-GKf"/>
-            </constraints>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <size key="customSize" width="168" height="50"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="xeA-de-GKf"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="titleLabel" destination="4cF-qu-Sel" id="m3c-ay-8ad"/>
-                <outlet property="topConstraint" destination="1Vq-Pv-tIf" id="Hbp-Ff-o1R"/>
             </connections>
             <point key="canvasLocation" x="507" y="353"/>
         </collectionViewCell>

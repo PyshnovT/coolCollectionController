@@ -13,9 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
-
-
 @end
 
 @implementation CoolBuyCardCell
@@ -47,20 +44,6 @@
 + (CGFloat)heightOfCell {
     return 50;
 }
-
-#pragma mark - Apply
-
-- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    [super applyLayoutAttributes:layoutAttributes];
-    
-    CoolCardLayoutAttributes *cardLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
-    
-    self.topConstraint.constant = cardLayoutAttributes.internalCellOffset;
-    
-}
-
-
-
 
 
 @end
