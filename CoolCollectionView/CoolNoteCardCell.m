@@ -67,7 +67,7 @@
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
     [super applyLayoutAttributes:layoutAttributes];
-    
+
     CoolCardLayoutAttributes *supLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
     
     self.shadowVisible = supLayoutAttributes.isShadowVisible;
@@ -75,12 +75,16 @@
 
 #pragma mark - CoolCollectionCell
 
++ (CellItemType)itemType {
+    return CellItemTypeNote;
+}
+
 + (BOOL)handleItem:(CoolCellItem *)item {
     return item.type == CellItemTypeNote;
 }
 
 + (CGFloat)heightOfCell {
-    return 60;
+    return 300;
 }
 
 

@@ -49,6 +49,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
+    NSLog(@"Cell");
+    
     NSString *sectionKey = [self.data allKeys][indexPath.section];
     NSArray *sectionData = [self.data objectForKey:sectionKey];
     
@@ -141,17 +143,17 @@
 
 - (void)setupData {
     NSDictionary *nameDict = @{@"Пара": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры"],
-                               @"Вата": @[@"Ва", @"Вы", @"Вивы"],
+                               @"Вата": @[@"Ва"],
                                @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                               @"Тёрка": @[@"Твац", @"Тцуацуа"],
+                               @"Тёрка": @[@"Твац"],
                                @"Чdучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
                                @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                               @"Чуaчмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чуaчмек": @[@"Чцуа"],
                                @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
-                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа"],
                                @"Дaыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                                @"Дыgня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
-                               @"Дыsня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
+                               @"Дыsня": @[@"Дйййййй", @"Тутка"],
                                @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
                                @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
                                };
@@ -166,12 +168,11 @@
         for (int i = 0; i < array.count; i++) {
             CoolCellItem *item = [[CoolCellItem alloc] init];
             item.title = array[i];
-            
-            NSInteger i = arc4random() % 10;
-            if (i) {
-                item.type = CellItemTypeBuy;
+        
+            if (array.count == 1) {
+                item.type = CellItemTypeBuy;//CellItemTypeNote;
             } else {
-                item.type = CellItemTypeNote;
+                item.type = CellItemTypeBuy;
             }
           //  item.type = arc4random() % 2 ? CellItemTypeBuy : CellItemTypeNote;
             
@@ -182,6 +183,8 @@
     }
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
+    
+    self.collectionView.clingingCellClasses = @[[CoolNoteCardCell class]];
 }
 
 - (void)registerCells {

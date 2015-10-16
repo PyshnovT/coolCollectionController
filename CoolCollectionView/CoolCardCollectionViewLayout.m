@@ -11,7 +11,7 @@
 #import "CoolCardDecorationView.h"
 
 #import "CoolCardTopDecorationView.h"
-
+#import "CoolCollectionCell.h"
 #import "CoolCardLayoutAttributes.h"
 
 typedef NS_ENUM(NSInteger, ViewType) {
@@ -132,9 +132,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
             cellLayoutFullInfo[indexPath] = [self cellLayoutAttributesForCellLayoutInfo:cellLayoutInfo atIndexPath:indexPath];
             
+            CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
 
            //
-            if (!indexPath.item) { // тут создаётся supplementary
+            if (!indexPath.item && ![self isCellItemTypeClinging:itemType]) { // тут создаётся supplementary
                
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
@@ -181,8 +182,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
-                    [allAttributes addObject:topDecorationViewAttributes];
+           //         UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
+             //       [allAttributes addObject:topDecorationViewAttributes];
                    
                     UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:attributes indexPath:indexKey];
                     
@@ -193,6 +194,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 }
 
                 if (CGRectIntersectsRect(rect, attributes.frame) && indexKey.section >= self.nextClingSupplementaryViewIndex - self.numberOfClingedCards) {
+#warning Rethink
                     [allAttributes addObject:attributes];
                 }
                 
@@ -305,12 +307,25 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 #pragma mark - Card Behaviour 
 
+- (BOOL)isCellItemTypeClinging:(CellItemType)itemType {
+    
+    CoolCardCollectionView *collectionView = (CoolCardCollectionView *)self.collectionView;
+    
+    for (Class<CoolCollectionCell> cellClass in collectionView.clingingCellClasses) {
+        if ([cellClass itemType] == itemType) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 - (CGFloat)clingYOffsetForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     return MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingedCards - 1));
 }
 
 - (NSInteger)zIndexForIndexPath:(NSIndexPath *)indexPath forViewOfType:(ViewType)viewType {
-    
+    /*
     if (viewType == ViewTypeDecorationView) {
         return indexPath.section - 1;
     } else if (viewType == ViewTypeSupplementaryView) {
@@ -318,12 +333,30 @@ typedef NS_ENUM(NSInteger, ViewType) {
     } else if (ViewTypeCell) {
         CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
         
-        if (itemType == CellItemTypeBuy) {
+        if ([self isCellItemTypeClinging:itemType]) {
+            return indexPath.section + 1;
+        } else {
             return -2;
-        } else if (itemType == CellItemTypeNote) {
-            return indexPath.section;
         }
     }
+     */
+    
+    
+    if (viewType == ViewTypeDecorationView) {
+        return indexPath.section;
+    } else if (viewType == ViewTypeSupplementaryView) {
+        return indexPath.section;
+    } else if (ViewTypeCell) {
+        CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
+        
+        if ([self isCellItemTypeClinging:itemType]) {
+            return indexPath.section;
+        } else {
+            return indexPath.section - 1;
+        }
+        
+    }
+    
     
     return indexPath.section;
 }
@@ -440,7 +473,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CGSize cellSize = [[cellLayoutInfo objectForKey:@"cellSize"] CGSizeValue];
     CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSize"] CGSizeValue];
     CGFloat previousBottomY = [[cellLayoutInfo objectForKey:@"previousBottomY"] floatValue];
-    CGFloat cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
+ //   CGFloat  cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
     
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     // -- start info
@@ -450,9 +483,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     
+    
     CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
     
-    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled && itemType == CellItemTypeNote) { // цеплять наверх
+    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled && [self isCellItemTypeClinging:itemType]) { // цеплять наверх
         
         if ((cellY < collectionViewYOffset)) { // цепляем
         //    NSLog(@"Цепляем");
@@ -466,19 +500,25 @@ typedef NS_ENUM(NSInteger, ViewType) {
         
     }
 
-    itemAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeCell];
-  //  NSLog(@"%ld - zIndex для cell %ld", itemAttributes.zIndex, (long)indexPath.section);
-    /*
-    if (itemType == CellItemTypeNote) {
-//        self.numberOfShownClingingCells++;
-        NSInteger zIndex = [self zIndexForIndexPath:indexPath];//indexPath.section + self.numberOfShownClingingCells;
-        itemAttributes.zIndex = zIndex;
-        
-
-    } else {
-        itemAttributes.zIndex = -2;
+    
+    CGFloat cellRelativeY = cellY - collectionViewYOffset;
+    
+    if (indexPath.item == 0) {
+  //      NSLog(@"%f for cell %@", cellRelativeY, indexPath);
     }
-    */
+    
+    CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + supplementaryViewSize.height / 2;//8; // тут clingOffset :)
+    
+    CGFloat offset = MAX(0, round(supRelativeY - cellRelativeY));
+    
+    if (indexPath.section == 0) {
+        NSLog(@"ОФСЕТ %f %@", offset, indexPath);
+    }
+    
+    
+    itemAttributes.internalCellOffset = offset;
+    
+    itemAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeCell];
     itemAttributes.size = cellSize;
     itemAttributes.center = CGPointMake(cellSize.width / 2.0, cellY + cellSize.height / 2.0);
     itemAttributes.shadowVisible = YES;
@@ -504,6 +544,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CoolCardLayoutAttributes *supAttributes = [CoolCardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
     supAttributes.size = supplementaryViewSize;
     supAttributes.shadowVisible = YES;
+    supAttributes.internalCellOffset = 0;
     
     if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) { // цеплять наверх
         
