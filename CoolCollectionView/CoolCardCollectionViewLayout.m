@@ -142,7 +142,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) {// && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
+                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
                    //     NSLog(@"Делать мэйджик для %d", indexPath.section);
                         [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
@@ -473,6 +473,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
+    
+    
+   // NSLog(@"%d", self.nextClingSupplementaryViewIndex);
+    if (self.nextClingSupplementaryViewIndex > 3 && indexPath.section < self.nextClingSupplementaryViewIndex) return nil;
     
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
     
