@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 @property (nonatomic) NSInteger nextClingSupplementaryViewIndex;
 
+@property (nonatomic) CGFloat interClingCellsSpaceY;
+
 
 @end
 
@@ -69,7 +71,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     // External
     self.interItemSpaceY = 0;
-    self.interSectionSpaceY = 0;
+    self.interSectionSpaceY = -20;
     // External
     
     if (self.collectionView) {
@@ -85,7 +87,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     self.clingYOffset = 8;
     self.magicOffset = 40;
     self.nextClingSupplementaryViewIndex = self.numberOfClingedCards;
-    
+    self.interClingCellsSpaceY = -20;
     
     self.cellBottomY = [NSMutableDictionary dictionary];
     self.numberOfShownClingingCells = 0;
@@ -290,6 +292,24 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return [NSIndexPath indexPathForItem:item inSection:section];
 }
 
+- (NSIndexPath *)nextIndexPathForIndexPath:(NSIndexPath *)indexPath {
+    NSInteger item = indexPath.item;
+    NSInteger section = indexPath.section;
+    
+    if ([self isTheLastItemInSectionForIndexPath:indexPath]) {
+        item = 0;
+        
+        if (section < [self.collectionView numberOfSections] - 1) {
+            section++;
+        }
+
+    } else {
+        item++;
+    }
+    
+    return [NSIndexPath indexPathForItem:item inSection:section];
+}
+
 - (BOOL)isTheLastItemInSectionForIndexPath:(NSIndexPath *)indexPath {
     return indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
 }
@@ -314,6 +334,16 @@ typedef NS_ENUM(NSInteger, ViewType) {
         if ([cellClass itemType] == itemType) {
             return YES;
         }
+    }
+    
+    return NO;
+}
+
+- (BOOL)isNextSectionCellClingingForIndexPath:(NSIndexPath *)indexPath {
+    NSIndexPath *nextIndexPath = [self nextIndexPathForIndexPath:indexPath];
+    
+    if ([self isCellItemTypeClinging:[self.delegate cellItemTypeForCellAtIndexPath:nextIndexPath]]) {
+        return YES;
     }
     
     return NO;
@@ -373,6 +403,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.item) return CGSizeZero;
+    
+    if ([self isCellItemTypeClinging:[self.delegate cellItemTypeForCellAtIndexPath:indexPath]]) {
+        return CGSizeZero;
+    }
     
     CGFloat height = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
@@ -460,7 +494,13 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGSize supplementaryViewSize = [self sizeForSupplementaryViewAtIndexPath:indexPath];
     CGSize supplementaryViewSizeForCurrentSection = [self sizeForSupplementaryViewInSection:indexPath.section];
+    /*
+    CGFloat interClingCellsOffset = 0;
     
+    if ([self isTheLastItemInSectionForIndexPath:indexPath]) {
+        interClingCellsOffset = [self isNextSectionCellClingingForIndexPath:indexPath] ? self.interClingCellsSpaceY : 0;
+    }
+    */
     CGFloat currentBottomY = previousBottomY + itemOffset + cellSize.height + sectionOffset + supplementaryViewSize.height;
     
     

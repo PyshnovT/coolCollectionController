@@ -82,7 +82,7 @@
     
     NSString *title = item.title;
     
-    cell.backgroundColor = [UIColor randomColor];
+  //  cell.backgroundColor = [UIColor randomColor];
  //   cell.layer.zPosition = 9000;
     cell.title = title;
     
@@ -172,7 +172,7 @@
             item.title = array[i];
         
             if (array.count == 1) {
-                item.type = CellItemTypeBuy;//CellItemTypeNote;
+                item.type = CellItemTypeNote;
             } else {
                 item.type = CellItemTypeBuy;
             }
