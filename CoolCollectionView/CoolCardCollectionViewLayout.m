@@ -138,12 +138,12 @@ typedef NS_ENUM(NSInteger, ViewType) {
 #warning Refactor itemType Calls
 
            //
-            if (!indexPath.item && ![self isCellItemTypeClinging:itemType]) { // тут создаётся supplementary
+            if (!indexPath.item) { // тут создаётся supplementary
                
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
-                        
+                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingedCards - 1) {// && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
+                   //     NSLog(@"Делать мэйджик для %d", indexPath.section);
                         [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
                     }
@@ -357,8 +357,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (BOOL)isCellClingingForIndexPath:(NSIndexPath *)indexPath {
     
     CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
-    
+ //   NSLog(@"тыркаю %@", indexPath);
     if ([self isCellItemTypeClinging:itemType]) {
+     //   NSLog(@"дотыркался");
         return YES;
     }
     
@@ -372,7 +373,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     NSIndexPath *nextIndexPath = [self nextIndexPathForIndexPath:indexPath];
     
-    CellItemType itemType =  [self.delegate cellItemTypeForCellAtIndexPath:nextIndexPath];
+    CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:nextIndexPath];
     
     if ([self isCellItemTypeClinging:itemType]) {
         return YES;
@@ -660,6 +661,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 - (void)makeMagicMoveForSupplementaryInfo:(NSMutableDictionary **)supplementaryInfo cellsInfo:(NSMutableDictionary **)cellsInfo beforeSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     
+ //   NSLog(@"Before indexPath:%@", indexPath);
     
     CGFloat supplementaryY = [self previousBottomYForIndexPath:indexPath];
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
@@ -670,15 +672,17 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (relativeSupplementaryY <= self.magicOffset && self.magicOffset >= 0) {
         
+     //   NSLog(@"начать двигать");
+        
         self.nextClingSupplementaryViewIndex = indexPath.section;
         
         CGFloat delta = MIN((self.magicOffset - (relativeSupplementaryY / self.magicOffset * self.magicOffset)) / 4, self.clingYOffset);
         NSInteger rDelta = round(delta);
         
         
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= self.numberOfClingedCards; i++) {
             
-            if (i == 3) {
+            if (i == self.numberOfClingedCards) {
                 rDelta = -rDelta;
             }
             
@@ -688,6 +692,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
             if ([self isCellClingingForIndexPath:previousIndexPathSection]) { // не работает
                 
+           //     NSLog(@"Двигать предыдущую крутую ячейку %@", previousIndexPathSection);
+                
                 CoolCardLayoutAttributes *prevAttributes = (*cellsInfo)[previousIndexPathSection];
                 prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
                 
@@ -695,6 +701,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
             } else {
             
+              //   NSLog(@"Двигать предыдущий хедер");
                 CoolCardLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousIndexPathSection];
                 prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
                 
