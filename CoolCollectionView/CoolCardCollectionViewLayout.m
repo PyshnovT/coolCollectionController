@@ -182,8 +182,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
-                    [allAttributes addObject:topDecorationViewAttributes];
+              //      UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
+              //      [allAttributes addObject:topDecorationViewAttributes];
                    
                     UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:attributes indexPath:indexKey];
                     
@@ -199,7 +199,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
             } else {
                 
-                if (CGRectIntersectsRect(rect, attributes.frame)) {
+                if (CGRectIntersectsRect(rect, attributes.frame) && attributes.size.height > 0) {
                     [allAttributes addObject:attributes];
                 }
             }
@@ -482,22 +482,42 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     
-    
     CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
     
-    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled && [self isCellItemTypeClinging:itemType]) { // цеплять наверх
+    if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) { // цеплять наверх
         
-        if ((cellY < collectionViewYOffset)) { // цепляем
-        //    NSLog(@"Цепляем");
-            cellY = collectionViewYOffset;
+        if ([self isCellItemTypeClinging:itemType]) {
+        
+            if ((cellY < collectionViewYOffset)) { // цепляем
+            //    NSLog(@"Цепляем");
+                cellY = collectionViewYOffset;
+                
+                if (indexPath.section > self.numberOfClingedCards - 1) {
+                   itemAttributes.shadowVisible = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
+                }
+                
+            }
             
-            if (indexPath.section > self.numberOfClingedCards - 1) {
-               itemAttributes.shadowVisible = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
+        } else { // когда начать скрывать ячейку
+            
+            CGFloat cellRelativeY = cellY - collectionViewYOffset;
+            CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + 8; // 8 -- отступ для тени
+            
+
+            if (cellRelativeY < supRelativeY) {
+           //     NSLog(@"Меньше");
+                CGFloat offset = supRelativeY - cellRelativeY;
+        //        NSLog(@"%f", offset);
+                cellY = cellY + offset;
+                cellSize = CGSizeMake(cellSize.width, cellSize.height - offset);
             }
             
         }
         
     }
+    
+
+
     
     
     itemAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeCell];

@@ -20,6 +20,7 @@
 
 #import "CoolBuyCardCell.h"
 #import "CoolNoteCardCell.h"
+#import "UIColor+Randomizer.h"
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
 
@@ -81,6 +82,7 @@
     
     NSString *title = item.title;
     
+    cell.backgroundColor = [UIColor randomColor];
  //   cell.layer.zPosition = 9000;
     cell.title = title;
     
@@ -93,7 +95,7 @@
     
     NSString *title = [self.data allKeys][indexPath.section];
     supCell.title = title;
-   // supCell.layer.zPosition = indexPath.section;
+    supCell.layer.zPosition = -20;//indexPath.section;
     
     NSLog(@"SUPPLEMENTARY %@", title);
     

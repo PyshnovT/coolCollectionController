@@ -25,6 +25,7 @@
 		6E00A6A71BCC0B0800990DD1 /* CoolNoteCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E00A6A51BCC0B0800990DD1 /* CoolNoteCardCell.xib */; settings = {ASSET_TAGS = (); }; };
 		6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */; settings = {ASSET_TAGS = (); }; };
 		6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */; settings = {ASSET_TAGS = (); }; };
+		6EFEC73A1BD4F99E007780EE /* UIColor+Randomizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFEC7391BD4F99E007780EE /* UIColor+Randomizer.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,8 @@
 		6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardTopDecorationView.m; sourceTree = "<group>"; };
 		6E4BB97A1BCAB97C0079F4D2 /* CoolCardDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCardDecorationView.h; sourceTree = "<group>"; };
 		6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardDecorationView.m; sourceTree = "<group>"; };
+		6EFEC7381BD4F99E007780EE /* UIColor+Randomizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Randomizer.h"; sourceTree = "<group>"; };
+		6EFEC7391BD4F99E007780EE /* UIColor+Randomizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Randomizer.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +198,8 @@
 			children = (
 				099E3EFD1BC00F7A0054B604 /* AppDelegate.h */,
 				099E3EFE1BC00F7A0054B604 /* AppDelegate.m */,
+				6EFEC7381BD4F99E007780EE /* UIColor+Randomizer.h */,
+				6EFEC7391BD4F99E007780EE /* UIColor+Randomizer.m */,
 				099E3F001BC00F7A0054B604 /* Assets.xcassets */,
 				099E3F021BC00F7A0054B604 /* LaunchScreen.storyboard */,
 				099E3F051BC00F7A0054B604 /* Info.plist */,
@@ -308,6 +313,7 @@
 				099E3EFF1BC00F7A0054B604 /* AppDelegate.m in Sources */,
 				099E3F141BC00FF60054B604 /* CoolFeedViewController.m in Sources */,
 				6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */,
+				6EFEC73A1BD4F99E007780EE /* UIColor+Randomizer.m in Sources */,
 				098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */,
 				6E00A6A61BCC0B0800990DD1 /* CoolNoteCardCell.m in Sources */,
 				099E3F171BC00FF60054B604 /* CoolCardCollectionViewLayout.m in Sources */,
