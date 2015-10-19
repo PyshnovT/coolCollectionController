@@ -11,5 +11,6 @@
 @interface CoolCardLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
+@property (nonatomic) CGFloat internalYOffset;
 
 @end

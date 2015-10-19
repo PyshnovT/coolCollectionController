@@ -324,7 +324,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (NSInteger)zIndexForIndexPath:(NSIndexPath *)indexPath forViewOfType:(ViewType)viewType {
-    
+    /*
     if (viewType == ViewTypeDecorationView) {
         return indexPath.section - 1;
     } else if (viewType == ViewTypeSupplementaryView) {
@@ -338,9 +338,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
             return -2;
         }
     }
-     
+     */
     
-    /*
+    
     if (viewType == ViewTypeDecorationView) {
         return indexPath.section;
     } else if (viewType == ViewTypeSupplementaryView) {
@@ -355,7 +355,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         }
         
     }
-    */
+    
     
     return indexPath.section;
 }
@@ -379,6 +379,12 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     return CGSizeMake(width, height);
     
+}
+
+- (CGSize)sizeForSupplementaryViewInSection:(NSInteger)section {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
+    
+    return [self sizeForSupplementaryViewAtIndexPath:indexPath];
 }
 
 #pragma mark - Decorations
@@ -450,8 +456,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CGFloat itemOffset = [self isTheLastItemInSectionForIndexPath:indexPath] ? 0 : self.interItemSpaceY;
     
     CGSize cellSize = [self sizeForCellAtIndexPath:indexPath];
-    CGSize supplementaryViewSize = [self sizeForSupplementaryViewAtIndexPath:indexPath];
     
+    
+    CGSize supplementaryViewSize = [self sizeForSupplementaryViewAtIndexPath:indexPath];
+    CGSize supplementaryViewSizeForCurrentSection = [self sizeForSupplementaryViewInSection:indexPath.section];
     
     CGFloat currentBottomY = previousBottomY + itemOffset + cellSize.height + sectionOffset + supplementaryViewSize.height;
     
@@ -459,6 +467,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     NSDictionary *info = @{@"previousBottomY": [NSNumber numberWithFloat:previousBottomY],
                            @"sectionOffset": [NSNumber numberWithFloat:sectionOffset],
                            @"itemOffset": [NSNumber numberWithFloat:itemOffset],
+                           @"supplementaryViewSizeForSection": [NSValue valueWithCGSize:supplementaryViewSizeForCurrentSection],
                            @"supplementaryViewSize": [NSValue valueWithCGSize:supplementaryViewSize],
                            @"cellSize": [NSValue valueWithCGSize:cellSize],
                            @"currentBottomY": [NSNumber numberWithFloat:currentBottomY]};
@@ -471,6 +480,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     // -- start info
     CGSize cellSize = [[cellLayoutInfo objectForKey:@"cellSize"] CGSizeValue];
     CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSize"] CGSizeValue];
+    CGSize supplementaryViewSizeForSection = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
     CGFloat previousBottomY = [[cellLayoutInfo objectForKey:@"previousBottomY"] floatValue];
  //   CGFloat  cellCenterY = previousBottomY + (cellSize.height) / 2.0 + supplementaryViewSize.height;
     
@@ -479,6 +489,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     
     CoolCardLayoutAttributes *itemAttributes = [CoolCardLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+    
     
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     
@@ -501,15 +512,16 @@ typedef NS_ENUM(NSInteger, ViewType) {
         } else { // когда начать скрывать ячейку
             
             CGFloat cellRelativeY = cellY - collectionViewYOffset;
-            CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + 8; // 8 -- отступ для тени
+            CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + 8 + supplementaryViewSizeForSection.height / 2.0; // 8 -- отступ для тени; height -- чтобы не было видно из-за сгруглений ячейку
             
 
             if (cellRelativeY < supRelativeY) {
-           //     NSLog(@"Меньше");
                 CGFloat offset = supRelativeY - cellRelativeY;
-        //        NSLog(@"%f", offset);
+                
                 cellY = cellY + offset;
                 cellSize = CGSizeMake(cellSize.width, cellSize.height - offset);
+                
+                itemAttributes.internalYOffset = -offset;
             }
             
         }
@@ -530,17 +542,17 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (CoolCardLayoutAttributes *)supplementaryViewLayoutAttributesForCellLayoutAttributes:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
  
+    if (indexPath.item) return nil;
+    
     // -- start info
-    CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSize"] CGSizeValue];
+    CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
     CGFloat previousBottomY = [[cellLayoutInfo objectForKey:@"previousBottomY"] floatValue];
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     // -- start info
     
     
-    
     CGFloat supplementaryY = previousBottomY;
     CGFloat clingYOfsset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
-    
     
     
     CoolCardLayoutAttributes *supAttributes = [CoolCardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];

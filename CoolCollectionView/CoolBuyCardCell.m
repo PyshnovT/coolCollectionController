@@ -8,10 +8,12 @@
 
 #import "CoolBuyCardCell.h"
 #import "CoolCardLayoutAttributes.h"
+#import "CoolCardLayoutAttributes.h"
 
 @interface CoolBuyCardCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 
 @end
 
@@ -29,6 +31,17 @@
     _title = title;
     
     self.titleLabel.text = title;
+}
+
+
+#pragma mark - Apply
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    [super applyLayoutAttributes:layoutAttributes];
+    
+    CoolCardLayoutAttributes *cellLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
+    
+    self.topConstraint.constant = cellLayoutAttributes.internalYOffset;
 }
 
 #pragma mark - CoolCollectionCell

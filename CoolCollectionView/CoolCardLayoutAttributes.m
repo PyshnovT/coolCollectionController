@@ -23,6 +23,7 @@
     NSAssert([copy isKindOfClass:[self class]], @"copy must have the same class");
     
     copy.shadowVisible = self.isShadowVisible;
+    copy.internalYOffset = self.internalYOffset;
     
     return copy;
 }
@@ -36,6 +37,9 @@
     CoolCardLayoutAttributes *otherObject = object;
     
     if (otherObject.isShadowVisible != self.isShadowVisible) {
+        return NO;
+    }
+    if (otherObject.internalYOffset != self.internalYOffset) {
         return NO;
     }
 

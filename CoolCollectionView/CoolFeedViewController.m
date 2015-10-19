@@ -95,7 +95,7 @@
     
     NSString *title = [self.data allKeys][indexPath.section];
     supCell.title = title;
-    supCell.layer.zPosition = -20;//indexPath.section;
+    //supCell.layer.zPosition = -20;//indexPath.section;
     
     NSLog(@"SUPPLEMENTARY %@", title);
     
