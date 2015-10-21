@@ -622,7 +622,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (CoolCardLayoutAttributes *)supplementaryViewLayoutAttributesForCellLayoutAttributes:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
  
-    if (indexPath.item) return nil;
+    if (indexPath.item || [self isCellClingingForIndexPath:indexPath]) return nil;
     
     // -- start info
     CGSize supplementaryViewSize = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
@@ -665,7 +665,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 - (void)makeMagicMoveForSupplementaryInfo:(NSMutableDictionary **)supplementaryInfo cellsInfo:(NSMutableDictionary **)cellsInfo beforeSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     
- //   NSLog(@"Before indexPath:%@", indexPath);
+//    NSLog(@"Before indexPath:%@", indexPath);
     
     CGFloat supplementaryY = [self previousBottomYForIndexPath:indexPath];
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
@@ -681,33 +681,35 @@ typedef NS_ENUM(NSInteger, ViewType) {
         self.nextClingSupplementaryViewIndex = indexPath.section;
         
         CGFloat delta = MIN((self.magicOffset - (relativeSupplementaryY / self.magicOffset * self.magicOffset)) / 4, self.clingYOffset);
-        NSInteger rDelta = round(delta);
         
         
         for (int i = 1; i <= self.numberOfClingedCards; i++) {
             
             if (i == self.numberOfClingedCards) {
-                rDelta = -rDelta;
+                delta = -delta;
+                
             }
             
             
             
             NSIndexPath *previousIndexPathSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section - i];
             
-            if ([self isCellClingingForIndexPath:previousIndexPathSection]) { // не работает
-                
-           //     NSLog(@"Двигать предыдущую крутую ячейку %@", previousIndexPathSection);
+            if ([self isCellClingingForIndexPath:previousIndexPathSection]) {
                 
                 CoolCardLayoutAttributes *prevAttributes = (*cellsInfo)[previousIndexPathSection];
-                prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+                prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - delta);
+                
+                if (i == self.numberOfClingedCards && delta < -4) {
+                    prevAttributes.shadowVisible = NO;
+                }
                 
                 (*cellsInfo)[previousIndexPathSection] = prevAttributes;
                 
             } else {
             
-              //   NSLog(@"Двигать предыдущий хедер");
                 CoolCardLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousIndexPathSection];
-                prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - rDelta);
+                prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - delta);
+                
                 
                 (*supplementaryInfo)[previousIndexPathSection] = prevAttributes;
                 
