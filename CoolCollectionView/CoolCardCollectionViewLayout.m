@@ -495,16 +495,16 @@ typedef NS_ENUM(NSInteger, ViewType) {
     //CoolCardLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
     
    // if (frame.origin.y < nextItemAttributes.frame.origin.y - frame.size.height + 20 || !nextItemAttributes) {
-    
+    /*
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
     
     CGFloat relativeSupplementaryY = frame.origin.y - collectionViewYOffset;
-    CGFloat suppplementaryViewHeight = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
+    CGFloat supplementaryViewHeight = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
+    */
     
-    
-    if (relativeSupplementaryY > suppplementaryViewHeight * 0.5 + clingYOffset) {
-        
+   // if (relativeSupplementaryY > supplementaryViewHeight * 0.5 + clingYOffset) {
+    if ([self canShowDecorationViewForCellAttributes:attributes withIndexPath:indexPath andViewType:ViewTypeHideDecorationView]) {
         return decorationAttributes;
         
     }
@@ -512,26 +512,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return nil;
 
 }
-/*
-- (UICollectionViewLayoutAttributes *)decorationHideAttributesForCellAttributes:(UICollectionViewLayoutAttributes *)cellAttributes withIndexPath:(NSIndexPath *)indexPath {
-    
 
-    if ([self isPreviousCellClingingForIndexPath:indexPath]) return nil;
-    
-    CGRect supplemetaryViewFrame = cellAttributes.frame;
-    
-    UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"hideLine" withIndexPath:indexPath];
-    
-    decorationAttributes.frame = CGRectMake(0.0f,
-                                            supplemetaryViewFrame.origin.y,
-                                            self.collectionViewContentSize.width,
-                                            20);
-    
-    decorationAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeHideDecorationView];
-    
-    return decorationAttributes;
-}
-*/
 - (UICollectionViewLayoutAttributes *)decorationLineAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes withIndexPath:(NSIndexPath *)indexPath {
     
     if (self.nextClingSupplementaryViewIndex > self.numberOfClingingCards && indexPath.section < self.nextClingSupplementaryViewIndex) return nil;
@@ -562,16 +543,52 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     // --- тут высчитывается alpha
     
-    NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
-    CoolCardLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
-    
-    if (supplemetaryViewFrame.origin.y < nextItemAttributes.frame.origin.y - supplemetaryViewFrame.size.height + 20 || !nextItemAttributes) {
+    if ([self canShowDecorationViewForCellAttributes:supplementaryAttributes withIndexPath:indexPath andViewType:ViewTypeLineDecorationView]) {
         
         return decorationAttributes;
         
     }
  
     return nil;
+}
+
+- (BOOL)canShowDecorationViewForCellAttributes:(UICollectionViewLayoutAttributes *)attributes withIndexPath:(NSIndexPath *)indexPath andViewType:(ViewType)viewType {
+    
+    NSInteger relativeY = round(attributes.frame.origin.y - self.collectionView.contentOffset.y);
+    CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
+    CGFloat supplementaryViewHeight = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
+    
+    if (viewType == ViewTypeLineDecorationView) {
+        
+      //  NSLog(@"relativeY %d для %d", relativeY, indexPath.section);
+        if (relativeY > supplementaryViewHeight + clingYOffset - attributes.size.height) {
+          //  NSLog(@"%f > %f", relativeY, supplementaryViewHeight + clingYOffset - attributes.size.height);
+           // NSLog(@"не показывать для %d", indexPath.section);
+            return NO;
+        }
+        
+        NSIndexPath *nextItemIndexPath = [NSIndexPath indexPathForItem:indexPath.item inSection:indexPath.section + 1];
+        CoolCardLayoutAttributes *nextItemAttributes = [self.layoutInfo[supplementaryKind] objectForKey:nextItemIndexPath];
+        
+        if (attributes.frame.origin.y < nextItemAttributes.frame.origin.y - attributes.size.height + 20 || !nextItemAttributes) {
+            
+        }
+        
+    } else if (viewType == ViewTypeHideDecorationView) {
+        
+        CGFloat collectionViewBottomY = self.collectionView.bounds.size.height + self.collectionView.contentOffset.y;
+
+        
+        if (relativeY > collectionViewBottomY) {
+            return NO;
+        }
+        
+        if (relativeY < supplementaryViewHeight * 0.5 + clingYOffset) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - Cell Layout Info
