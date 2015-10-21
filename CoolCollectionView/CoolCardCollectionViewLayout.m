@@ -300,10 +300,19 @@ typedef NS_ENUM(NSInteger, ViewType) {
         item -= 1;
     }
     
-    return [NSIndexPath indexPathForItem:item inSection:section];
+    NSIndexPath *endIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    
+    if ([self isIndexPathLegal:indexPath]) {
+        return endIndexPath;
+    }
+    
+    return nil;
 }
 
 - (NSIndexPath *)nextIndexPathForIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath == [self indexPathForLastCell]) return nil;
+    
     NSInteger item = indexPath.item;
     NSInteger section = indexPath.section;
     
@@ -359,7 +368,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (BOOL)isPreviousCellClingingForIndexPath:(NSIndexPath *)indexPath {
-   // if (indexPath.item) return NO; // выбросить?
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
     
@@ -377,9 +385,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (BOOL)isCellClingingForIndexPath:(NSIndexPath *)indexPath {
     
     CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
- //   NSLog(@"тыркаю %@", indexPath);
+    
     if ([self isCellItemTypeClinging:itemType]) {
-     //   NSLog(@"дотыркался");
         return YES;
     }
     
@@ -389,9 +396,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 // нужно ли?
 - (BOOL)isNextCellClingingForIndexPath:(NSIndexPath *)indexPath {
-  //  if (indexPath.item) return NO; // выбросить?
     
     NSIndexPath *nextIndexPath = [self nextIndexPathForIndexPath:indexPath];
+    if (!nextIndexPath) return NO;
     
     CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:nextIndexPath];
     
