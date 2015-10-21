@@ -184,9 +184,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
             if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
-                    
-              //      UICollectionViewLayoutAttributes *topDecorationViewAttributes = [self decorationAttributesForTopView];
-              //      [allAttributes addObject:topDecorationViewAttributes];
                    
                     UICollectionViewLayoutAttributes *decorationAttributes = [self decorationAttributesForSupplementaryViewAttributes:attributes indexPath:indexKey];
                     
@@ -389,22 +386,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
 #pragma mark ZIndex
 
 - (NSInteger)zIndexForIndexPath:(NSIndexPath *)indexPath forViewOfType:(ViewType)viewType {
-    /*
-    if (viewType == ViewTypeDecorationView) {
-        return indexPath.section - 1;
-    } else if (viewType == ViewTypeSupplementaryView) {
-        return indexPath.section;
-    } else if (ViewTypeCell) {
-        CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
-        
-        if ([self isCellItemTypeClinging:itemType]) {
-            return indexPath.section + 1;
-        } else {
-            return -2;
-        }
-    }
-     */
-    
     
     if (viewType == ViewTypeDecorationView) {
         return indexPath.section;
@@ -458,24 +439,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 #pragma mark - Decorations
 
-- (UICollectionViewLayoutAttributes *)decorationAttributesForTopView {
-    UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"topLine" withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    
-    
-    decorationAttributes.frame = CGRectMake(0.0f,
-                                            self.collectionView.contentOffset.y,
-                                            self.collectionViewContentSize.width,
-                                            20);
-    
-    decorationAttributes.zIndex = -1;
-    
-    return decorationAttributes;
-}
-
 - (UICollectionViewLayoutAttributes *)decorationAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes indexPath:(NSIndexPath *)indexPath {
     
-    
-   // NSLog(@"%d", self.nextClingSupplementaryViewIndex);
     if (self.nextClingSupplementaryViewIndex > 3 && indexPath.section < self.nextClingSupplementaryViewIndex) return nil;
     
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
