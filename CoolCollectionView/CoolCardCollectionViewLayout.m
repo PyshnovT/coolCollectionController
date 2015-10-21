@@ -335,6 +335,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 }
 
+- (BOOL)isIndexPathLegal:(NSIndexPath *)indexPath {
+    if (indexPath.section < 0 || indexPath.item < 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 #pragma mark - Clinging
 
 - (BOOL)isCellItemTypeClinging:(CellItemType)itemType {
@@ -397,6 +405,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (CGFloat)clingYOffsetForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     return MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingingCards - 1));
 }
+
 
 #pragma mark ZIndex
 
