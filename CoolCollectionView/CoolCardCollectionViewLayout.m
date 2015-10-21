@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
             cellLayoutFullInfo[indexPath] = [self cellLayoutAttributesForCellLayoutInfo:cellLayoutInfo atIndexPath:indexPath];
             
-            CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
+         //   CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
 #warning Refactor itemType Calls
 
            //
@@ -142,10 +142,15 @@ typedef NS_ENUM(NSInteger, ViewType) {
                
                 if (((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
                     
-                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && indexPath.section > self.numberOfClingingCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
-                   //     NSLog(@"Делать мэйджик для %d", indexPath.section);
-                        [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
+                    if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled) {
+                        
+                        if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section <= self.nextClingSupplementaryViewIndex + 1) {
+                            
+                            // NSLog(@"Делать мэйджик для %d", indexPath.section);
+                            [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
+                        }
+                        
                     }
                     
                 }
