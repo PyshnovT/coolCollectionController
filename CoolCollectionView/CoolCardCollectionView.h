@@ -14,5 +14,6 @@
 @property (nonatomic) BOOL cardMagicEnabled;
 
 @property (nonatomic, strong) NSArray *clingingCellClasses; // классы-ячейки, которые прикрепляются наверх
+@property (nonatomic) NSInteger numberOfClingingCards;
 
 @end
