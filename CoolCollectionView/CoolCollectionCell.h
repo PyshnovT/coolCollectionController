@@ -12,10 +12,12 @@
 
 @protocol CoolCollectionCell <NSObject>
 
-@property (nonatomic, strong) NSString *title;
-
 + (BOOL)handleItem:(CoolCellItem *)item;
 + (CellItemType)itemType;
 + (CGFloat)heightOfCell;
+
+@optional
+
+@property (nonatomic, strong) NSString *title;
 
 @end

@@ -20,6 +20,7 @@
 
 #import "CoolBuyCardCell.h"
 #import "CoolNoteCardCell.h"
+#import "ThirdCardCell.h"
 #import "UIColor+Randomizer.h"
 
 @interface CoolFeedViewController () <UICollectionViewDataSource, UICollectionViewDelegate, CardColletionViewLayoutDelegate>
@@ -82,8 +83,6 @@
     
     NSString *title = item.title;
     
-  //  cell.backgroundColor = [UIColor randomColor];
- //   cell.layer.zPosition = 9000;
     cell.title = title;
     
     return cell;
@@ -95,9 +94,6 @@
     
     NSString *title = [self.data allKeys][indexPath.section];
     supCell.title = title;
-    //supCell.layer.zPosition = -20;//indexPath.section;
-    
-    NSLog(@"SUPPLEMENTARY %@", title);
     
     return supCell;
 }
@@ -173,11 +169,10 @@
         
             if (array.count == 1) {
                // item.type = CellItemTypeBuy;
-                item.type = CellItemTypeNote;
+                item.type = arc4random() % 2 ? CellItemTypeNote : CellItemTypeThird;
             } else {
                 item.type = CellItemTypeBuy;
             }
-          //  item.type = arc4random() % 2 ? CellItemTypeBuy : CellItemTypeNote;
             
             [itemsArray addObject:item];
         }
@@ -187,13 +182,14 @@
     
     self.data = [NSMutableDictionary dictionaryWithDictionary:itemDict];
     
-    self.collectionView.clingingCellClasses = @[[CoolNoteCardCell class]];
+    self.collectionView.clingingCellClasses = @[[CoolNoteCardCell class], [ThirdCardCell class]];
 }
 
 - (void)registerCells {
     
     self.cellClasses = @[[CoolBuyCardCell class],
-                         [CoolNoteCardCell class]];
+                         [CoolNoteCardCell class],
+                         [ThirdCardCell class]];
     
     for (Class<CoolCollectionCell> cellClass in self.cellClasses) {
         [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass(cellClass) bundle:nil]  forCellWithReuseIdentifier:NSStringFromClass(cellClass)];

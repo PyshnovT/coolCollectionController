@@ -11,7 +11,8 @@
 typedef NS_ENUM(NSInteger, CellItemType) {
     CellItemTypeNone,
     CellItemTypeBuy,
-    CellItemTypeNote
+    CellItemTypeNote,
+    CellItemTypeThird
 };
 
 @interface CoolCellItem : NSObject
