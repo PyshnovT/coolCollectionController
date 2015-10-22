@@ -150,7 +150,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                         
                         if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section == self.lastClingedCardIndex + 1) {
                             
-                             NSLog(@"Делать мэйджик для %d", indexPath.section);
+                        //     NSLog(@"Делать мэйджик для %d", indexPath.section);
                             [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
                         }
