@@ -377,9 +377,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 #pragma mark - Clinging
 
-- (BOOL)isCellItemTypeClinging:(CellItemType)itemType {
+- (BOOL)isCellClingingForIndexPath:(NSIndexPath *)indexPath {
     
-    return [self.delegate isCellItemTypeClinging:itemType];
+    return [self.delegate isCellClingingForIndexPath:indexPath];
     
 }
 
@@ -389,25 +389,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (previousIndexPath.section < 0 || previousIndexPath.item < 0) return NO;
     
-    CellItemType itemType =  [self.delegate cellItemTypeForCellAtIndexPath:previousIndexPath];
-    
-    if ([self isCellItemTypeClinging:itemType]) {
+    if ([self isCellClingingForIndexPath:previousIndexPath]) {
         return YES;
     }
     
     return NO;
-}
-
-- (BOOL)isCellClingingForIndexPath:(NSIndexPath *)indexPath {
-    
-    CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
-    
-    if ([self isCellItemTypeClinging:itemType]) {
-        return YES;
-    }
-    
-    return NO;
-    
 }
 
 // нужно ли?
@@ -416,9 +402,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
     NSIndexPath *nextIndexPath = [self nextIndexPathForIndexPath:indexPath];
     if (!nextIndexPath) return NO;
     
-    CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:nextIndexPath];
     
-    if ([self isCellItemTypeClinging:itemType]) {
+    if ([self isCellClingingForIndexPath:indexPath]) {
         return YES;
     }
     
@@ -461,9 +446,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
     } else if (viewType == ViewTypeSupplementaryView) {
         return indexPath.section;
     } else if (ViewTypeCell) {
-        CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
         
-        if ([self isCellItemTypeClinging:itemType]) {
+        if ([self isCellClingingForIndexPath:indexPath]) {
             return indexPath.section;
         } else {
             return indexPath.section - 1;
@@ -489,7 +473,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
     if (indexPath.item) return CGSizeZero;
     
-    if ([self isCellItemTypeClinging:[self.delegate cellItemTypeForCellAtIndexPath:indexPath]]) {
+    if ([self isCellClingingForIndexPath:indexPath]) {
         return CGSizeZero;
     }
     
@@ -661,7 +645,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     
-    CellItemType itemType = [self.delegate cellItemTypeForCellAtIndexPath:indexPath];
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     // -- start info
 
@@ -671,7 +654,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.cardBehaviourEnabled) { // цеплять наверх
         
-        if ([self isCellItemTypeClinging:itemType]) {
+        if ([self isCellClingingForIndexPath:indexPath]) {
             
             CGFloat newCellY = [self clingedYForStartY:cellY withIndexPath:indexPath];
             
