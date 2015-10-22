@@ -29,7 +29,7 @@
     
     self.cardMagicEnabled = YES;
     self.cardBehaviourEnabled = YES;
-    self.numberOfClingingCards = 8;
+    self.numberOfClingingCards = 4;
 }
 
 @end

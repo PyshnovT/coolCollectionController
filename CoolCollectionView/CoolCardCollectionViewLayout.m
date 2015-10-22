@@ -691,6 +691,38 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 if (indexPath.section > self.numberOfClingingCards - 1) {
                    itemAttributes.shadowVisible = ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
                 }
+             
+                if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
+                    
+                    NSInteger mIndex = self.lastClingedCardIndex - indexPath.section;
+                    //  NSInteger
+                    
+                    if (indexPath.section < self.lastClingedCardIndex) {
+                        
+                        if (mIndex >= self.numberOfClingingCards) { // карта, которую занизили
+                            
+                            cellY += self.clingYOffset * mIndex;
+                            
+                        } else if (mIndex < self.numberOfClingingCards && self.lastClingedCardIndex >= self.numberOfClingingCards) { // поднимать
+                            
+                            CGFloat zIndex = 0;
+                            
+                            if (indexPath.section < self.numberOfClingingCards - 1) {
+                                
+                                NSInteger wowNumber = self.lastClingedCardIndex - self.numberOfClingingCards;
+                                zIndex = self.clingYOffset * (mIndex - 1) - wowNumber * self.clingYOffset;
+                                
+                            }
+                            
+                            CGFloat offset = (self.clingYOffset * mIndex) - zIndex;
+                            cellY = cellY - offset;
+                            
+                        }
+                        
+                        
+                    }
+                }
+
                 
             }
             
@@ -754,34 +786,25 @@ typedef NS_ENUM(NSInteger, ViewType) {
               //  NSInteger
                 
                 if (indexPath.section < self.lastClingedCardIndex) {
-                   // NSLog(@"ОПА %d и опа %d", indexPath.section, mIndex);
                     
                     if (mIndex >= self.numberOfClingingCards) { // карта, которую занизили
-                 //       NSLog(@"опа");
+                        
                         supplementaryY += self.clingYOffset * mIndex;
+                        
                     } else if (mIndex < self.numberOfClingingCards && self.lastClingedCardIndex >= self.numberOfClingingCards) { // поднимать
                         
-                   //     NSLog(@"%@ %f", indexPath, supplementaryY - collectionViewYOffset);
-                        
                         CGFloat zIndex = 0;
-                       // NSInteger wtfIndex = self.numberOfClingingCards -
-                        
                         
                         if (indexPath.section < self.numberOfClingingCards - 1) {
-                //            NSLog(@"считаем z для M: %d", mIndex);
-                            NSLog(@"%d и %d", self.numberOfClingingCards, self.lastClingedCardIndex);
                             
                             NSInteger wowNumber = self.lastClingedCardIndex - self.numberOfClingingCards;
                             zIndex = self.clingYOffset * (mIndex - 1) - wowNumber * self.clingYOffset;
+                            
                         }
                         
                         CGFloat offset = (self.clingYOffset * mIndex) - zIndex;
-                        
-                //        NSLog(@"%@ offset %f", indexPath, offset);
-                      //  NSLog(@"prev %f", supplementaryY - collectionViewYOffset);
                         supplementaryY = supplementaryY - offset;
                         
-                        NSLog(@"fut %@ %f", indexPath, supplementaryY - collectionViewYOffset);
                     }
                     
                     
