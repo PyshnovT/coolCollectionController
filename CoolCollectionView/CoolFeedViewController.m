@@ -137,6 +137,17 @@
     
 }
 
+- (BOOL)isCellItemTypeClinging:(CellItemType)itemType {
+    
+    for (Class<CoolCollectionCell> cellClass in self.collectionView.clingingCellClasses) {
+        if ([cellClass itemType] == itemType) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 #pragma mark - Setup
 
 - (void)setupData {

@@ -11,7 +11,7 @@
 #import "CoolCardDecorationView.h"
 
 #import "CoolCardTopDecorationView.h"
-#import "CoolCollectionCell.h"
+//#import "CoolCollectionCell.h"
 #import "CoolCardLayoutAttributes.h"
 
 typedef NS_ENUM(NSInteger, ViewType) {
@@ -379,15 +379,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (BOOL)isCellItemTypeClinging:(CellItemType)itemType {
     
-    CoolCardCollectionView *collectionView = (CoolCardCollectionView *)self.collectionView;
+    return [self.delegate isCellItemTypeClinging:itemType];
     
-    for (Class<CoolCollectionCell> cellClass in collectionView.clingingCellClasses) {
-        if ([cellClass itemType] == itemType) {
-            return YES;
-        }
-    }
-    
-    return NO;
 }
 
 - (BOOL)isPreviousCellClingingForIndexPath:(NSIndexPath *)indexPath {
