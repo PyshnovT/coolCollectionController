@@ -146,11 +146,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
                         
                        //  NSLog(@"%d", self.lastClingedCardIndex);
                         
-                        if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section >= self.lastClingedCardIndex - 1 && indexPath.section <= self.lastClingedCardIndex + 1) {
+                  //      if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section >= self.lastClingedCardIndex - (self.numberOfClingingCards - 2) && indexPath.section <= self.lastClingedCardIndex + 1) {
                         
-                     //   if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section == self.lastClingedCardIndex + 1) {
+                        if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section == self.lastClingedCardIndex + 1) {
                             
-                   //          NSLog(@"Делать мэйджик для %d", indexPath.section);
+                      //       NSLog(@"Делать мэйджик для %d", indexPath.section);
                             [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
 
                         }
@@ -210,9 +210,16 @@ typedef NS_ENUM(NSInteger, ViewType) {
                     
                 }
 
-                if (CGRectIntersectsRect(rect, attributes.frame) && indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
+                if (CGRectIntersectsRect(rect, attributes.frame) ) {
+                    
+                    if (self.cardMagicEnabled && self.cardBehaviourEnabled) {
+                        if (indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
+                            [allAttributes addObject:attributes];
+                        }
+                    } else {
                   //  NSLog(@"показываем %d", indexKey.section);
-                    [allAttributes addObject:attributes];
+                        [allAttributes addObject:attributes];
+                    }
                 }
                 
             } else {
