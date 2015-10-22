@@ -749,7 +749,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
             }
          
             if (((CoolCardCollectionView *)self.collectionView).cardMagicEnabled && ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled) {
-                NSLog(@"%@ %f", indexPath, supplementaryY - collectionViewYOffset);
                 
                 NSInteger mIndex = self.lastClingedCardIndex - indexPath.section;
               //  NSInteger
@@ -758,16 +757,31 @@ typedef NS_ENUM(NSInteger, ViewType) {
                    // NSLog(@"ОПА %d и опа %d", indexPath.section, mIndex);
                     
                     if (mIndex >= self.numberOfClingingCards) { // карта, которую занизили
-                        NSLog(@"опа");
+                 //       NSLog(@"опа");
                         supplementaryY += self.clingYOffset * mIndex;
                     } else if (mIndex < self.numberOfClingingCards && self.lastClingedCardIndex >= self.numberOfClingingCards) { // поднимать
                         
-                        CGFloat offset = (self.clingYOffset * mIndex);
+                   //     NSLog(@"%@ %f", indexPath, supplementaryY - collectionViewYOffset);
                         
+                        CGFloat zIndex = 0;
+                       // NSInteger wtfIndex = self.numberOfClingingCards -
+                        
+                        
+                        if (indexPath.section < self.numberOfClingingCards - 1) {
+                //            NSLog(@"считаем z для M: %d", mIndex);
+                            NSLog(@"%d и %d", self.numberOfClingingCards, self.lastClingedCardIndex);
+                            
+                            NSInteger wowNumber = self.lastClingedCardIndex - self.numberOfClingingCards;
+                            zIndex = self.clingYOffset * (mIndex - 1) - wowNumber * self.clingYOffset;
+                        }
+                        
+                        CGFloat offset = (self.clingYOffset * mIndex) - zIndex;
+                        
+                //        NSLog(@"%@ offset %f", indexPath, offset);
                       //  NSLog(@"prev %f", supplementaryY - collectionViewYOffset);
                         supplementaryY = supplementaryY - offset;
                         
-                       // NSLog(@"fut %@ %f", indexPath, supplementaryY - collectionViewYOffset);
+                        NSLog(@"fut %@ %f", indexPath, supplementaryY - collectionViewYOffset);
                     }
                     
                     

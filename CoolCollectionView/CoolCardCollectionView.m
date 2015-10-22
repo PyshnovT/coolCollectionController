@@ -27,9 +27,9 @@
     self.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
     self.showsVerticalScrollIndicator = NO;
     
-    self.cardMagicEnabled = NO;
+    self.cardMagicEnabled = YES;
     self.cardBehaviourEnabled = YES;
-    self.numberOfClingingCards = 3;
+    self.numberOfClingingCards = 8;
 }
 
 @end
