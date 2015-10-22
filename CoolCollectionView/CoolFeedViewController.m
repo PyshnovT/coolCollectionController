@@ -172,8 +172,8 @@
             item.title = array[i];
         
             if (array.count == 1) {
-               // item.type = CellItemTypeBuy;
-                item.type = CellItemTypeNote;
+                item.type = CellItemTypeBuy;
+               // item.type = CellItemTypeNote;
             } else {
                 item.type = CellItemTypeBuy;
             }
