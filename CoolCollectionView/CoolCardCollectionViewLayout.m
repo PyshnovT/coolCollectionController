@@ -413,6 +413,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingingCards - 1));
 }
 
+- (CGFloat)clingYOffsetForCellAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.delegate heightForCellAtIndexPath:indexPath] * indexPath.item + [self sizeForSupplementaryViewInSection:indexPath.section].height;
+}
+
 #pragma mark Cling Index
 
 - (void)updateNextClingSupplementaryViewIndex {
@@ -642,8 +646,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CGSize supplementaryViewSizeForSection = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
     CGSize supplementaryViewSize = indexPath.item ? CGSizeZero : supplementaryViewSizeForSection;
     
-    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-    
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     // -- start info
     
@@ -653,9 +655,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.cardBehaviourEnabled) {
         
-        if ([self isCellClingingForIndexPath:indexPath]) { // 
+        if ([self isCellClingingForIndexPath:indexPath]) {
             
-            CGFloat newCellY = [self clingedYForStartY:cellY withIndexPath:indexPath];
+            CGFloat newCellY = [self clingedYForHeaderAtY:cellY withIndexPath:indexPath];
             
             if (newCellY > cellY) {
                 if (indexPath.section > self.numberOfClingingCards - 1) {
@@ -667,6 +669,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
         } else { // когда начать скрывать ячейку
             
+            cellY = [self clingedYForCellAtY:cellY withIndexPath:indexPath];
+            /*
             CGFloat cellRelativeY = cellY - collectionViewYOffset;
             CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + self.clingYOffset + supplementaryViewSizeForSection.height / 2.0;
             
@@ -679,6 +683,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
                 cellAttributes.internalYOffset = -offset;
             }
+            
+             */
+            
             
         }
         
@@ -709,7 +716,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.cardBehaviourEnabled) { // цеплять наверх
         
-        CGFloat newSupplementaryY = [self clingedYForStartY:supplementaryY withIndexPath:indexPath];
+        CGFloat newSupplementaryY = [self clingedYForHeaderAtY:supplementaryY withIndexPath:indexPath];
         
         if (newSupplementaryY > supplementaryY) {
             if (indexPath.section > self.numberOfClingingCards - 1) {
@@ -729,7 +736,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 #pragma mark - Magic
 
-- (CGFloat)clingedYForStartY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)clingedYForHeaderAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
     
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
@@ -742,6 +749,25 @@ typedef NS_ENUM(NSInteger, ViewType) {
             startY = [self magicYForStartY:startY withIndexPath:indexPath];
         }
     }
+    
+    return startY;
+    
+}
+
+- (CGFloat)clingedYForCellAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
+    
+    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
+    CGFloat clingYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
+    CGFloat magicOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
+    
+ //   NSLog(@"Меньше %f", clingYOffset);
+    
+    if (startY < collectionViewYOffset + clingYOffset + magicOffset) {
+
+        startY = collectionViewYOffset + clingYOffset + magicOffset;
+    }
+    
+  //  NSLog(@"%f %@", startY, indexPath);
     
     return startY;
     
