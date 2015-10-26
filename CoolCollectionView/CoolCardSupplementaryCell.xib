@@ -12,27 +12,34 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caE-q6-szA">
-                        <rect key="frame" x="0.0" y="8" width="234" height="90"/>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auU-go-hwl">
+                        <rect key="frame" x="0.0" y="0.0" width="234" height="60"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Совместная аналитика" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPy-Wg-PwR">
-                                <rect key="frame" x="21" y="16" width="205" height="21"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="caE-q6-szA">
+                                <rect key="frame" x="0.0" y="8" width="234" height="90"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Совместная аналитика" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IPy-Wg-PwR">
+                                        <rect key="frame" x="21" y="16" width="193" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Hrd-Se-Ya5"/>
+                                    <constraint firstAttribute="height" constant="90" id="RkO-Tu-nfk"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="IPy-Wg-PwR" secondAttribute="trailing" constant="8" id="7nZ-Mc-Qm8"/>
-                            <constraint firstItem="IPy-Wg-PwR" firstAttribute="leading" secondItem="caE-q6-szA" secondAttribute="leading" constant="21" id="DmP-Dr-hjf"/>
-                            <constraint firstItem="IPy-Wg-PwR" firstAttribute="top" secondItem="caE-q6-szA" secondAttribute="top" constant="16" id="e89-jF-voV"/>
-                            <constraint firstAttribute="height" constant="90" id="hOg-fB-aaY"/>
+                            <constraint firstAttribute="trailing" secondItem="caE-q6-szA" secondAttribute="trailing" id="APu-TB-x5f"/>
+                            <constraint firstItem="caE-q6-szA" firstAttribute="top" secondItem="auU-go-hwl" secondAttribute="top" constant="8" id="bQK-0C-pId"/>
+                            <constraint firstItem="caE-q6-szA" firstAttribute="leading" secondItem="auU-go-hwl" secondAttribute="leading" id="o6p-mh-yQo"/>
+                            <constraint firstAttribute="height" constant="60" id="srl-4v-gJr"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -41,14 +48,15 @@
             </view>
             <animations/>
             <constraints>
-                <constraint firstItem="caE-q6-szA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6TZ-j0-qdB"/>
-                <constraint firstItem="caE-q6-szA" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="QYm-f9-oEc"/>
-                <constraint firstAttribute="trailing" secondItem="caE-q6-szA" secondAttribute="trailing" id="agq-Z1-0aT"/>
+                <constraint firstItem="auU-go-hwl" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="IVD-Pv-iDL"/>
+                <constraint firstAttribute="trailing" secondItem="auU-go-hwl" secondAttribute="trailing" id="nlP-FA-l8F"/>
+                <constraint firstItem="auU-go-hwl" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="vKW-v8-HbN"/>
             </constraints>
             <size key="customSize" width="234" height="60"/>
             <connections>
                 <outlet property="decorationView" destination="caE-q6-szA" id="LVG-01-HWE"/>
                 <outlet property="titleLabel" destination="IPy-Wg-PwR" id="bTP-qP-o3V"/>
+                <outlet property="topConstraint" destination="vKW-v8-HbN" id="SSG-S5-wFu"/>
             </connections>
             <point key="canvasLocation" x="563" y="488"/>
         </collectionViewCell>

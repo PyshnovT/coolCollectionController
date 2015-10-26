@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topConstraint;
 
 @end
 
@@ -28,6 +29,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
+
     [self setupDecorationView];
 }
 
@@ -69,6 +71,7 @@
     CoolCardLayoutAttributes *supLayoutAttributes = (CoolCardLayoutAttributes *)layoutAttributes;
 
     self.shadowVisible = supLayoutAttributes.isShadowVisible;
+    self.topConstraint.constant = supLayoutAttributes.internalYOffset;
 }
  
 
