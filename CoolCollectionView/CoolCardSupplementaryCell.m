@@ -52,7 +52,7 @@
 - (void)setShadowVisible:(BOOL)shadowVisible {
     _shadowVisible = shadowVisible;
     
-    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
+    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.22 : 0.0;
 }
 
 - (void)setTitle:(NSString *)title {

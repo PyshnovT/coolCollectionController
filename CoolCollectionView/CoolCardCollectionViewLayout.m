@@ -352,6 +352,20 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return [NSIndexPath indexPathForItem:item inSection:section];
 }
 
+- (NSIndexPath *)indexPathForFirstItemInSection:(NSInteger)section {
+    if (section > [self.collectionView numberOfSections] - 1) return nil;
+    
+    return [NSIndexPath indexPathForItem:0 inSection:section];
+}
+
+- (NSIndexPath *)indexPathForLastItemInSection:(NSInteger)section {
+    if (section > [self.collectionView numberOfSections] - 1) return nil;
+    
+    NSInteger item = [self.collectionView numberOfItemsInSection:section] - 1;
+    
+    return [NSIndexPath indexPathForItem:item inSection:section];
+}
+
 - (BOOL)isTheLastItemInSectionForIndexPath:(NSIndexPath *)indexPath {
     return indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
 }
@@ -645,7 +659,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGSize supplementaryViewSizeForSection = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
     CGSize supplementaryViewSize = indexPath.item ? CGSizeZero : supplementaryViewSizeForSection;
+
     
+    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     // -- start info
     
@@ -670,7 +686,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         } else { // когда начать скрывать ячейку
             
             cellY = [self clingedYForCellAtY:cellY withIndexPath:indexPath];
-            /*
+        
             CGFloat cellRelativeY = cellY - collectionViewYOffset;
             CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + self.clingYOffset + supplementaryViewSizeForSection.height / 2.0;
             
@@ -684,7 +700,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 cellAttributes.internalYOffset = -offset;
             }
             
-             */
+            
             
             
         }
@@ -758,13 +774,24 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat clingYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
-    CGFloat magicOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
+    CGFloat headerMagicOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
     
+    CGFloat screenHeight = self.collectionView.bounds.size.height;
  //   NSLog(@"Меньше %f", clingYOffset);
     
-    if (startY < collectionViewYOffset + clingYOffset + magicOffset) {
+    NSIndexPath *prevLastIndexPath = [self indexPathForLastItemInSection:indexPath.section - 1]; // Проверить для 0
+    NSIndexPath *lastIndexPath = [self indexPathForLastItemInSection:indexPath.section];
+    
+    CGFloat firstBottomY = [self bottomYForIndexPath:prevLastIndexPath];
+    CGFloat lastBottomY = [self bottomYForIndexPath:lastIndexPath];
+    
+    BOOL below = lastBottomY - firstBottomY > screenHeight;
+    
+    if (startY < collectionViewYOffset + clingYOffset + headerMagicOffset && !below) {
 
-        startY = collectionViewYOffset + clingYOffset + magicOffset;
+        startY = collectionViewYOffset + clingYOffset + headerMagicOffset;
+        
+        
     }
     
   //  NSLog(@"%f %@", startY, indexPath);
