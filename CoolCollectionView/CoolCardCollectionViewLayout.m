@@ -11,7 +11,6 @@
 #import "CoolCardDecorationView.h"
 
 #import "CoolCardTopDecorationView.h"
-//#import "CoolCollectionCell.h"
 #import "CoolCardLayoutAttributes.h"
 
 typedef NS_ENUM(NSInteger, ViewType) {
@@ -24,7 +23,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 @interface CoolCardCollectionViewLayout ()
 
-@property (nonatomic, strong) NSDictionary *layoutInfo; 
+@property (nonatomic, strong) NSDictionary *layoutInfo;
 @property (nonatomic, strong) NSMutableDictionary *cellBottomY;
 
 @property (nonatomic) NSInteger numberOfClingingCards;
@@ -61,7 +60,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 #pragma mark - Setups
 
 - (void)setupLayout {
-
+    
     [self setupDefaultValues];
     [self registerDecorationViews];
     
@@ -143,12 +142,12 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
             indexPath = [NSIndexPath indexPathForItem:item inSection:section];
             NSDictionary *cellLayoutInfo = [self cellLayoutInfoForIndexPath:indexPath];
-
+            
             CGFloat currentBottomY = [[cellLayoutInfo objectForKey:@"currentBottomY"] floatValue];
             [self setBottomY:currentBottomY forCellAtIndexPath:indexPath]; // ставим frame ячейке
             
             cellLayoutFullInfo[indexPath] = [self cellLayoutAttributesForCellLayoutInfo:cellLayoutInfo atIndexPath:indexPath];
-        
+            
             
             if (!indexPath.item) { // тут создаётся supplementary
                 
@@ -159,7 +158,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                         if (indexPath.section > self.numberOfClingingCards - 1 && indexPath.section == self.lastClingedCardIndex + 1) {
                             
                             [self makeMagicMoveForSupplementaryInfo:&supplementaryFullInfo cellsInfo:&cellLayoutFullInfo beforeSupplementaryViewAtIndexPath:indexPath]; // тут двигаем подъезд карточек друг к другу
-
+                            
                         }
                         
                     }
@@ -200,7 +199,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
                 if (self.cardBehaviourEnabled) {
-                   
+                    
                     UICollectionViewLayoutAttributes *decorationLineAttributes = [self decorationLineAttributesForSupplementaryViewAttributes:attributes withIndexPath:indexKey];
                     
                     if (decorationLineAttributes) {
@@ -214,7 +213,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                     }
                     
                 }
-
+                
                 if (CGRectIntersectsRect(rect, attributes.frame) ) {
                     
                     if (self.cardMagicEnabled && self.cardBehaviourEnabled) {
@@ -345,7 +344,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         if (section < [self.collectionView numberOfSections] - 1) {
             section++;
         }
-
+        
     } else {
         item++;
     }
@@ -403,7 +402,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if (!nextIndexPath) return NO;
     
     
-    if ([self isCellClingingForIndexPath:indexPath]) {
+    if ([self isCellClingingForIndexPath:nextIndexPath]) {
         return YES;
     }
     
@@ -470,7 +469,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     if (indexPath.item) return CGSizeZero;
     
     if ([self isCellClingingForIndexPath:indexPath]) {
@@ -517,7 +516,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     }
     
     return nil;
-
+    
 }
 
 - (UICollectionViewLayoutAttributes *)decorationLineAttributesForSupplementaryViewAttributes:(UICollectionViewLayoutAttributes *)supplementaryAttributes withIndexPath:(NSIndexPath *)indexPath {
@@ -555,7 +554,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         return decorationAttributes;
         
     }
- 
+    
     return nil;
 }
 
@@ -647,14 +646,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     // -- start info
-
+    
     
     CoolCardLayoutAttributes *cellAttributes = [CoolCardLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     cellAttributes.shadowVisible = YES;
     
-    if (self.cardBehaviourEnabled) { // цеплять наверх
+    if (self.cardBehaviourEnabled) {
         
-        if ([self isCellClingingForIndexPath:indexPath]) {
+        if ([self isCellClingingForIndexPath:indexPath]) { // 
             
             CGFloat newCellY = [self clingedYForStartY:cellY withIndexPath:indexPath];
             
@@ -671,7 +670,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             CGFloat cellRelativeY = cellY - collectionViewYOffset;
             CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + self.clingYOffset + supplementaryViewSizeForSection.height / 2.0;
             
-
+            
             if (cellRelativeY < supRelativeY) {
                 CGFloat offset = supRelativeY - cellRelativeY;
                 
@@ -693,7 +692,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (CoolCardLayoutAttributes *)supplementaryViewLayoutAttributesForCellLayoutAttributes:(NSDictionary *)cellLayoutInfo atIndexPath:(NSIndexPath *)indexPath {
- 
+    
     if (indexPath.item || [self isCellClingingForIndexPath:indexPath]) return nil;
     
     // -- start info
@@ -738,14 +737,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if ((startY < collectionViewYOffset + clingYOffset)) { // цепляем
         startY = collectionViewYOffset + clingYOffset;
         
-
+        
         if (self.cardMagicEnabled && self.cardBehaviourEnabled) {
             startY = [self magicYForStartY:startY withIndexPath:indexPath];
         }
     }
     
     return startY;
-
+    
 }
 
 - (CGFloat)magicYForStartY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
@@ -808,7 +807,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 (*cellsInfo)[previousIndexPathSection] = prevAttributes;
                 
             } else {
-            
+                
                 CoolCardLayoutAttributes *prevAttributes = (*supplementaryInfo)[previousIndexPathSection];
                 prevAttributes.center = CGPointMake(prevAttributes.center.x, prevAttributes.center.y - delta);
                 (*supplementaryInfo)[previousIndexPathSection] = prevAttributes;
@@ -818,7 +817,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         }
         
     }
-
+    
     
 }
 

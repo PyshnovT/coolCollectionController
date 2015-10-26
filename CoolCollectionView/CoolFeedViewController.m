@@ -182,8 +182,8 @@
             item.title = array[i];
         
             if (array.count == 1) {
-               // item.type = CellItemTypeBuy;
-                item.type = arc4random() % 2 ? CellItemTypeNote : CellItemTypeThird;
+                item.type = CellItemTypeBuy;
+              //  item.type = CellItemTypeNote;
             } else {
                 item.type = CellItemTypeBuy;
             }
