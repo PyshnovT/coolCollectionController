@@ -675,7 +675,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         
         if ([self isCellClingingForIndexPath:indexPath]) { // ячейка-хэдер
             
-            CGFloat newCellY = [self clingedYForHeaderAtY:cellY withIndexPath:indexPath];
+            CGFloat newCellY = [self clingedYForViewType:ViewTypeSupplementaryView atY:cellY withIndexPath:indexPath];
             
             if (newCellY > cellY) {
                 if (indexPath.section > self.numberOfClingingCards - 1) {
@@ -777,36 +777,21 @@ typedef NS_ENUM(NSInteger, ViewType) {
 #pragma mark - Card Behaviour
 
 - (CGFloat)clingedYForViewType:(ViewType)viewType atY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
-    /*
-    if (viewType == ViewTypeSupplementaryView) {
-        return [self clingedYForHeaderAtY:startY withIndexPath:indexPath];
-    } else if (viewType == ViewTypeCell) {
-        return [self clingedYForCellAtY:startY withIndexPath:indexPath];
-    }
-     */
-    
+
     if (self.cardBehaviourEnabled) {
     
         CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
         CGFloat headerYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
-        CGFloat screenHeight = self.collectionView.bounds.size.height;
-        
-    #warning Check for 0 section
-        NSIndexPath *prevLastIndexPath = [self indexPathForLastItemInSection:indexPath.section - 1];
-        NSIndexPath *lastIndexPath = [self indexPathForLastItemInSection:indexPath.section];
-        CGFloat firstBottomY = [self bottomYForIndexPath:prevLastIndexPath];
-        CGFloat lastBottomY = [self bottomYForIndexPath:lastIndexPath];
-        
-        BOOL below = lastBottomY - firstBottomY > screenHeight;
+        CGFloat fuckOffset = [self fuckOffsetForCardAtSection:indexPath.section];
         
         if (viewType == ViewTypeCell) {
             CGFloat cellYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
-            if (startY < collectionViewYOffset + cellYOffset + headerYOffset && !below) {
-                startY = collectionViewYOffset + cellYOffset + headerYOffset;
+            if (startY < collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset) {
+                startY = collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset;
             }
         } else if (viewType == ViewTypeSupplementaryView) {
-            if (startY < collectionViewYOffset + headerYOffset && !below) {
-                startY = collectionViewYOffset + headerYOffset;
+            if (startY < collectionViewYOffset + headerYOffset - fuckOffset) {
+                startY = collectionViewYOffset + headerYOffset - fuckOffset;
             }
             
             if (self.cardMagicEnabled) {
@@ -819,7 +804,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return startY;
     
 }
-
+/*
 - (CGFloat)clingedYForHeaderAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
     
     CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
@@ -854,7 +839,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return startY;
     
 }
-
+*/
 - (BOOL)isCardMoreThanScreenForSection:(NSInteger)section {
     CGFloat screenHeight = self.collectionView.bounds.size.height;
     
@@ -868,6 +853,26 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     return isMore;
 }
+
+- (CGFloat)fuckOffsetForCardAtSection:(NSInteger)section {
+    BOOL isCardBig = [self isCardMoreThanScreenForSection:section];
+    CGFloat collectionViewHeight = self.collectionView.bounds.size.height;
+    
+    CGFloat fuckOffset = 0;
+    
+    if (isCardBig) {
+        NSIndexPath *indexPathForPrevLastCell = [self indexPathForLastItemInSection:section - 1];
+        CGFloat bottomPrevCardY = [self bottomYForIndexPath:indexPathForPrevLastCell];
+        
+        NSIndexPath *indexPathForLastCell = [self indexPathForLastItemInSection:section];
+        CGFloat bottomCardY = [self bottomYForIndexPath:indexPathForLastCell];
+        
+        fuckOffset = bottomCardY - bottomPrevCardY - collectionViewHeight + 100;
+    }
+    
+    return fuckOffset;
+}
+
 
 #pragma mark - Magic
 
