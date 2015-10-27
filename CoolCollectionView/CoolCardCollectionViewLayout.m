@@ -353,13 +353,13 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (NSIndexPath *)indexPathForFirstItemInSection:(NSInteger)section {
-    if (section > [self.collectionView numberOfSections] - 1) return nil;
+    if (section > [self.collectionView numberOfSections] - 1 || section < 0) return nil;
     
     return [NSIndexPath indexPathForItem:0 inSection:section];
 }
 
 - (NSIndexPath *)indexPathForLastItemInSection:(NSInteger)section {
-    if (section > [self.collectionView numberOfSections] - 1) return nil;
+    if (section > [self.collectionView numberOfSections] - 1 || section < 0) return nil;
     
     NSInteger item = [self.collectionView numberOfItemsInSection:section] - 1;
     
@@ -784,21 +784,22 @@ typedef NS_ENUM(NSInteger, ViewType) {
         CGFloat headerYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
         CGFloat fuckOffset = [self fuckOffsetForCardAtSection:indexPath.section];
         
+        CGFloat cellYOffset = 0;
+        
         if (viewType == ViewTypeCell) {
-            CGFloat cellYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
-            if (startY < collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset) {
-                startY = collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset;
-            }
-        } else if (viewType == ViewTypeSupplementaryView) {
-            if (startY < collectionViewYOffset + headerYOffset - fuckOffset) {
-                startY = collectionViewYOffset + headerYOffset - fuckOffset;
-            }
-            
+            cellYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
+        }
+        
+        if (startY < collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset) {
+            startY = collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset;
+        }
+        
+        if (viewType == ViewTypeSupplementaryView) {
             if (self.cardMagicEnabled) {
                 startY = [self magicYForStartY:startY withIndexPath:indexPath];
             }
         }
-    
+
     }
     
     return startY;
@@ -855,6 +856,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (CGFloat)fuckOffsetForCardAtSection:(NSInteger)section {
+    NSIndexPath *testIndexPath = [self indexPathForLastItemInSection:-1];
+    CGFloat bottomPrevCardY = [self bottomYForIndexPath:testIndexPath];
+    
+    NSLog(@"BOTTOM %@ %f", testIndexPath, bottomPrevCardY);
+    
     BOOL isCardBig = [self isCardMoreThanScreenForSection:section];
     CGFloat collectionViewHeight = self.collectionView.bounds.size.height;
     
