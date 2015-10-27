@@ -673,7 +673,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
         
         if ([self isCellClingingForIndexPath:indexPath]) {
             
-            CGFloat newCellY = [self clingedYForHeaderAtY:cellY withIndexPath:indexPath];
+            CGFloat newCellY = [self clingedYForViewType:ViewTypeSupplementaryView atY:cellY withIndexPath:indexPath];//[self clingedYForHeaderAtY:cellY withIndexPath:indexPath];
             
             if (newCellY > cellY) {
                 if (indexPath.section > self.numberOfClingingCards - 1) {
@@ -685,7 +685,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
         } else { // когда начать скрывать ячейку
             
-            cellY = [self clingedYForCellAtY:cellY withIndexPath:indexPath];
+            cellY = [self clingedYForViewType:ViewTypeCell atY:cellY withIndexPath:indexPath];//[self clingedYForCellAtY:cellY withIndexPath:indexPath];
         
             CGFloat cellRelativeY = cellY - collectionViewYOffset;
             CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + self.clingYOffset + supplementaryViewSizeForSection.height / 2.0;
@@ -732,7 +732,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.cardBehaviourEnabled) { // цеплять наверх
         
-        CGFloat newSupplementaryY = [self clingedYForHeaderAtY:supplementaryY withIndexPath:indexPath];
+        CGFloat newSupplementaryY = [self clingedYForViewType:ViewTypeSupplementaryView atY:supplementaryY withIndexPath:indexPath];//[self clingedYForHeaderAtY:supplementaryY withIndexPath:indexPath];
         
         if (newSupplementaryY > supplementaryY) {
             if (indexPath.section > self.numberOfClingingCards - 1) {
@@ -750,7 +750,44 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 }
 
-#pragma mark - Magic
+#pragma mark - Card Behaviour
+
+- (CGFloat)clingedYForViewType:(ViewType)viewType atY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
+    
+    if (self.cardBehaviourEnabled) {
+        
+        CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
+        CGFloat headerYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
+        CGFloat fuckOffset = [self fuckOffsetForCardAtSection:indexPath.section];
+        
+        
+        if (viewType == ViewTypeCell) {
+            CGFloat cellYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
+            if (startY < collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset) {
+                startY = collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset;
+            }
+        }
+        
+        
+        
+        if (viewType == ViewTypeSupplementaryView) {
+            
+            if (startY < collectionViewYOffset + headerYOffset) {
+                startY = collectionViewYOffset + headerYOffset;
+            }
+            
+            if (self.cardMagicEnabled) {
+                startY = [self magicYForStartY:startY withIndexPath:indexPath];
+            }
+        }
+        
+    }
+    
+    return startY;
+    
+}
+
+/*
 
 - (CGFloat)clingedYForHeaderAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
     
@@ -799,6 +836,44 @@ typedef NS_ENUM(NSInteger, ViewType) {
     return startY;
     
 }
+ */
+
+
+- (BOOL)isCardMoreThanScreenForSection:(NSInteger)section {
+    CGFloat screenHeight = self.collectionView.bounds.size.height;
+    
+    NSIndexPath *prevLastIndexPath = [self indexPathForLastItemInSection:section - 1]; // Проверить для 0
+    NSIndexPath *lastIndexPath = [self indexPathForLastItemInSection:section];
+    
+    CGFloat firstBottomY = [self bottomYForIndexPath:prevLastIndexPath];
+    CGFloat lastBottomY = [self bottomYForIndexPath:lastIndexPath];
+    
+    BOOL isMore = lastBottomY - firstBottomY > screenHeight;
+    
+    return isMore;
+}
+
+- (CGFloat)fuckOffsetForCardAtSection:(NSInteger)section {
+
+    BOOL isCardBig = [self isCardMoreThanScreenForSection:section];
+    CGFloat collectionViewHeight = self.collectionView.bounds.size.height;
+    
+    CGFloat fuckOffset = 0;
+    
+    if (isCardBig) {
+        NSIndexPath *indexPathForPrevLastCell = [self indexPathForLastItemInSection:section - 1];
+        CGFloat bottomPrevCardY = [self bottomYForIndexPath:indexPathForPrevLastCell];
+        
+        NSIndexPath *indexPathForLastCell = [self indexPathForLastItemInSection:section];
+        CGFloat bottomCardY = [self bottomYForIndexPath:indexPathForLastCell];
+        
+        fuckOffset = bottomCardY - bottomPrevCardY - collectionViewHeight + 100;
+    }
+    
+    return fuckOffset;
+}
+
+#pragma mark - Magic
 
 - (CGFloat)magicYForStartY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
     
