@@ -833,7 +833,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
         NSIndexPath *indexPathForLastCell = [self indexPathForLastItemInSection:section];
         CGFloat bottomCardY = [self bottomYForIndexPath:indexPathForLastCell];
         
-        fuckOffset = bottomCardY - bottomPrevCardY - collectionViewHeight + 100;
+        CGFloat wowNumber = section == [self.collectionView numberOfSections] - 1 ? self.collectionView.bounds.size.height : 100;
+        
+        fuckOffset = bottomCardY - bottomPrevCardY - collectionViewHeight + wowNumber;
     }
     
     return fuckOffset;
