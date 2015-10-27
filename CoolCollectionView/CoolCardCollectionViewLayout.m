@@ -83,7 +83,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (void)registerDecorationViews {
-    [self registerClass:[CoolCardDecorationView class] forDecorationViewOfKind:@"bottomLine"];
+    [self registerNib:[UINib nibWithNibName:@"CoolCardDecorationView" bundle:nil] forDecorationViewOfKind:@"bottomLine"];
     [self registerClass:[CoolCardTopDecorationView class] forDecorationViewOfKind:@"hideLine"];
 }
 
@@ -269,6 +269,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     if (newBounds.size.width != self.collectionView.bounds.size.width) {
+        NSLog(@"Revert");
         return YES;
     }
     
@@ -475,7 +476,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     } else if (viewType == ViewTypeHideDecorationView) {
         return indexPath.section - 2;
     } else if (viewType == ViewTypeSupplementaryView) {
-        return indexPath.section + 1;
+        return indexPath.section;
     } else if (ViewTypeCell) {
         
         if ([self isCellClingingForIndexPath:indexPath]) {
@@ -564,9 +565,9 @@ typedef NS_ENUM(NSInteger, ViewType) {
     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine" withIndexPath:indexPath];
     
     decorationAttributes.frame = CGRectMake(0.0f,
-                                            supplemetaryViewFrame.origin.y + supplemetaryViewFrame.size.height - 30,
-                                            self.collectionViewContentSize.width,
-                                            30);
+                                            supplemetaryViewFrame.origin.y + supplemetaryViewFrame.size.height,
+                                            self.collectionView.bounds.size.width,
+                                            6);
     
     decorationAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeLineDecorationView];
     

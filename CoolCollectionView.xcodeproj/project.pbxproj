@@ -7,27 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0930CD741BC3C38E0038227F /* CoolCardSupplementaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930CD721BC3C38E0038227F /* CoolCardSupplementaryCell.m */; settings = {ASSET_TAGS = (); }; };
-		0930CD751BC3C38E0038227F /* CoolCardSupplementaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0930CD731BC3C38E0038227F /* CoolCardSupplementaryCell.xib */; settings = {ASSET_TAGS = (); }; };
-		098B06721BC42BF000C9DDF8 /* CoolBuyCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06701BC42BF000C9DDF8 /* CoolBuyCardCell.m */; settings = {ASSET_TAGS = (); }; };
-		098B06731BC42BF000C9DDF8 /* CoolBuyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 098B06711BC42BF000C9DDF8 /* CoolBuyCardCell.xib */; settings = {ASSET_TAGS = (); }; };
-		098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06761BC42FE900C9DDF8 /* CoolCellItem.m */; settings = {ASSET_TAGS = (); }; };
+		0930CD741BC3C38E0038227F /* CoolCardSupplementaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930CD721BC3C38E0038227F /* CoolCardSupplementaryCell.m */; };
+		0930CD751BC3C38E0038227F /* CoolCardSupplementaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0930CD731BC3C38E0038227F /* CoolCardSupplementaryCell.xib */; };
+		098B06721BC42BF000C9DDF8 /* CoolBuyCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06701BC42BF000C9DDF8 /* CoolBuyCardCell.m */; };
+		098B06731BC42BF000C9DDF8 /* CoolBuyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 098B06711BC42BF000C9DDF8 /* CoolBuyCardCell.xib */; };
+		098B06771BC42FE900C9DDF8 /* CoolCellItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 098B06761BC42FE900C9DDF8 /* CoolCellItem.m */; };
 		099E3EFC1BC00F7A0054B604 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3EFB1BC00F7A0054B604 /* main.m */; };
 		099E3EFF1BC00F7A0054B604 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3EFE1BC00F7A0054B604 /* AppDelegate.m */; };
 		099E3F011BC00F7A0054B604 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 099E3F001BC00F7A0054B604 /* Assets.xcassets */; };
 		099E3F041BC00F7A0054B604 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 099E3F021BC00F7A0054B604 /* LaunchScreen.storyboard */; };
-		099E3F141BC00FF60054B604 /* CoolFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F0C1BC00FF60054B604 /* CoolFeedViewController.m */; settings = {ASSET_TAGS = (); }; };
-		099E3F151BC00FF60054B604 /* CoolFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 099E3F0D1BC00FF60054B604 /* CoolFeedViewController.xib */; settings = {ASSET_TAGS = (); }; };
-		099E3F161BC00FF60054B604 /* CoolCardCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F0F1BC00FF60054B604 /* CoolCardCollectionView.m */; settings = {ASSET_TAGS = (); }; };
-		099E3F171BC00FF60054B604 /* CoolCardCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F111BC00FF60054B604 /* CoolCardCollectionViewLayout.m */; settings = {ASSET_TAGS = (); }; };
-		6E00A6A21BCBDE9500990DD1 /* CoolCardLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6A11BCBDE9500990DD1 /* CoolCardLayoutAttributes.m */; settings = {ASSET_TAGS = (); }; };
-		6E00A6A61BCC0B0800990DD1 /* CoolNoteCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6A41BCC0B0800990DD1 /* CoolNoteCardCell.m */; settings = {ASSET_TAGS = (); }; };
-		6E00A6A71BCC0B0800990DD1 /* CoolNoteCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E00A6A51BCC0B0800990DD1 /* CoolNoteCardCell.xib */; settings = {ASSET_TAGS = (); }; };
-		6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */; settings = {ASSET_TAGS = (); }; };
-		6E1B6BBF1BD928980012FBE6 /* ThirdCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1B6BBD1BD928980012FBE6 /* ThirdCardCell.m */; settings = {ASSET_TAGS = (); }; };
-		6E1B6BC01BD928980012FBE6 /* ThirdCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E1B6BBE1BD928980012FBE6 /* ThirdCardCell.xib */; settings = {ASSET_TAGS = (); }; };
-		6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */; settings = {ASSET_TAGS = (); }; };
-		6EFEC73A1BD4F99E007780EE /* UIColor+Randomizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFEC7391BD4F99E007780EE /* UIColor+Randomizer.m */; settings = {ASSET_TAGS = (); }; };
+		099E3F141BC00FF60054B604 /* CoolFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F0C1BC00FF60054B604 /* CoolFeedViewController.m */; };
+		099E3F151BC00FF60054B604 /* CoolFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 099E3F0D1BC00FF60054B604 /* CoolFeedViewController.xib */; };
+		099E3F161BC00FF60054B604 /* CoolCardCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F0F1BC00FF60054B604 /* CoolCardCollectionView.m */; };
+		099E3F171BC00FF60054B604 /* CoolCardCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 099E3F111BC00FF60054B604 /* CoolCardCollectionViewLayout.m */; };
+		6E00A6A21BCBDE9500990DD1 /* CoolCardLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6A11BCBDE9500990DD1 /* CoolCardLayoutAttributes.m */; };
+		6E00A6A61BCC0B0800990DD1 /* CoolNoteCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6A41BCC0B0800990DD1 /* CoolNoteCardCell.m */; };
+		6E00A6A71BCC0B0800990DD1 /* CoolNoteCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E00A6A51BCC0B0800990DD1 /* CoolNoteCardCell.xib */; };
+		6E00A6AC1BCC21B900990DD1 /* CoolCardTopDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */; };
+		6E1B6BBF1BD928980012FBE6 /* ThirdCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1B6BBD1BD928980012FBE6 /* ThirdCardCell.m */; };
+		6E1B6BC01BD928980012FBE6 /* ThirdCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E1B6BBE1BD928980012FBE6 /* ThirdCardCell.xib */; };
+		6E49C69E1BDFE5AB0005A922 /* CoolCardDecorationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E49C69D1BDFE5AB0005A922 /* CoolCardDecorationView.xib */; };
+		6E49C6A01BDFE6FD0005A922 /* shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E49C69F1BDFE6FD0005A922 /* shadow.png */; };
+		6E4BB97C1BCAB97C0079F4D2 /* CoolCardDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */; };
+		6EFEC73A1BD4F99E007780EE /* UIColor+Randomizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EFEC7391BD4F99E007780EE /* UIColor+Randomizer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +66,8 @@
 		6E1B6BBC1BD928980012FBE6 /* ThirdCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdCardCell.h; sourceTree = "<group>"; };
 		6E1B6BBD1BD928980012FBE6 /* ThirdCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdCardCell.m; sourceTree = "<group>"; };
 		6E1B6BBE1BD928980012FBE6 /* ThirdCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThirdCardCell.xib; sourceTree = "<group>"; };
+		6E49C69D1BDFE5AB0005A922 /* CoolCardDecorationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CoolCardDecorationView.xib; sourceTree = "<group>"; };
+		6E49C69F1BDFE6FD0005A922 /* shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shadow.png; sourceTree = "<group>"; };
 		6E4BB97A1BCAB97C0079F4D2 /* CoolCardDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolCardDecorationView.h; sourceTree = "<group>"; };
 		6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolCardDecorationView.m; sourceTree = "<group>"; };
 		6EFEC7381BD4F99E007780EE /* UIColor+Randomizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Randomizer.h"; sourceTree = "<group>"; };
@@ -195,6 +199,8 @@
 			children = (
 				6E4BB97A1BCAB97C0079F4D2 /* CoolCardDecorationView.h */,
 				6E4BB97B1BCAB97C0079F4D2 /* CoolCardDecorationView.m */,
+				6E49C69D1BDFE5AB0005A922 /* CoolCardDecorationView.xib */,
+				6E49C69F1BDFE6FD0005A922 /* shadow.png */,
 				6E00A6AA1BCC21B900990DD1 /* CoolCardTopDecorationView.h */,
 				6E00A6AB1BCC21B900990DD1 /* CoolCardTopDecorationView.m */,
 			);
@@ -307,8 +313,10 @@
 				6E00A6A71BCC0B0800990DD1 /* CoolNoteCardCell.xib in Resources */,
 				6E1B6BC01BD928980012FBE6 /* ThirdCardCell.xib in Resources */,
 				099E3F151BC00FF60054B604 /* CoolFeedViewController.xib in Resources */,
+				6E49C69E1BDFE5AB0005A922 /* CoolCardDecorationView.xib in Resources */,
 				099E3F041BC00F7A0054B604 /* LaunchScreen.storyboard in Resources */,
 				098B06731BC42BF000C9DDF8 /* CoolBuyCardCell.xib in Resources */,
+				6E49C6A01BDFE6FD0005A922 /* shadow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +394,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -423,7 +431,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
