@@ -206,7 +206,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
                 if (self.cardBehaviourEnabled) {
-                    
+               
                     UICollectionViewLayoutAttributes *decorationLineAttributes = [self decorationLineAttributesForSupplementaryViewAttributes:attributes withIndexPath:indexKey];
                     
                     if (decorationLineAttributes) {
@@ -475,7 +475,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     } else if (viewType == ViewTypeHideDecorationView) {
         return indexPath.section - 2;
     } else if (viewType == ViewTypeSupplementaryView) {
-        return indexPath.section;
+        return indexPath.section + 1;
     } else if (ViewTypeCell) {
         
         if ([self isCellClingingForIndexPath:indexPath]) {
@@ -557,28 +557,25 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.lastClingedCardIndex > self.numberOfClingingCards && indexPath.section < self.lastClingedCardIndex) return nil;
     
+    if (![self isCardMoreThanScreenForSection:indexPath.section]) return nil;
+    
     CGRect supplemetaryViewFrame = supplementaryAttributes.frame;
     
     UICollectionViewLayoutAttributes *decorationAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:@"bottomLine" withIndexPath:indexPath];
     
     decorationAttributes.frame = CGRectMake(0.0f,
-                                            supplemetaryViewFrame.origin.y + supplemetaryViewFrame.size.height,
+                                            supplemetaryViewFrame.origin.y + supplemetaryViewFrame.size.height - 30,
                                             self.collectionViewContentSize.width,
-                                            1);
+                                            30);
     
     decorationAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeLineDecorationView];
     
     
     // --- тут высчитывается alpha
-    
-    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-    CGFloat clingYOffset = MIN(self.clingYOffset * indexPath.section, self.clingYOffset * (self.numberOfClingingCards - 1));
-    
-    NSIndexPath *firstCellIndexInCurrentSection = [NSIndexPath indexPathForItem:0 inSection:indexPath.section];
-    UICollectionViewLayoutAttributes *cellAttributes = self.layoutInfo[cellReuseIdentifier][firstCellIndexInCurrentSection];
-    
-    CGFloat decorationAlpha = (cellAttributes.frame.origin.y - collectionViewYOffset - clingYOffset) / supplemetaryViewFrame.size.height;
-    decorationAlpha = MIN(1, 1 - decorationAlpha);
+
+    CGFloat decorationAlpha = (supplementaryAttributes.frame.origin.y - [self previousBottomYForIndexPath:indexPath]) / supplemetaryViewFrame.size.height;
+
+    decorationAlpha = MIN(1, decorationAlpha);
     decorationAttributes.alpha = decorationAlpha;
     
     // --- тут высчитывается alpha
@@ -748,6 +745,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     supAttributes.shadowVisible = YES;
     supAttributes.isHeader = YES;
     
+    
     if (self.cardBehaviourEnabled) { // цеплять наверх
         
         CGFloat newSupplementaryY = [self clingedYForViewType:ViewTypeSupplementaryView atY:supplementaryY withIndexPath:indexPath];//[self clingedYForHeaderAtY:supplementaryY withIndexPath:indexPath];
@@ -763,6 +761,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     supAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeSupplementaryView];
     supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
+    
+    CGFloat decorationAlpha = (supAttributes.frame.origin.y - [self previousBottomYForIndexPath:indexPath]) / supAttributes.size.height;
+    decorationAlpha = MIN(1, decorationAlpha);
+    
+    supAttributes.bottomHeaderShadowAlpha = decorationAlpha;
     
     return supAttributes;
     
