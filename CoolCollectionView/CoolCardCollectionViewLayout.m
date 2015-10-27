@@ -332,7 +332,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     NSIndexPath *endIndexPath = [NSIndexPath indexPathForItem:item inSection:section];
     
-    if ([self isIndexPathLegal:indexPath]) {
+    if ([self isIndexPathValid:indexPath]) {
         return endIndexPath;
     }
     
@@ -356,6 +356,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
     } else {
         item++;
     }
+    
+    
     
     return [NSIndexPath indexPathForItem:item inSection:section];
 }
@@ -388,10 +390,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 }
 
-- (BOOL)isIndexPathLegal:(NSIndexPath *)indexPath {
+- (BOOL)isIndexPathValid:(NSIndexPath *)indexPath {
     if (indexPath.section < 0 || indexPath.item < 0) {
         return NO;
     }
+    
+    if (indexPath.section > [self.collectionView numberOfSections] - 1) return NO;
+    
+    if (indexPath.item > [self.collectionView numberOfItemsInSection:indexPath.section]) return NO;
     
     return YES;
 }
