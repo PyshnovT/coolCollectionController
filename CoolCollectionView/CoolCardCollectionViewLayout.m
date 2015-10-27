@@ -194,7 +194,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
         
         for (NSIndexPath *indexKey in attributesDict) {
             
-            UICollectionViewLayoutAttributes *attributes = [attributesDict objectForKey:indexKey];
+            CoolCardLayoutAttributes *attributes = [attributesDict objectForKey:indexKey];
+            
+            NSIndexPath *nextKey = [NSIndexPath indexPathForItem:0 inSection:indexKey.section + 1];
+            CoolCardLayoutAttributes *nextCardCellAtributes = [attributesDict objectForKey:nextKey];
+            
+            CGFloat myRelativeY = attributes.frame.origin.y - self.collectionView.contentOffset.y;
+            CGFloat nextRelativeY = nextCardCellAtributes.frame.origin.y - self.collectionView.contentOffset.y - [self sizeForSupplementaryViewInSection:indexKey.section + 1].height;
+
             
             if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
                 
@@ -205,7 +212,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
                     if (decorationLineAttributes) {
                         [allAttributes addObject:decorationLineAttributes];
                     }
-                    
+                 
                     UICollectionViewLayoutAttributes *decorationHideAttributes = [self decorationHideAttributesForAttributes:attributes withIndexPath:indexKey];
                     
                     if (decorationHideAttributes) {
@@ -234,13 +241,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 }
                 
                 if (CGRectIntersectsRect(rect, attributes.frame) && attributes.size.height > 0) {
-                    [allAttributes addObject:attributes];
+                    if (attributes.isHeader || nextRelativeY > myRelativeY || !nextCardCellAtributes) {
+                        [allAttributes addObject:attributes];
+                    }
                 }
                 
             }
         }
     }
-    
     
     return allAttributes;
 }
@@ -489,10 +497,12 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.item) return CGSizeZero;
+    if (indexPath.section > [self.collectionView numberOfSections] - 1) return CGSizeZero;
     
     if ([self isCellClingingForIndexPath:indexPath]) {
         return CGSizeZero;
     }
+    
     
     CGFloat height = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
     CGFloat width = self.collectionView.bounds.size.width;
@@ -668,6 +678,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CoolCardLayoutAttributes *cellAttributes = [CoolCardLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     cellAttributes.shadowVisible = YES;
+    cellAttributes.isHeader = NO;
     
     if (self.cardBehaviourEnabled) {
         
@@ -680,6 +691,8 @@ typedef NS_ENUM(NSInteger, ViewType) {
                     cellAttributes.shadowVisible = self.cardMagicEnabled;
                 }
             }
+            
+            cellAttributes.isHeader = YES;
             
             cellY = newCellY;
             
@@ -699,8 +712,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 
                 cellAttributes.internalYOffset = -offset;
             }
-            
-            
             
             
         }
@@ -729,6 +740,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CoolCardLayoutAttributes *supAttributes = [CoolCardLayoutAttributes layoutAttributesForSupplementaryViewOfKind:supplementaryKind withIndexPath:indexPath];
     supAttributes.size = supplementaryViewSize;
     supAttributes.shadowVisible = YES;
+    supAttributes.isHeader = YES;
     
     if (self.cardBehaviourEnabled) { // цеплять наверх
         
@@ -787,58 +799,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
 }
 
-/*
-
-- (CGFloat)clingedYForHeaderAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
-    
-    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-    CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
-    
-    if ((startY < collectionViewYOffset + clingYOffset)) { // цепляем
-        startY = collectionViewYOffset + clingYOffset;
-        
-        
-        if (self.cardMagicEnabled && self.cardBehaviourEnabled) {
-            startY = [self magicYForStartY:startY withIndexPath:indexPath];
-        }
-    }
-    
-    return startY;
-    
-}
-
-- (CGFloat)clingedYForCellAtY:(CGFloat)startY withIndexPath:(NSIndexPath *)indexPath {
-    
-    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
-    CGFloat clingYOffset = [self clingYOffsetForCellAtIndexPath:indexPath];
-    CGFloat headerMagicOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
-    
-    CGFloat screenHeight = self.collectionView.bounds.size.height;
- //   NSLog(@"Меньше %f", clingYOffset);
-    
-    NSIndexPath *prevLastIndexPath = [self indexPathForLastItemInSection:indexPath.section - 1]; // Проверить для 0
-    NSIndexPath *lastIndexPath = [self indexPathForLastItemInSection:indexPath.section];
-    
-    CGFloat firstBottomY = [self bottomYForIndexPath:prevLastIndexPath];
-    CGFloat lastBottomY = [self bottomYForIndexPath:lastIndexPath];
-    
-    BOOL below = lastBottomY - firstBottomY > screenHeight;
-    
-    if (startY < collectionViewYOffset + clingYOffset + headerMagicOffset && !below) {
-
-        startY = collectionViewYOffset + clingYOffset + headerMagicOffset;
-        
-        
-    }
-    
-  //  NSLog(@"%f %@", startY, indexPath);
-    
-    return startY;
-    
-}
- */
-
-
 - (BOOL)isCardMoreThanScreenForSection:(NSInteger)section {
     CGFloat screenHeight = self.collectionView.bounds.size.height;
     
@@ -871,6 +831,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
     }
     
     return fuckOffset;
+}
+
+- (CGFloat)relativeYForY:(CGFloat)y {
+    return y - self.collectionView.contentOffset.y;
 }
 
 #pragma mark - Magic

@@ -143,7 +143,6 @@
     
     for (Class<CoolCollectionCell> cellClass in self.collectionView.clingingCellClasses) {
         if ([cellClass itemType] == itemType) {
-          //  NSLog(@"%@ клинится", indexPath);
             return YES;
         }
     }
@@ -182,8 +181,8 @@
             item.title = array[i];
         
             if (array.count == 1) {
-                item.type = CellItemTypeBuy;
-              //  item.type = CellItemTypeNote;
+              //  item.type = CellItemTypeBuy;
+                item.type = CellItemTypeNote;
             } else {
                 item.type = CellItemTypeBuy;
             }

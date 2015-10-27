@@ -12,5 +12,6 @@
 
 @property (nonatomic, getter=isShadowVisible) BOOL shadowVisible;
 @property (nonatomic) CGFloat internalYOffset;
+@property (nonatomic) BOOL isHeader;
 
 @end

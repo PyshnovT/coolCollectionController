@@ -24,6 +24,7 @@
     
     copy.shadowVisible = self.isShadowVisible;
     copy.internalYOffset = self.internalYOffset;
+    copy.isHeader = self.isHeader;
     
     return copy;
 }
@@ -40,6 +41,9 @@
         return NO;
     }
     if (otherObject.internalYOffset != self.internalYOffset) {
+        return NO;
+    }
+    if (otherObject.isHeader != self.isHeader) {
         return NO;
     }
 
