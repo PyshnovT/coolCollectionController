@@ -241,8 +241,14 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 }
                 
                 if (CGRectIntersectsRect(rect, attributes.frame) && attributes.size.height > 0) {
-                    if (attributes.isHeader || nextRelativeY > myRelativeY || !nextCardCellAtributes) {
-                        [allAttributes addObject:attributes];
+                    if (attributes.isHeader) {
+                        if (indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
+                            [allAttributes addObject:attributes];
+                        }
+                    } else {
+                        if (nextRelativeY > myRelativeY || !nextCardCellAtributes) {
+                            [allAttributes addObject:attributes];
+                        }
                     }
                 }
                 
