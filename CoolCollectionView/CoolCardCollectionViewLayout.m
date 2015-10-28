@@ -235,20 +235,20 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 }
                 
             } else {
-                
+                /*
                 UICollectionViewLayoutAttributes *decorationHideAttributes = [self decorationHideAttributesForAttributes:attributes withIndexPath:indexKey];
                 
                 if (decorationHideAttributes) {
                     [allAttributes addObject:decorationHideAttributes];
                 }
-                
+                */
                 if (CGRectIntersectsRect(rect, attributes.frame) && attributes.size.height > 0) {
                     if (attributes.isHeader) {
                         if (indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
                             [allAttributes addObject:attributes];
                         }
                     } else {
-                        if (nextRelativeY > myRelativeY || !nextCardCellAtributes) {
+                        if (nextRelativeY + 16 > myRelativeY || !nextCardCellAtributes) {
                             [allAttributes addObject:attributes];
                         }
                     }
@@ -537,6 +537,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (UICollectionViewLayoutAttributes *)decorationHideAttributesForAttributes:(UICollectionViewLayoutAttributes *)attributes withIndexPath:(NSIndexPath *)indexPath {
     
+    return nil;
     if ([self isPreviousCellClingingForIndexPath:indexPath]) return nil;
     
     if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
@@ -601,7 +602,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (BOOL)canShowDecorationViewForCellAttributes:(UICollectionViewLayoutAttributes *)attributes withIndexPath:(NSIndexPath *)indexPath andViewType:(ViewType)viewType {
     
-    NSInteger relativeY = round(attributes.frame.origin.y - self.collectionView.contentOffset.y);
+    NSInteger relativeY = roundf([self relativeYForY:attributes.frame.origin.y]);//round(attributes.frame.origin.y - self.collectionView.contentOffset.y);
     CGFloat clingYOffset = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath];
     CGFloat supplementaryViewHeight = [self.delegate heightForSupplementaryViewAtIndexPath:indexPath];
     
@@ -942,7 +943,10 @@ typedef NS_ENUM(NSInteger, ViewType) {
 }
 
 - (CGFloat)topOffsetForIndexPath:(NSIndexPath *)indexPath {
+
     if (![self isScrollTopped]) return 0;
+    
+  //  if (indexPath.section > 4) return 0;
     
     NSInteger section = indexPath.section;
     
