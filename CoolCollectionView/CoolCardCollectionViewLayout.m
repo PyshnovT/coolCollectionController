@@ -680,8 +680,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     CGSize supplementaryViewSizeForSection = [[cellLayoutInfo objectForKey:@"supplementaryViewSizeForSection"] CGSizeValue];
     CGSize supplementaryViewSize = indexPath.item ? CGSizeZero : supplementaryViewSizeForSection;
 
-    
-    CGFloat collectionViewYOffset = self.collectionView.contentOffset.y;
     CGFloat cellY = previousBottomY + supplementaryViewSize.height;
     // -- start info
     
@@ -692,11 +690,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     if (self.cardBehaviourEnabled) {
         
-        if ([self isCellClingingForIndexPath:indexPath]) {
+        if ([self isCellClingingForIndexPath:indexPath]) { // если ячейка-хедер
             
-            CGFloat newCellY = [self clingedYForViewType:ViewTypeSupplementaryView atY:cellY withIndexPath:indexPath];//[self clingedYForHeaderAtY:cellY withIndexPath:indexPath];
+            CGFloat newCellY = [self clingedYForViewType:ViewTypeSupplementaryView atY:cellY withIndexPath:indexPath]; // не ошибка, так надо
             
-            if (newCellY > cellY) {
+            if (newCellY > cellY) { // если прилепился
                 if (indexPath.section > self.numberOfClingingCards - 1) {
                     cellAttributes.shadowVisible = self.cardMagicEnabled;
                 }
@@ -706,11 +704,11 @@ typedef NS_ENUM(NSInteger, ViewType) {
             
             cellY = newCellY;
             
-        } else { // когда начать скрывать ячейку
+        } else { // если ячейка обычная
             
             cellY = [self clingedYForViewType:ViewTypeCell atY:cellY withIndexPath:indexPath];//[self clingedYForCellAtY:cellY withIndexPath:indexPath];
         
-            CGFloat cellRelativeY = cellY - collectionViewYOffset;
+            CGFloat cellRelativeY = [self relativeYForY:cellY];
             CGFloat supRelativeY = [self clingYOffsetForSupplementaryViewAtIndexPath:indexPath] + self.clingYOffset + supplementaryViewSizeForSection.height / 2.0;
             
             
@@ -768,11 +766,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     supAttributes.zIndex = [self zIndexForIndexPath:indexPath forViewOfType:ViewTypeSupplementaryView];
     supAttributes.center = CGPointMake(supplementaryViewSize.width / 2.0, supplementaryY + supplementaryViewSize.height / 2.0);
-    
-    CGFloat decorationAlpha = (supAttributes.frame.origin.y - [self previousBottomYForIndexPath:indexPath]) / supAttributes.size.height;
-    decorationAlpha = MIN(1, decorationAlpha);
-    
-    supAttributes.bottomHeaderShadowAlpha = decorationAlpha;
     
     return supAttributes;
     
@@ -865,9 +858,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if (indexPath.section < self.lastClingedCardIndex) {
         
         if (mIndex >= self.numberOfClingingCards) { // карта, которую занизили
-            
             magicY += self.clingYOffset * mIndex;
-            
         } else if (mIndex < self.numberOfClingingCards && self.lastClingedCardIndex >= self.numberOfClingingCards) { // поднимать
             
             CGFloat zIndex = 0;
