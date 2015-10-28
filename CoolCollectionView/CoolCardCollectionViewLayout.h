@@ -20,6 +20,7 @@ static NSString * const supplementaryKind = @"Header";
 - (CGFloat)heightForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath;
 - (BOOL)isCellClingingForIndexPath:(NSIndexPath *)indexPath;
 
+
 @end
 
 

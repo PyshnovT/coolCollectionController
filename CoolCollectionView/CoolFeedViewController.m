@@ -99,8 +99,21 @@
 }
 
 #pragma mark - UICollectionViewDelegate
-
-
+/*
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (scrollView == self.collectionView) {
+        self.scrollInfo.velocity = velocity;
+        self.scrollInfo.targetContentOffset = *(targetContentOffset);
+    }
+}
+ */
+/*
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.collectionView) {
+        self.scrollInfo.currentDate = [NSDate date];
+    }
+}
+*/
 #pragma mark - CardColletionViewLayoutDelegate
 
 - (CGFloat)heightForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -158,7 +171,7 @@
                                @"Дыня": @[@"Дйййййй", @"Двыа", @"Двыаыва"],
                                @"Тёрка": @[@"Твац"],
                                @"Чdучмек": @[@"Чцуа"],
-                               @"Чучaмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
+                               @"Чучaмек": @[@"Чцуа", @"Ч32к", @"Чйук"],
                                @"Чуaчмек": @[@"Чцуа"],
                                @"Чучмек": @[@"Чцуа", @"Чуца", @"Чуца", @"Ч32к", @"Чйук"],
                                @"Чучaмек": @[@"Чцуа"],
@@ -166,7 +179,7 @@
                                @"Дыgня": @[@"Дйййййй"],
                                @"Дыsня": @[@"Дйййййй"],
                                @"Дынaя": @[@"Дйййййй", @"Двыа", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Двыаыва", @"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"],
-                               @"Паsdaра": @[@"Перв", @"Перк", @"Пы", @"По", @"Пры", @"Двыа", @"Двыаыва", @"Чцуа", @"Чуца", @"Чуца", @"Ч32к"]
+                               @"Паsdaра": @[@"Перв", @"Перк", @"Чцуа"]
                                };
     
     NSMutableDictionary *itemDict = [NSMutableDictionary dictionary];
@@ -181,8 +194,8 @@
             item.title = array[i];
         
             if (array.count == 1) {
-              //  item.type = CellItemTypeBuy;
-                item.type = CellItemTypeNote;
+                item.type = CellItemTypeBuy;
+                //item.type = CellItemTypeNote;
             } else {
                 item.type = CellItemTypeBuy;
             }
@@ -233,6 +246,7 @@
     */
     [self setupData];
     [self registerCells];
+
     
     ((CoolCardCollectionViewLayout *)self.collectionView.collectionViewLayout).delegate = self;
 }

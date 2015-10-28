@@ -55,7 +55,7 @@
 }
 
 + (CGFloat)heightOfCell {
-    return 100;
+    return 60;
 }
 
 
