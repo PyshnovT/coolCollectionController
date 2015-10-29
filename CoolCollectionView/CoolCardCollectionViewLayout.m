@@ -65,8 +65,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (void)setupDefaultValues {
     
-   // [self setupKinetics];
-    
     // External
     self.interItemSpaceY = 0;
     self.interSectionSpaceY = 0;
@@ -83,7 +81,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
 
 - (void)registerDecorationViews {
     [self registerNib:[UINib nibWithNibName:@"CoolCardDecorationView" bundle:nil] forDecorationViewOfKind:@"bottomLine"];
-    [self registerClass:[CoolCardTopDecorationView class] forDecorationViewOfKind:@"hideLine"];
 }
 
 #pragma mark - Getters
@@ -92,7 +89,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if (self.collectionView) {
         return ((CoolCardCollectionView *)self.collectionView).cardBehaviourEnabled;
     } else {
-        return NO;
+        return YES;
     }
 }
 
@@ -100,7 +97,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if (self.collectionView) {
         return ((CoolCardCollectionView *)self.collectionView).cardMagicEnabled;
     } else {
-        return NO;
+        return YES;
     }
 }
 
@@ -108,7 +105,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
     if (self.collectionView) {
         return ((CoolCardCollectionView *)self.collectionView).numberOfClingingCards;
     } else {
-        return NO;
+        return 1;
     }
 }
 
@@ -204,7 +201,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
             CGFloat nextRelativeY = nextCardCellAtributes.frame.origin.y - self.collectionView.contentOffset.y - [self sizeForSupplementaryViewInSection:indexKey.section + 1].height;
 
             
-            if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration
+            if (attributes.representedElementCategory == UICollectionElementCategorySupplementaryView) { // тут добавляем decoration и supplementary
                 
                 if (self.cardBehaviourEnabled) {
                
@@ -228,17 +225,15 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 }
                 
             } else {
-                /*
-                UICollectionViewLayoutAttributes *decorationHideAttributes = [self decorationHideAttributesForAttributes:attributes withIndexPath:indexKey];
-                
-                if (decorationHideAttributes) {
-                    [allAttributes addObject:decorationHideAttributes];
-                }
-                */
+
                 if (CGRectIntersectsRect(rect, attributes.frame) && attributes.size.height > 0) {
                     if (attributes.isHeader) {
-                        if (indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
+                        if (!self.cardMagicEnabled && indexKey.section < self.numberOfClingingCards) {
                             [allAttributes addObject:attributes];
+                        } else {
+                            if (indexKey.section >= self.lastClingedCardIndex - self.numberOfClingingCards) {
+                                [allAttributes addObject:attributes];
+                            }
                         }
                     } else {
                         if (nextRelativeY + 16 > myRelativeY || !nextCardCellAtributes) {
@@ -416,8 +411,7 @@ typedef NS_ENUM(NSInteger, ViewType) {
 - (BOOL)isPreviousCellClingingForIndexPath:(NSIndexPath *)indexPath {
     
     NSIndexPath *previousIndexPath = [self previousIndexPathForIndexPath:indexPath];
-    
-    if (previousIndexPath.section < 0 || previousIndexPath.item < 0) return NO;
+    if (!previousIndexPath) return NO;
     
     if ([self isCellClingingForIndexPath:previousIndexPath]) {
         return YES;
@@ -431,7 +425,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     NSIndexPath *nextIndexPath = [self nextIndexPathForIndexPath:indexPath];
     if (!nextIndexPath) return NO;
-    
     
     if ([self isCellClingingForIndexPath:nextIndexPath]) {
         return YES;
@@ -611,7 +604,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     CGFloat itemOffset = [self isTheLastItemInSectionForIndexPath:indexPath] ? 0 : self.interItemSpaceY;
     
-    
     CGSize supplementaryViewSizeForSection = [self sizeForSupplementaryViewInSection:indexPath.section];
     CGSize supplementaryViewSizeForIndexPath = [self sizeForSupplementaryViewAtIndexPath:indexPath]; // может дать CGSizeZero, в этом и смысл
     
@@ -756,7 +748,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
                 startY = collectionViewYOffset + cellYOffset + headerYOffset - fuckOffset;
             }
         }
-        
         
         
         if (viewType == ViewTypeSupplementaryView) {
@@ -906,9 +897,6 @@ typedef NS_ENUM(NSInteger, ViewType) {
     
     return (-self.collectionView.contentOffset.y * section) / 6;
 }
-
-#pragma mark - Kinetics
-
 
 
 #pragma mark - BottomY Management
