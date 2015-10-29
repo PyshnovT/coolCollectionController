@@ -41,7 +41,8 @@
 
 - (void)setupDecorationView {
     
-    self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:14] CGPath];
+    CGRect wholeRect = CGRectMake(0, 0, self.bounds.size.width, self.decorationView.bounds.size.height);
+    self.decorationView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:wholeRect cornerRadius:14] CGPath];
     self.decorationView.layer.cornerRadius = 14;
     self.decorationView.layer.shadowOffset = CGSizeMake(0, 0);
     self.decorationView.layer.shadowOpacity = self.isShadowVisible ? 0.22 : 0.0;
@@ -54,7 +55,7 @@
 - (void)setShadowVisible:(BOOL)shadowVisible {
     _shadowVisible = shadowVisible;
     
-    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.2 : 0.0;
+    self.decorationView.layer.shadowOpacity = shadowVisible ? 0.22 : 0.0;
 }
 
 - (void)setTitle:(NSString *)title {
@@ -84,7 +85,7 @@
 }
 
 + (CGFloat)heightOfCell {
-    return 100;
+    return 180;
 }
 
 

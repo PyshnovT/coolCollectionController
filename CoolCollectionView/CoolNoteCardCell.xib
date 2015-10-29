@@ -14,10 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="356" height="50"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCY-xj-BhW">
-                        <rect key="frame" x="0.0" y="8" width="356" height="80"/>
+                        <rect key="frame" x="0.0" y="8" width="356" height="34"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lB-B0-2IW">
-                                <rect key="frame" x="157" y="11" width="42" height="21"/>
+                                <rect key="frame" x="157" y="6" width="42" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -27,7 +27,7 @@
                         <animations/>
                         <color key="backgroundColor" red="1" green="0.64783723600812126" blue="0.91380283387784433" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="7lB-B0-2IW" firstAttribute="top" secondItem="oCY-xj-BhW" secondAttribute="top" constant="11" id="hq8-ss-sNn"/>
+                            <constraint firstItem="7lB-B0-2IW" firstAttribute="top" secondItem="oCY-xj-BhW" secondAttribute="top" constant="6" id="hq8-ss-sNn"/>
                             <constraint firstAttribute="trailing" secondItem="7lB-B0-2IW" secondAttribute="trailing" constant="157" id="zaR-mr-6ZY"/>
                         </constraints>
                     </view>
@@ -37,7 +37,7 @@
             </view>
             <animations/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="oCY-xj-BhW" secondAttribute="bottom" constant="-38" id="5rI-a7-Ote"/>
+                <constraint firstAttribute="bottom" secondItem="oCY-xj-BhW" secondAttribute="bottom" constant="8" id="5rI-a7-Ote"/>
                 <constraint firstItem="oCY-xj-BhW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="EHZ-5v-u7z"/>
                 <constraint firstAttribute="trailing" secondItem="oCY-xj-BhW" secondAttribute="trailing" id="Jav-GL-svj"/>
                 <constraint firstItem="oCY-xj-BhW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="bMJ-oM-1oS"/>
